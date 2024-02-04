@@ -1,0 +1,14 @@
+version: '3'
+services:
+  api:
+    container_name: "pemilu"
+    image: "pemilu"
+    # volumes:
+    #    - ./upload://usr/src/app/upload
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
