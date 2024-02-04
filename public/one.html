@@ -1,0 +1,342 @@
+<html>
+<header>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .form input {
+            outline: 0;
+            background: rgb(243, 216, 189);
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .form {
+            position: relative;
+            z-index: 1;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+        }
+
+        ::placeholder {
+            color: black;
+            opacity: 1;
+            font-weight: 550;
+            /* Firefox */
+        }
+
+        .tab {
+            display: none;
+        }
+
+        .form button {
+            text-transform: uppercase;
+            font-family: 'Poppins';
+            outline: 0;
+            background: rgb(243, 91, 90);
+            border: 2px solid rgb(243, 91, 90);
+            border-radius: 5px;
+            width: 100%;
+            padding: 15px;
+            color: #FFFFFF;
+            margin-top: 20;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+
+        .header-input {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .subheader-input {
+            text-align: left;
+        }
+
+        .text-upper {
+            text-align: left;
+            padding: 0 40 5 40
+        }
+
+        .text-lower {
+            text-align: left;
+            padding: 0 0 40 40
+        }
+
+
+        body {
+            font-family: 'Poppins';
+            font-size: 22px;
+        }
+    </style>
+</header>
+
+<body style="background-color: rgb(234,190,143);">
+    <div class="root" style="height: 100%;background-color: rgb(234,190,143);box-sizing: border-box;">
+        <div class="page" style="max-width: 500px;height: 100%;background-color: bisque;margin: auto;">
+            <form class="login-form">
+
+
+                <div class="tab form">
+                    <div class="text-upper">
+                        Halo,
+                    </div>
+                    <div class="text-lower">
+                        <b>BRIPKA AGUS NURYANTO</b>
+                    </div>
+                    <div style="text-align:center ">
+                        <div class="header-input" class="header-input">
+                            Satwil
+                        </div>
+                        <input type="number" />
+                        <div class="header-input">
+                            Kotamadya/Kabupaten
+                        </div>
+                        <input type="password" />
+                        <div class="header-input">
+                            Kecamatan
+                        </div>
+                        <input type="number" />
+                        <div class="header-input">
+                            Kelurahan
+                        </div>
+                        <input type="number" />
+                        <div class="header-input">
+                            No TPS (Format penulisan XXX. Contoh : 001)
+                        </div>
+                        <input type="text" />
+                        <div class="header-input">
+                            Jumlah daftar pemilih tetap
+                        </div>
+                        <input type="number" />
+                    </div>
+                </div>
+                <div class="tab form">
+                    <div class="text-upper">
+                        <b>Hasil Pemilihan Presiden</b>
+                    </div>
+                    <div class="text-lower">
+                        Masukkan angka hasil pemilihan pada
+                        masing-masing kolom.
+                    </div>
+                    <div style="text-align:center ">
+                        <div class="subheader-input" class="header-input">
+                            Paslon 1
+                        </div>
+                        <div class="subheader-input" class="header-input">
+                            Anies Baswedan - Muhaimin Iskandar
+                        </div>
+
+                        <input type="number" />
+                        <div class="subheader-input" class="header-input">
+                            Paslon 2
+                        </div>
+                        <div class="subheader-input" class="header-input">
+                            Prabowo Subianto - Gibran Rakabuming
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input" class="header-input">
+                            Paslon 3
+                        </div>
+                        <div class="subheader-input" class="header-input">
+                            Ganjar Pranowo - Mahfud MD
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            Suara Tidak Sah
+                        </div>
+                        <input type="number" />
+                    </div>
+                </div>
+
+                <div class="tab form">
+                    <div class="text-upper">
+                        <b>Hasil Pemilihan Legislatif DPR RI</b>
+                    </div>
+                    <div class="text-lower">
+                        Masukkan angka hasil pemilihan pada
+                        masing-masing kolom.
+                    </div>
+                    <div style="overflow-y: scroll; height:55%;" style="text-align:center ">
+                        <div class="subheader-input" class="header-input">
+                            1. Partai Kebangkitan Bangsa (PKB)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input" class="header-input">
+                            2. Partai Gerakan Indonesia Raya (GERINDRA)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input" class="header-input">
+                            3. Partai Demokrasi Indonesia Perjuangan (PDI Perjuangan)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            4. Partai Golongan Karya (Golkar)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            5. Partai NasDem
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            6. Partai Buruh
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            7. Partai Gelombang Rakyat Indonesia (Gelora)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            8. Partai Keadilan Sejahtera (PKS)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            9. Partai Kebangkitan Nusantara (PKN)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            10. Partai Hati Nurani Rakyat (Hanura)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            11. Partai Garda Perubahan Indonesia (Garuda)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            12. Partai Amanat Nasional (PAN)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            13. Partai Bulan Bintang (PBB)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            14. Partai Demokrat
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            15. Partai Solidaritas Indonesia (PSI)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            16. Partai Persatuan Indonesia (Perindo)
+                        </div>
+                        <input type="number" />
+                        <div class="subheader-input">
+                            17. Partai Persatuan Pembangunan (PPP)
+                        </div>
+                        <input type="number" />
+                    </div>
+                </div>
+                <div class="form">
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </div>
+
+
+
+
+            </form>
+            <div id="submisi" class="submisi" style="text-align: center; display: none;">
+                Terima kasih, hasil perhitungan akan langsung
+                masuk dan terpantau di posko OMB
+                Polres Metropolitan Tangerang Kota
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Submit";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            //... and run a function that will display the correct step indicator:
+            // fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            // if (n == 1 && !validateForm()) return false;
+            // if (n == 1 ) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                document.getElementById("nextBtn").style.display = "none";
+                document.getElementById("submisi").style.display = "block"
+                document.getElementById("regForm").submit();
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
+
+        // function validateForm() {
+        //     // This function deals with validation of the form fields
+        //     var x, y, i, valid = true;
+        //     x = document.getElementsByClassName("tab");
+        //     y = x[currentTab].getElementsByTagName("input");
+        //     // A loop that checks every input field in the current tab:
+        //     for (i = 0; i < y.length; i++) {
+        //         // If a field is empty...
+        //         if (y[i].value == "") {
+        //             // add an "invalid" class to the field:
+        //             y[i].className += " invalid";
+        //             // and set the current valid status to false
+        //             valid = false;
+        //         }
+        //     }
+        //     // If the valid status is true, mark the step as finished and valid:
+        //     if (valid) {
+        //         document.getElementsByClassName("step")[currentTab].className += " finish";
+        //     }
+        //     return valid; // return the valid status
+        // }
+
+        // function fixStepIndicator(n) {
+        //     // This function removes the "active" class of all steps...
+        //     var i, x = document.getElementsByClassName("step");
+        //     for (i = 0; i < x.length; i++) {
+        //         x[i].className = x[i].className.replace(" active", "");
+        //     }
+        //     //... and adds the "active" class on the current step:
+        //     x[n].className += " active";
+        // }
+    </script>
+</body>
+
+</html>
