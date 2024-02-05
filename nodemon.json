@@ -2,6 +2,6 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": ["src/**/*.spec.ts"],
-    "exec": "node --inspect=127.0.0.1:9226 -r ts-node/register -- src/main.ts",
+    "exec": "node --inspect=127.0.0.1:9236 -r ts-node/register -- src/main.ts",
     "env": {}
    }

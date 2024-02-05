@@ -72,7 +72,7 @@ header
     body {
     font-family: 'Poppins';
     font-size: 22px;
-    background-color: rgb(234,190,143)
+    background-color: rgb(234,190,143);
     }
 .root(style='height: 100%;background-color: rgb(234,190,143);box-sizing: border-box;')
   .page(style='max-width: 500px;height: 100%;background-color: bisque;margin: auto;')
@@ -81,7 +81,7 @@ header
         .text-upper
           | Halo,
         .text-lower
-          b BRIPKA AGUS NURYANTO
+          b BRIPKA AGUS NURYANTOs
         div(style='text-align:center ')
           .header-input
             | Satwil
@@ -186,6 +186,10 @@ header
           input(type='number')
       .form
         button#nextBtn(type='button' onclick='nextPrev(1)') Next
+    #submisi.submisi(style='text-align: center; display: none;')
+      | Terima kasih, hasil perhitungan akan langsung
+      | masuk dan terpantau di posko OMB
+      | Polres Metropolitan Tangerang Kota
 script.
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab
@@ -215,6 +219,8 @@ script.
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
   // ... the form gets submitted:
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("submisi").style.display = "block"
   document.getElementById("regForm").submit();
   return false;
   }
