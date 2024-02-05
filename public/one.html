@@ -1,5 +1,9 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <style>
         /* Chrome, Safari, Edge, Opera */
@@ -24,6 +28,39 @@
             box-sizing: border-box;
             font-size: 16px;
         }
+        select {
+            outline: 0;
+            background: rgb(243, 216, 189);
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .custom-select select{
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image:
+                linear-gradient(45deg, transparent 50%, black 50%),
+                linear-gradient(135deg, black 50%, transparent 50%);
+            background-position:
+                calc(100% - 22px) calc(1em + 3px),
+                calc(100% - 7px) calc(1em + 3px);
+            background-size:
+                15px 15px,
+                15px 15px,
+                10px 1.5em;
+            background-repeat: no-repeat;
+        }
+        .custom-select select:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #000;
+        }
+      
 
         .form {
             position: relative;
@@ -84,14 +121,25 @@
 
         body {
             font-family: 'Poppins';
+            background-color: bisque;
             font-size: 22px;
+            margin:0;
+            /* line-height: inherit; */
+            height:100%;
+            box-sizing: border-box;
+            display: block;
+        }
+        html{
+            max-width: 100%;
+            height:100vh;
+            box-sizing: border-box;
         }
     </style>
 </head>
 
-<body style="background-color: rgb(234,190,143);">
-    <div class="root" style="height: 100%;background-color: rgb(234,190,143);box-sizing: border-box;">
-        <div class="page" style="max-width: 500px;height: 100%;background-color: bisque;margin: auto;">
+<body>
+    <div class="root" style="min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;">
+        <div class="page" style="max-width: 37.5rem;min-height: 100vh;background-color: rgb(234,190,143);margin:0 auto;border: 1px solid transparent; ">
             <form class="login-form">
 
 
@@ -103,26 +151,44 @@
                         <b>BRIPKA AGUS NURYANTO</b>
                     </div>
                     <div style="text-align:center ">
-                        <div class="header-input" class="header-input">
-                            Satwil
-                        </div>
-                        <input type="number" />
-                        <div class="header-input">
-                            Kotamadya/Kabupaten
-                        </div>
-                        <input type="password" />
+                        
+                        <!-- a========= -->
+                        
+                        
+
+                          <!-- ====================== -->
                         <div class="header-input">
                             Kecamatan
                         </div>
-                        <input type="number" />
+                        <div class="custom-select">
+                            <select>
+                              <option value=""></option>
+                              <option value="1">tangerang</option>
+                              <option value="2">Cipondoh</option>
+                              <option value="2">Ciledug</option>
+                              <option value="2">Cibodas</option>
+                            </select>
+                          </div>
                         <div class="header-input">
                             Kelurahan
                         </div>
-                        <input type="number" />
+                        <div class="custom-select">
+                            <select>
+                              <option value=""></option>
+                              <option value="1">Batuceper</option>
+                              <option value="1">Poris Jaya</option>
+                            </select>
+                          </div>
                         <div class="header-input">
                             No TPS (Format penulisan XXX. Contoh : 001)
                         </div>
-                        <input type="text" />
+                        <div class="custom-select">
+                            <select>
+                              <option value=""></option>
+                              <option value="1">1</option>
+                              <option value="1">2</option>
+                            </select>
+                          </div>
                         <div class="header-input">
                             Jumlah daftar pemilih tetap
                         </div>
