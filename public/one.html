@@ -248,6 +248,9 @@
             </form>
             <div id="submisi" class="submisi" style="text-align: center; display: none;">
                 Terima kasih, hasil perhitungan telah masuk dalam database
+                <br>
+                <br>
+                Silahkan klik <a href="https://ombtangkot.flazzard.com/">DISINI</a> untuk kembali ke halaman awal dan memasukkan data dari TPS lainnya. Terima kasih
             </div>
         </div>
 
@@ -271,7 +274,7 @@
         $('#kecamatan').change(function () {
             document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
             document.querySelectorAll('#tps option').forEach(option => option.remove())
-            axios.get('http://localhost:4890/api/kelurahan', {
+            axios.get('https://ombtangkot.flazzard.com/api/kelurahan', {
                 params: {
                     idKecamatan: $(this).val(),
                 },
@@ -289,7 +292,7 @@
 
         $('#kelurahan').change(function () {
             document.querySelectorAll('#tps option').forEach(option => option.remove())
-            axios.get('http://localhost:4890/api/tps', {
+            axios.get('https://ombtangkot.flazzard.com/api/tps', {
                 params: {
                     idKelurahan: $(this).val(),
                 },
