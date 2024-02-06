@@ -9,6 +9,7 @@ import { join } from 'path';
 import KecamatanEntity from './model/kecamatan.entity';
 import WilayahEntity from './model/wilayah.entity';
 import kelurahanEntity from './model/kelurahan.entity';
+import tpsEntity from './model/tps.entity';
 
 @Module({
   imports: [ServeStaticModule.forRoot({
@@ -50,6 +51,7 @@ import kelurahanEntity from './model/kelurahan.entity';
       KecamatanEntity,
       WilayahEntity,
       kelurahanEntity,
+      tpsEntity,
     ]),
   ],
   controllers: [AppController],

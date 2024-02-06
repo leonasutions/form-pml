@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { kelurahanDto } from './dto/api.dto';
+import { kelurahanDto, tpsDto } from './dto/api.dto';
 
 @Controller()
 export class AppController {
@@ -25,14 +25,15 @@ export class AppController {
   }
 
   @Get('api/kelurahan')
-  async kelurahan(@Res() res) {
-    var dataKecamatan = await this.appService.getKecamatan()
+  async kelurahan(@Query() getNameDto: kelurahanDto) {
+    console.log(getNameDto)
+    var dataKecamatan = await this.appService.getKelurahan(getNameDto.idKecamatan)
     return dataKecamatan
   }
 
   @Get('api/tps')
-  async tps(@Query() getNameDto: kelurahanDto) {
-    var dataKecamatan = await this.appService.getKecamatan()
+  async tps(@Query() getkelurahanDto: tpsDto) {
+    var dataKecamatan = await this.appService.getTps(getkelurahanDto.idKelurahan)
     return dataKecamatan
   }
 

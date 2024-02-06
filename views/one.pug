@@ -120,6 +120,7 @@ head
     height: 100vh;
     box-sizing: border-box;
     }
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js')
 .root(style='min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;')
   .page(style='max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ')
     form.login-form
@@ -130,26 +131,18 @@ head
           .header-input
             | Kecamatan
           .custom-select
-            select
+            select#kecamatan
               option(value='')
-              option(value='1') tangerang
-              option(value='2') Cipondoh
-              option(value='2') Ciledug
-              option(value='2') Cibodas
           .header-input
             | Kelurahan
           .custom-select
-            select
+            select#kelurahan
               option(value='')
-              option(value='1') Batuceper
-              option(value='1') Poris Jaya
           .header-input
             | No TPS
           .custom-select
-            select
+            select#tps
               option(value='')
-              option(value='1') 1
-              option(value='1') 2
           .header-input
             | Jumlah Daftar Pemilih Tetap
           input(type='number')
@@ -160,13 +153,13 @@ head
             | Jumlah DPT Khusus
           input(type='number')
           .header-input
-            | Jumlah DPT Datang
-          input(type='number')
-          .header-input
-            | Jumlah Suara Sah
+            | Jumlah DPT Hadir
           input(type='number')
           .header-input
             | Jumlah Suara Tidak Sah
+          input(type='number')
+          .header-input
+            | Jumlah Suara Sah
           input(type='number')
       .tab.form
         .text-upper
@@ -194,7 +187,55 @@ head
         button#nextBtn(type='button' onclick='nextPrev(1)') Next
     #submisi.submisi(style='text-align: center; display: none;')
       | Terima kasih, hasil perhitungan telah masuk dalam database
-script.
+script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+script(type='text/javascript').
+  $(document).ready(function () {
+  axios.get('https://ombtangkot.flazzard.com/api/kecamatan')
+  .then(function (response) {
+  var select = document.getElementById("kecamatan");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  }
+  });
+  });
+  $('#kecamatan').change(function () {
+  document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
+  document.querySelectorAll('#tps option').forEach(option => option.remove())
+  axios.get('https://ombtangkot.flazzard.com/api/kelurahan', {
+  params: {
+  idKecamatan: $(this).val(),
+  },
+  })
+  .then(function (response) {
+  var select = document.getElementById("kelurahan");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  }
+  });
+  });
+  $('#kelurahan').change(function () {
+  document.querySelectorAll('#tps option').forEach(option => option.remove())
+  axios.get('https://ombtangkot.flazzard.com/api/tps', {
+  params: {
+  idKelurahan: $(this).val(),
+  },
+  })
+  .then(function (response) {
+  var select = document.getElementById("tps");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.alamat;
+  select.appendChild(newOption);
+  }
+  });
+  });
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab
   function showTab(n) {

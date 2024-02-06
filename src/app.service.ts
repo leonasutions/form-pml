@@ -4,6 +4,7 @@ import KecamatanEntity from './model/kecamatan.entity';
 import { DataSource, Equal, In, IsNull, Not, Repository } from 'typeorm';
 import Wilayah from './model/wilayah.entity';
 import kelurahanEntity from './model/kelurahan.entity';
+import tpsEntity from './model/tps.entity';
 
 
 
@@ -15,7 +16,9 @@ export class AppService {
     @InjectRepository(KecamatanEntity)
     private accountingRepository: Repository<KecamatanEntity>,
     @InjectRepository(kelurahanEntity)
-    private kelurahanRepository: Repository<kelurahanEntity>
+    private kelurahanRepository: Repository<kelurahanEntity>,
+    @InjectRepository(tpsEntity)
+    private tpsRepository: Repository<tpsEntity>
   ) { }
   getHello(): string {
     return 'Hello World!';
@@ -30,6 +33,14 @@ export class AppService {
     var dataKelurahan = await this.kelurahanRepository.find({
       where: { kecamatan: { id: idKecamatan } },
       relations: ['kecamatan']
+    })
+    return dataKelurahan
+  }
+
+  
+  async getTps(idKelurahan: number) {
+    var dataKelurahan = await this.tpsRepository.find({
+      where: { kelurahan: { id: idKelurahan } },
     })
     return dataKelurahan
   }

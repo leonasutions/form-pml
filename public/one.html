@@ -141,12 +141,12 @@
             box-sizing: border-box;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="root" style="min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;">
-        <div class="page"
-            style="max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ">
+        <div class="page" style="max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ">
             <form class="login-form">
 
 
@@ -159,32 +159,24 @@
                             Kecamatan
                         </div>
                         <div class="custom-select">
-                            <select>
+                            <select id="kecamatan">
                                 <option value=""></option>
-                                <option value="1">tangerang</option>
-                                <option value="2">Cipondoh</option>
-                                <option value="2">Ciledug</option>
-                                <option value="2">Cibodas</option>
                             </select>
                         </div>
                         <div class="header-input">
                             Kelurahan
                         </div>
                         <div class="custom-select">
-                            <select>
+                            <select id="kelurahan">
                                 <option value=""></option>
-                                <option value="1">Batuceper</option>
-                                <option value="1">Poris Jaya</option>
                             </select>
                         </div>
                         <div class="header-input">
                             No TPS
                         </div>
                         <div class="custom-select">
-                            <select>
+                            <select id="tps">
                                 <option value=""></option>
-                                <option value="1">1</option>
-                                <option value="1">2</option>
                             </select>
                         </div>
                         <div class="header-input">
@@ -200,15 +192,16 @@
                         </div>
                         <input type="number" />
                         <div class="header-input">
-                            Jumlah DPT Datang
-                        </div>
-                        <input type="number" />
-                        <div class="header-input">
-                            Jumlah Suara Sah
+                            Jumlah DPT Hadir
                         </div>
                         <input type="number" />
                         <div class="header-input">
                             Jumlah Suara Tidak Sah
+                        </div>
+                        <input type="number" />
+
+                        <div class="header-input">
+                            Jumlah Suara Sah
                         </div>
                         <input type="number" />
 
@@ -261,8 +254,57 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            axios.get('https://ombtangkot.flazzard.com/api/kecamatan')
+                .then(function (response) {
+                    var select = document.getElementById("kecamatan");
+                    for (item of response.data) {
+                        var newOption = document.createElement('option');
+                        newOption.value = item.id;
+                        newOption.innerHTML = item.nama;
+                        select.appendChild(newOption);
+                    }
+                });
+        });
+        $('#kecamatan').change(function () {
+            document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
+            document.querySelectorAll('#tps option').forEach(option => option.remove())
+            axios.get('http://localhost:4890/api/kelurahan', {
+                params: {
+                    idKecamatan: $(this).val(),
+                },
+            })
+                .then(function (response) {
+                    var select = document.getElementById("kelurahan");
+                    for (item of response.data) {
+                        var newOption = document.createElement('option');
+                        newOption.value = item.id;
+                        newOption.innerHTML = item.nama;
+                        select.appendChild(newOption);
+                    }
+                });
+        });
 
-    <script>
+        $('#kelurahan').change(function () {
+            document.querySelectorAll('#tps option').forEach(option => option.remove())
+            axios.get('http://localhost:4890/api/tps', {
+                params: {
+                    idKelurahan: $(this).val(),
+                },
+            })
+                .then(function (response) {
+                    var select = document.getElementById("tps");
+                    for (item of response.data) {
+                        var newOption = document.createElement('option');
+                        newOption.value = item.id;
+                        newOption.innerHTML = item.alamat;
+                        select.appendChild(newOption);
+                    }
+                });
+        });
+
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
 
