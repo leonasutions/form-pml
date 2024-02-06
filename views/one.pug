@@ -1,4 +1,8 @@
-header
+doctype html
+head
+  meta(charset='UTF-8')
+  // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  meta(name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no')
   link(href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet')
   style.
     /* Chrome, Safari, Edge, Opera */
@@ -20,6 +24,38 @@ header
     padding: 15px;
     box-sizing: border-box;
     font-size: 16px;
+    }
+    select {
+    outline: 0;
+    background: rgb(243, 216, 189);
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 16px;
+    }
+    .custom-select select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image:
+    linear-gradient(45deg, transparent 50%, black 50%),
+    linear-gradient(135deg, black 50%, transparent 50%);
+    background-position:
+    calc(100% - 22px) calc(1em + 3px),
+    calc(100% - 7px) calc(1em + 3px);
+    background-size:
+    15px 15px,
+    15px 15px,
+    10px 1.5em;
+    background-repeat: no-repeat;
+    }
+    .custom-select select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
     }
     .form {
     position: relative;
@@ -71,35 +107,59 @@ header
     }
     body {
     font-family: 'Poppins';
+    background-color: bisque;
     font-size: 22px;
-    background-color: rgb(234,190,143);
+    margin: 0;
+    /* line-height: inherit; */
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
     }
-.root(style='height: 100%;background-color: rgb(234,190,143);box-sizing: border-box;')
-  .page(style='max-width: 500px;height: 100%;background-color: bisque;margin: auto;')
+    html {
+    max-width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    }
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js')
+.root(style='min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;')
+  .page(style='max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ')
     form.login-form
       .tab.form
         .text-upper
           | Halo,
-        .text-lower
-          b BRIPKA AGUS NURYANTOs
         div(style='text-align:center ')
           .header-input
-            | Satwil
-          input(type='number')
-          .header-input
-            | Kotamadya/Kabupaten
-          input(type='password')
-          .header-input
             | Kecamatan
-          input(type='number')
+          .custom-select
+            select#kecamatan
+              option(value='')
           .header-input
             | Kelurahan
+          .custom-select
+            select#kelurahan
+              option(value='')
+          .header-input
+            | No TPS
+          .custom-select
+            select#tps
+              option(value='')
+          .header-input
+            | Jumlah Daftar Pemilih Tetap
           input(type='number')
           .header-input
-            | No TPS (Format penulisan XXX. Contoh : 001)
-          input(type='text')
+            | Jumlah DPT Tambahan
+          input(type='number')
           .header-input
-            | Jumlah daftar pemilih tetap
+            | Jumlah DPT Khusus
+          input(type='number')
+          .header-input
+            | Jumlah DPT Hadir
+          input(type='number')
+          .header-input
+            | Jumlah Suara Tidak Sah
+          input(type='number')
+          .header-input
+            | Jumlah Suara Sah
           input(type='number')
       .tab.form
         .text-upper
@@ -123,74 +183,66 @@ header
           .subheader-input
             | Ganjar Pranowo - Mahfud MD
           input(type='number')
-          .subheader-input
-            | Suara Tidak Sah
-          input(type='number')
-      .tab.form
-        .text-upper
-          b Hasil Pemilihan Legislatif DPR RI
-        .text-lower
-          | Masukkan angka hasil pemilihan pada
-          | masing-masing kolom.
-        div(style='overflow-y: scroll; height:55%;')
-          .subheader-input
-            | 1. Partai Kebangkitan Bangsa (PKB)
-          input(type='number')
-          .subheader-input
-            | 2. Partai Gerakan Indonesia Raya (GERINDRA)
-          input(type='number')
-          .subheader-input
-            | 3. Partai Demokrasi Indonesia Perjuangan (PDI Perjuangan)
-          input(type='number')
-          .subheader-input
-            | 4. Partai Golongan Karya (Golkar)
-          input(type='number')
-          .subheader-input
-            | 5. Partai NasDem
-          input(type='number')
-          .subheader-input
-            | 6. Partai Buruh
-          input(type='number')
-          .subheader-input
-            | 7. Partai Gelombang Rakyat Indonesia (Gelora)
-          input(type='number')
-          .subheader-input
-            | 8. Partai Keadilan Sejahtera (PKS)
-          input(type='number')
-          .subheader-input
-            | 9. Partai Kebangkitan Nusantara (PKN)
-          input(type='number')
-          .subheader-input
-            | 10. Partai Hati Nurani Rakyat (Hanura)
-          input(type='number')
-          .subheader-input
-            | 11. Partai Garda Perubahan Indonesia (Garuda)
-          input(type='number')
-          .subheader-input
-            | 12. Partai Amanat Nasional (PAN)
-          input(type='number')
-          .subheader-input
-            | 13. Partai Bulan Bintang (PBB)
-          input(type='number')
-          .subheader-input
-            | 14. Partai Demokrat
-          input(type='number')
-          .subheader-input
-            | 15. Partai Solidaritas Indonesia (PSI)
-          input(type='number')
-          .subheader-input
-            | 16. Partai Persatuan Indonesia (Perindo)
-          input(type='number')
-          .subheader-input
-            | 17. Partai Persatuan Pembangunan (PPP)
-          input(type='number')
       .form
+        button#prevBtn(style='margin-bottom: 15px;' type='button' onclick='nextPrev(-1)') Previous
         button#nextBtn(type='button' onclick='nextPrev(1)') Next
     #submisi.submisi(style='text-align: center; display: none;')
-      | Terima kasih, hasil perhitungan akan langsung
-      | masuk dan terpantau di posko OMB
-      | Polres Metropolitan Tangerang Kota
-script.
+      | Terima kasih, hasil perhitungan telah masuk dalam database
+      br
+      br
+      |                 Silahkan klik 
+      a(href='https://ombtangkot.flazzard.com/') DISINI
+      |  untuk kembali ke halaman awal dan
+      |                 memasukkan data dari TPS lainnya.
+script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+script(type='text/javascript').
+  $(document).ready(function () {
+  axios.get('https://ombtangkot.flazzard.com/api/kecamatan')
+  .then(function (response) {
+  var select = document.getElementById("kecamatan");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  }
+  });
+  });
+  $('#kecamatan').change(function () {
+  document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
+  document.querySelectorAll('#tps option').forEach(option => option.remove())
+  axios.get('https://ombtangkot.flazzard.com/api/kelurahan', {
+  params: {
+  idKecamatan: $(this).val(),
+  },
+  })
+  .then(function (response) {
+  var select = document.getElementById("kelurahan");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  }
+  });
+  });
+  $('#kelurahan').change(function () {
+  document.querySelectorAll('#tps option').forEach(option => option.remove())
+  axios.get('https://ombtangkot.flazzard.com/api/tps', {
+  params: {
+  idKelurahan: $(this).val(),
+  },
+  })
+  .then(function (response) {
+  var select = document.getElementById("tps");
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.alamat;
+  select.appendChild(newOption);
+  }
+  });
+  });
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab
   function showTab(n) {
@@ -198,6 +250,11 @@ script.
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
   //... and fix the Previous/Next buttons:
+  if (n == 0) {
+  document.getElementById("prevBtn").style.display = "none";
+  } else {
+  document.getElementById("prevBtn").style.display = "inline";
+  }
   if (n == (x.length - 1)) {
   document.getElementById("nextBtn").innerHTML = "Submit";
   } else {
@@ -220,6 +277,7 @@ script.
   if (currentTab >= x.length) {
   // ... the form gets submitted:
   document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("prevBtn").style.display = "none";
   document.getElementById("submisi").style.display = "block"
   document.getElementById("regForm").submit();
   return false;
@@ -227,33 +285,3 @@ script.
   // Otherwise, display the correct tab:
   showTab(currentTab);
   }
-  // function validateForm() {
-  //     // This function deals with validation of the form fields
-  //     var x, y, i, valid = true;
-  //     x = document.getElementsByClassName("tab");
-  //     y = x[currentTab].getElementsByTagName("input");
-  //     // A loop that checks every input field in the current tab:
-  //     for (i = 0; i < y.length; i++) {
-  //         // If a field is empty...
-  //         if (y[i].value == "") {
-  //             // add an "invalid" class to the field:
-  //             y[i].className += " invalid";
-  //             // and set the current valid status to false
-  //             valid = false;
-  //         }
-  //     }
-  //     // If the valid status is true, mark the step as finished and valid:
-  //     if (valid) {
-  //         document.getElementsByClassName("step")[currentTab].className += " finish";
-  //     }
-  //     return valid; // return the valid status
-  // }
-  // function fixStepIndicator(n) {
-  //     // This function removes the "active" class of all steps...
-  //     var i, x = document.getElementsByClassName("step");
-  //     for (i = 0; i < x.length; i++) {
-  //         x[i].className = x[i].className.replace(" active", "");
-  //     }
-  //     //... and adds the "active" class on the current step:
-  //     x[n].className += " active";
-  // }

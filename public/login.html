@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <style>
@@ -66,59 +68,71 @@
             font-family: 'Poppins';
             background-color: bisque;
             font-size: 22px;
-            margin:0;
+            margin: 0;
             /* line-height: inherit; */
-            height:100%;
+            height: 100%;
             box-sizing: border-box;
             display: block;
         }
-        html{
+
+        html {
             max-width: 100%;
-            height:100vh;
+            height: 100vh;
             box-sizing: border-box;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 </head>
 
 <body>
     <div class="root" style="min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;">
-            <div class="page" style="max-width: 37.5rem;min-height: 100vh;background-color: rgb(234,190,143);margin:0 auto;border: 1px solid transparent; ">
+        <div class="page" style="max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ">
             <div class="content" style="margin-top: 20%;">
-                <div class="logo" style="
-                    position:relative;
-                    margin:0 auto;
-                    top: 15%;
-                    clear:left;
-                    height:auto;
-                    z-index: 0;
-                    text-align:center;/* Add This*/">
-                    <img width="38%" src="./public/logo.png" />
-                </div> 
-                <div class="text-upper" style="
+            </div>
+            <div class="text-upper" style="
                 top: 15%;
                 position:relative;text-align:center ">
                 <span>Selamat Datang,</span>
                 <br>
                 <span style="font-weight:900">Masukkan NRP dan password</span>
-                <br>
-                <span>Aplikasi Tangerang Akur Anda!</span>
-                </div>
-                <div class="form" style="
+            </div>
+            <div class="form" style="
                 top: 15%;
                 position:relative;text-align:center ">
-                    <form class="login-form"  action="1" method="get">
-                        <input type="number" placeholder="NRP"  value=""/>
-                        <input type="password" placeholder="Password" value=""/>
-                        <input type="number" placeholder="No HP*" />
-                        <button>login</button>
-                    </form>
-                    <div style="text-align: left; font-size: .4em; font-style: italic; margin-top: 20px;">*Harap masukkan no HP sebenarnya agar bisa dihubungi Padal
-                        pada saat diperlukan</div>
+                <div class="login-form">
+                    <input id="nrp" type="number" placeholder="NRP" value="" />
+                    <input id="password" type="password" placeholder="Password" value="" />
+                    <input type="number" placeholder="No HP*" />
+                    <button id="loginButton">login</button>
                 </div>
+                <div style="text-align: left; font-size: .4em; font-style: italic; margin-top: 20px;">*Harap masukkan no
+                    HP sebenarnya agar bisa dihubungi Padal
+                    pada saat diperlukan</div>
             </div>
         </div>
     </div>
-
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        $('#loginButton').click(function () {
+            axios.post('https://ombtangkot.flazzard.com/api/login',
+                {
+                    nrp: document.getElementById('nrp').value,
+                    password: document.getElementById('password').value,
+                }
+            )
+                .then(function (response) {
+                    if (response.data.success) {
+                        event.preventDefault();
+                        var url = 'https://ombtangkot.flazzard.com/1';
+                        location.replace(url);
+                    } else {
+                        alert("nrp atau password salah");
+                    }
+                });
+        });
+    </script>
 
 </body>
 
