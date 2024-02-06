@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { kelurahanDto, tpsDto } from './dto/api.dto';
+import { LoginDto, kelurahanDto, tpsDto } from './dto/api.dto';
+import { log } from 'console';
 
 @Controller()
 export class AppController {
@@ -26,7 +27,6 @@ export class AppController {
 
   @Get('api/kelurahan')
   async kelurahan(@Query() getNameDto: kelurahanDto) {
-    console.log(getNameDto)
     var dataKecamatan = await this.appService.getKelurahan(getNameDto.idKecamatan)
     return dataKecamatan
   }
@@ -37,10 +37,21 @@ export class AppController {
     return dataKecamatan
   }
 
-  @Post('capres')
+  @Post('api/capres')
   async capres(@Res() res) {
     var dataKecamatan = await this.appService.getKecamatan()
     return dataKecamatan
+  }
+
+  @Post('api/login')
+  async loginApi(@Body() loginDto: LoginDto, @Res() res) {
+    var dataKecamatan = await this.appService.login(loginDto.nrp, loginDto.password, loginDto.no_hp)
+    if (dataKecamatan != null) {
+      res.status(200).send({ message: "login successfuly", success: 1 })
+    } else {
+      res.status(200).send({ message: "nrp atau password salah", success: 0 })
+
+    }
   }
 
 

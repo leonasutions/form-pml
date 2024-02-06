@@ -10,6 +10,7 @@ import KecamatanEntity from './model/kecamatan.entity';
 import WilayahEntity from './model/wilayah.entity';
 import kelurahanEntity from './model/kelurahan.entity';
 import tpsEntity from './model/tps.entity';
+import userEntity from './model/user.entity';
 
 @Module({
   imports: [ServeStaticModule.forRoot({
@@ -52,6 +53,8 @@ import tpsEntity from './model/tps.entity';
       WilayahEntity,
       kelurahanEntity,
       tpsEntity,
+      tpsEntity,
+      userEntity
     ]),
   ],
   controllers: [AppController],
