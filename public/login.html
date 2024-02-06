@@ -8,6 +8,8 @@
         content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href=
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
@@ -20,17 +22,73 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
-        .form input {
+       
+/* ========== */
+        .input-icons {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .input-icons input{
             outline: 0;
             background: rgb(243, 216, 189);
             width: 100%;
             border: 0;
-            margin: 0 0 15px;
+            margin: 0 0 1px;
             padding: 15px;
             box-sizing: border-box;
             font-size: 16px;
         }
+       
+ 
+        .input-icons i {
+            position: absolute;
+            margin-bottom: 15px;
+            visibility: hidden;;
+        }
+
+        .icon {
+            padding: 13px;
+            color: red;
+            min-width: 50px;
+            text-align: right;
+            right:50px;
+        }
+        
+        .input-field {
+            width: 100%;
+            text-align: left;
+        }
+
+        .invalid-feedback{
+            margin-top:1px;
+            font-size: 12px;
+            text-align:left;
+            color: red;
+            visibility: hidden;
+        }
+
+        .invalid > i, .invalid > .invalid-feedback{
+            visibility:visible;
+        }
+        .invalid > input{
+            border: 1px solid red;
+        }
+     
+ 
+
+/* ============ */
+ 
+
+        /* .form input { */
+            /* outline: 0; */
+            /* background: rgb(243, 216, 189); */
+            /* width: 100%; */
+            /* border: 0; */
+            /* margin: 0 0 10px; */
+            /* padding: 15px; */
+            /* box-sizing: border-box; */
+            /* font-size: 16px; */
+        /* } */
 
         .form {
             position: relative;
@@ -101,9 +159,27 @@
                 top: 15%;
                 position:relative;text-align:center ">
                 <div class="login-form">
-                    <input id="nrp" type="number" placeholder="NRP" value="" />
-                    <input id="password" type="password" placeholder="Password" value="" />
-                    <input type="number" placeholder="No HP*" />
+                    <div class="input-icons" id="nrp-wrap">
+                        <i class="fa fa-solid fa-exclamation icon"></i>
+                        <input class="input-field" id="nrp" type="number" placeholder="NRP" value="" />
+                        <div id="validationServer03Feedback" class="invalid-feedback">
+                            Please provide a valid city.
+                          </div>
+                    </div>
+                    <div class="input-icons" id="password-wrap">
+                        <i class="fa fa-solid fa-exclamation icon"></i>
+                        <input class="input-field" id="password" type="password" placeholder="Password" value="" />
+                        <div id="validationServer03Feedback" class="invalid-feedback">
+                            Please provide a valid city.
+                          </div>
+                    </div>
+                    <div class="input-icons" id="phone-wrap">
+                        <i class="fa fa-solid fa-exclamation icon"></i>
+                        <input class="input-field" type="number" placeholder="No HP*" />
+                        <div id="validationServer03Feedback" class="invalid-feedback">
+                            Please provide a valid city.
+                          </div>
+                    </div>
                     <button id="loginButton">login</button>
                 </div>
                 <div style="text-align: left; font-size: .4em; font-style: italic; margin-top: 20px;">*Harap masukkan no
@@ -115,7 +191,34 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
+
+        const invalidInputProc = (id, msg) =>{
+            //add validation error class
+            document.getElementById(id).classList.add("invalid")
+            //add message
+            document.querySelector('#'+id+' > .invalid-feedback').innerText = msg;
+        }
+
         $('#loginButton').click(function () {
+            //reset all invalid class
+            document.querySelectorAll('.invalid').forEach(function(element) {
+                element.classList.remove('invalid');
+            });;
+
+            let nrpVal = document.getElementById('nrp').value;
+            let nrpErrMsg = "NRP tidak boleh kosong";
+            let passwordVal = document.getElementById('password').value;
+            let passwordErrMsg = "Password tidak boleh kosong";
+            if(!nrpVal.length){
+                invalidInputProc('nrp-wrap', nrpErrMsg);
+                return;
+            }
+            if(!passwordVal.length){
+                invalidInputProc('password-wrap', passwordErrMsg);
+                return;
+            }
+
+            
             axios.post('https://ombtangkot.flazzard.com/api/login',
                 {
                     nrp: document.getElementById('nrp').value,
@@ -123,12 +226,14 @@
                 }
             )
                 .then(function (response) {
+                    console.log(response.data)
                     if (response.data.success) {
                         event.preventDefault();
                         var url = 'https://ombtangkot.flazzard.com/1';
                         location.replace(url);
                     } else {
-                        alert("nrp atau password salah");
+                        invalidInputProc('nrp-wrap', response.data.message);
+                        invalidInputProc('password-wrap', response.data.message);
                     }
                 });
         });
