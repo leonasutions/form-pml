@@ -7,6 +7,8 @@
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href=
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
@@ -30,19 +32,17 @@
             box-sizing: border-box;
             font-size: 16px;
         }
-
         select {
             outline: 0;
             background: rgb(243, 216, 189);
             width: 100%;
             border: 0;
-            margin: 0 0 15px;
+            margin: 0 0 1px;
             padding: 15px;
             box-sizing: border-box;
             font-size: 16px;
         }
-
-        .custom-select select {
+        .custom-select select{
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -60,12 +60,10 @@
                 10px 1.5em;
             background-repeat: no-repeat;
         }
-
         .custom-select select:-moz-focusring {
             color: transparent;
             text-shadow: 0 0 0 #000;
         }
-
 
         .form {
             position: relative;
@@ -75,6 +73,70 @@
             padding: 45px;
             text-align: center;
         }
+
+              
+/* ========== */
+.input-icons {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .input-icons input{
+            outline: 0;
+            background: rgb(243, 216, 189);
+            width: 100%;
+            border: 0;
+            margin: 0 0 1px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+       
+ 
+        .input-icons i {
+            position: absolute;
+            margin-bottom: 15px;
+            visibility: hidden;;
+        }
+
+        .icon {
+            padding: 13px;
+            color: red;
+            min-width: 50px;
+            text-align: right;
+            right:50px;
+        }
+        .custom-select > .icon {
+            right:80px;
+            padding: 13px;
+        }
+        
+        .input-field {
+            width: 100%;
+            text-align: left;
+        }
+
+        .invalid-feedback{
+            margin-top:1px;
+            font-size: 12px;
+            text-align:left;
+            color: red;
+            visibility: hidden;
+        }
+
+        .invalid > i, 
+        .invalid > .invalid-feedback,
+        .invalid > .custom-select > i,
+        .invalid > .custom-select > .invalid-feedback{
+            visibility:visible;
+        }
+
+        .invalid > input, .invalid > .custom-select > select{
+            border: 1px solid red;
+        }
+     
+ 
+
+/* ============ */
 
         ::placeholder {
             color: black;
@@ -158,10 +220,16 @@
                         <div class="header-input">
                             Kecamatan
                         </div>
-                        <div class="custom-select">
-                            <select id="kecamatan">
-                                <option value=""></option>
-                            </select>
+                        <div class="input-icons invalid">
+                            <div class="custom-select">
+                                <i class="fa fa-solid fa-exclamation icon"></i>
+                                <select id="kecamatan">
+                                    <option value=""></option>
+                                </select>
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    Please provide a valid city.
+                                  </div>
+                            </div>
                         </div>
                         <div class="header-input">
                             Kelurahan
@@ -179,10 +247,18 @@
                                 <option value=""></option>
                             </select>
                         </div>
+
                         <div class="header-input">
                             Jumlah Daftar Pemilih Tetap
                         </div>
-                        <input type="number" />
+                        <div class="input-icons invalid" id="pemilih-tetap-wrap">
+                            <i class="fa fa-solid fa-exclamation icon"></i>
+                            <input class="input-field" type="number" />
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                Please provide a valid city.
+                              </div>
+                        </div>
+
                         <div class="header-input">
                             Jumlah DPT Tambahan
                         </div>
