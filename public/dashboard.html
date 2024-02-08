@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Float four columns side by side */
+        .column1 {
+            float: left;
+            width: 25%;
+            padding: 0 10px;
+        }
+
+        /* Float four columns side by side */
+        .column2 {
+            float: left;
+            width: 50%;
+            padding: 0 10px;
+        }
+
+        .column3 {
+            float: left;
+            width: 33%;
+            padding: 0 10px;
+        }
+
+        .column4 {
+            float: left;
+            width: 15%;
+            padding: 0 110px;
+            margin: auto;
+        }
+
+
+        /* Remove extra left and right margins, due to padding */
+        .row {
+            margin: 0 -5px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive columns */
+        @media screen and (max-width: 600px) {
+            .column1 {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .column2 {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
+        }
+
+        body {
+            font-family: 'Poppins';
+            background-color: bisque;
+            font-size: 21px;
+            margin: 0;
+            color: #7B2929;
+            /* line-height: inherit; */
+            height: 100%;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        /* Style the counter cards */
+        .card1 {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: left;
+            background-color: rgb(243, 216, 189);
+            height: 900px;
+
+        }
+
+        .card2 {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: rgb(243, 216, 189);
+            height: 900px;
+
+        }
+
+        .dot {
+            height: 200px;
+            width: 200px;
+            background-color: #bbb;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 200px;
+            display: inline-block;
+        }
+
+        #donut {
+            /* (A1) CIRCLE */
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: auto;
+            /* (A2) SEGMENTS */
+            background: conic-gradient(red 0deg 80deg,
+                    blue 80deg 360deg);
+        }
+
+        /* (B) DONUT "CONVERSION" */
+        /* (B1) SMALLER CIRCLE */
+        #donut::before {
+            content: "";
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgb(243, 216, 189) ;
+        }
+
+        /* (B2) "CONVERT PIE TO DONUT" - CENTER SMALLER CIRCLE */
+        #donut {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* (C) LEGEND */
+        /* (C1) LEGEND CONTAINER */
+       
+    </style>
+</head>
+
+<body>
+
+    <h2>Rabu, 14 Februari 2024</h2>
+    <p>11:11 WIB</p>
+
+    <div class="row">
+        <div class="column1">
+            <div class="card1">
+                <h3>PILIH WILAYAH :</h3>
+                <select style="width: 100%;padding:10px">
+                    <option></option>
+                </select>
+                <div class="placeholder-kecamatan"></div>
+            </div>
+        </div>
+
+        <div class="column2">
+            <div class="card2">
+                <h1>HASIL PERHITUNGAN SUARA</h1>
+                <h2>WILAYAH : SELURUH WILAYAH</h2>
+                <div style="width: 100%;height: 100px;">
+                    <div class="column3">
+                        <h3 style="text-align: left;">PEMILIHAN PRESIDEN 2024</h3>
+                    </div>
+                    <div class="column3"> &nbsp;</div>
+                    <div class="column3" style="text-align: right;line-height: 75px;">LIHAT DETAIL</div>
+                </div>
+
+                <div style="height: 200px;">
+                    <div class="column3">
+                        <div class="dot"
+                            style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">26.02%</div>
+                    </div>
+                    <div class="column3">
+                        <div class="dot"
+                            style="background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;">43.01%</div>
+                    </div>
+                    <div class="column3">
+                        <div class="dot"
+                            style="background-color: #FF0202;font-size:26px;color:white;font-weight: bold;">34.76%</div>
+                    </div>
+                </div>
+
+                <div style="height: 120px;">
+                    <div class="column3" style="padding:10px">
+                        <div>PASLON NO 1</div>
+                        <div>
+                            ANIES BASWEDAN - MUHAIMIN ISKANDAR
+                        </div>
+                    </div>
+                    <div class="column3" style="padding:10px">
+                        <div>PASLON NO 2</div>
+                        <div>PRABOWO SUBIANTO - GIBRAN RAKABUMI</div>
+                    </div>
+                    <div class="column3" style="padding:10px">
+                        <div>PASLON NO 2</div>
+                        <div>GANJAR PRANOWO - MAHFUD MD</div>
+                    </div>
+                </div>
+                <div style="height: 250px;">
+                    <div class="column4">
+                        <div
+                            style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL DPT</b></div>
+                            <div style="height: 75px;font-size: 32px;">125,078</div>
+                            <div style="height: 75px;font-size: 48px;"><b>100%</b></div>
+                        </div>
+                    </div>
+                    <div class="column4">
+                        <div
+                            style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL DPT TAMBAHAN</b></div>
+                            <div style="height: 75px;font-size: 32px;">250</div>
+                            <div style="height: 75px;font-size: 48px;"><b>0,2%</b></div>
+                        </div>
+                    </div>
+                    <div class="column4">
+                        <div
+                            style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL HADIR</b></div>
+                            <div style="height: 75px;font-size: 32px;">121,756</div>
+                            <div style="height: 75px;font-size: 48px;"><b>97,15%</b></div>
+                        </div>
+                    </div>
+                    <div class="column4">
+                        <div
+                            style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL SUARA SAH</b></div>
+                            <div style="height: 75px;font-size: 32px;">119,406</div>
+                            <div style="height: 75px;font-size: 48px;"><b>98,07%</b></div>
+                        </div>
+                    </div>
+                    <div class="column4">
+                        <div
+                            style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL SUARA TIDAK SAH</b></div>
+                            <div style="height: 75px;font-size: 32px;">2,350</div>
+                            <div style="height: 75px;font-size: 48px;"><b>1,93%</b></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+
+        <div class="column1">
+            <div class="card1">
+                <h3>TOTAL HASIL TPS MASUK</h3>
+                <!-- DONUT CHART -->
+                <div style="text-align: center;" id="donut"></div>
+                <div style="text-align: center;"><h2>72%</h2></div>
+
+                <!-- LEGEND -->
+                <div  id="legend">
+                    <div>976 DATA TPS MASUK DARI TOTAL</div>
+                    <div>1,254 TPS TERDAFTAR</div>
+                </div>
+                <div style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
+                    <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
+                    <table style="width: 100%;margin-left: 20px;margin-right: 20px">
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Kecamatan
+                        </th>
+                        <th>
+                            JML TPS BLM MASUK DATA
+                        </th>
+                        <tr>
+                            <td>1</td>
+                            <td>BATU CEPER</td>
+                            <td style="text-align: center;">11</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>KARANG TENGAH</td>
+                            <td style="text-align: center;">53</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

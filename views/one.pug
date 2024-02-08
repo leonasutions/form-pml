@@ -129,6 +129,12 @@ head
           | Halo,
         div(style='text-align:center ')
           .header-input
+            | Kotamadya/Kabupaten
+          .custom-select
+            select#kotkab
+              option(value='KOTAMADYA') Kotamadya
+              option(value='KABUPATEN') Kabupaten
+          .header-input
             | Kecamatan
           .custom-select
             select#kecamatan
@@ -145,22 +151,22 @@ head
               option(value='')
           .header-input
             | Jumlah Daftar Pemilih Tetap
-          input(type='number')
+          input#total_dpt(type='number')
           .header-input
             | Jumlah DPT Tambahan
-          input(type='number')
+          input#total_dpt_tambahan(type='number')
           .header-input
             | Jumlah DPT Khusus
-          input(type='number')
+          input#total_dpt_khusus(type='number')
           .header-input
             | Jumlah DPT Hadir
-          input(type='number')
+          input#total_dpt_datang(type='number')
           .header-input
             | Jumlah Suara Tidak Sah
-          input(type='number')
+          input#suara_tidak_sah(type='number')
           .header-input
             | Jumlah Suara Sah
-          input(type='number')
+          input#suara_sah(type='number')
       .tab.form
         .text-upper
           b Hasil Pemilihan Presiden
@@ -172,18 +178,20 @@ head
             | Paslon 1
           .subheader-input
             | Anies Baswedan - Muhaimin Iskandar
-          input(type='number')
+          input#paslon_1(type='number')
           .subheader-input
             | Paslon 2
           .subheader-input
             | Prabowo Subianto - Gibran Rakabuming
-          input(type='number')
+          input#paslon_2(type='number')
           .subheader-input
             | Paslon 3
           .subheader-input
             | Ganjar Pranowo - Mahfud MD
-          input(type='number')
+          input#paslon_3(type='number')
       .form
+        div(style='margin-bottom: 15px;' ) 
+          b#warningMsg(style='color:red;display:none') Data Tidak boleh ada yang kosong
         button#prevBtn(style='margin-bottom: 15px;' type='button' onclick='nextPrev(-1)') Previous
         button#nextBtn(type='button' onclick='nextPrev(1)') Next
     #submisi.submisi(style='text-align: center; display: none;')
@@ -191,13 +199,19 @@ head
       br
       br
       |                 Silahkan klik 
-      a(href='https://ombtangkot.flazzard.com/') DISINI
+      a(href='/') DISINI
       |  untuk kembali ke halaman awal dan
       |                 memasukkan data dari TPS lainnya.
 script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 script(type='text/javascript').
+  var check = true
+
   $(document).ready(function () {
-  axios.get('https://ombtangkot.flazzard.com/api/kecamatan')
+  axios.get('!{host}/api/kecamatan',{
+  params: {
+  type: document.getElementById("kotkab").value,
+  }
+  })
   .then(function (response) {
   var select = document.getElementById("kecamatan");
   for (item of response.data) {
@@ -208,16 +222,42 @@ script(type='text/javascript').
   }
   });
   });
+  $('#kotkab').change(function () {
+  document.querySelectorAll('#kecamatan option').forEach(option => option.remove())
+  document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
+  document.querySelectorAll('#tps option').forEach(option => option.remove())
+  axios.get('!{host}/api/kecamatan', {
+  params: {
+  type: document.getElementById("kotkab").value,
+  },
+  })
+  .then(function (response) {
+  var select = document.getElementById("kecamatan");
+  var firstOption = document.createElement('option');
+  firstOption.value = '';
+  select.appendChild(firstOption);
+  for (item of response.data) {
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  }
+  });
+  });
+
   $('#kecamatan').change(function () {
   document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
   document.querySelectorAll('#tps option').forEach(option => option.remove())
-  axios.get('https://ombtangkot.flazzard.com/api/kelurahan', {
+  axios.get('!{host}/api/kelurahan', {
   params: {
   idKecamatan: $(this).val(),
   },
   })
   .then(function (response) {
   var select = document.getElementById("kelurahan");
+  var firstOption = document.createElement('option');
+  firstOption.value = '';
+  select.appendChild(firstOption);
   for (item of response.data) {
   var newOption = document.createElement('option');
   newOption.value = item.id;
@@ -228,13 +268,16 @@ script(type='text/javascript').
   });
   $('#kelurahan').change(function () {
   document.querySelectorAll('#tps option').forEach(option => option.remove())
-  axios.get('https://ombtangkot.flazzard.com/api/tps', {
+  axios.get('!{host}/api/tps', {
   params: {
   idKelurahan: $(this).val(),
   },
   })
   .then(function (response) {
   var select = document.getElementById("tps");
+  var firstOption = document.createElement('option');
+  firstOption.value = '';
+  select.appendChild(firstOption);
   for (item of response.data) {
   var newOption = document.createElement('option');
   newOption.value = item.id;
@@ -248,12 +291,17 @@ script(type='text/javascript').
   function showTab(n) {
   // This function will display the specified tab of the form...
   var x = document.getElementsByClassName("tab");
+  var kecValue = document.getElementById("kecamatan").value
+
+
   x[n].style.display = "block";
   //... and fix the Previous/Next buttons:
   if (n == 0) {
   document.getElementById("prevBtn").style.display = "none";
   } else {
   document.getElementById("prevBtn").style.display = "inline";
+  // add validator function
+
   }
   if (n == (x.length - 1)) {
   document.getElementById("nextBtn").innerHTML = "Submit";
@@ -263,11 +311,52 @@ script(type='text/javascript').
   //... and run a function that will display the correct step indicator:
   // fixStepIndicator(n)
   }
+  function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  return valid; // return the valid status
+  }
+
   function nextPrev(n) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
-  // if (n == 1 && !validateForm()) return false;
+    if (n == 1 && !validateForm() ){
+      document.getElementById("warningMsg").style.display="block";
+      return false;
+    }else{
+      document.getElementById("warningMsg").style.display="none";
+    }
+    var total_paslon = parseInt(document.getElementById("paslon_1").value) + parseInt(document.getElementById("paslon_2").value) + parseInt(document.getElementById("paslon_3").value) 
+    var sah = parseInt(document.getElementById("suara_sah").value)
+    if (total_paslon < sah || total_paslon > sah){
+      check = false
+    }else{
+      check=true
+    }
+    if (!check && n == 1 && currentTab==1){
+      document.getElementById("warningMsg").style.display="block";
+      document.getElementById("warningMsg").innerHTML="Data hasil pemilihan yang anda masukkan tidak bisa disimpan karena jumlah yang anda masukkan kurang dari atau lebih banyak dari Jumlah Total Suara Sah. Harap periksa kembali angka yang anda masukkan atau periksa kembali jumlah suara sah di halaman formulir sebelumnya";
+      return false
+    }
+    if (!check && n == -1 && currentTab==1){
+      document.getElementById("warningMsg").style.display="none";
+      check=true
+
+    }
+
   // if (n == 1 ) return false;
   // Hide the current tab:
   x[currentTab].style.display = "none";
@@ -275,13 +364,34 @@ script(type='text/javascript').
   currentTab = currentTab + n;
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
+    if (check){
+      axios.post('!{host}/api/capres',
+      {
+      paslon_1: parseInt(document.getElementById("paslon_1").value),
+      paslon_2: parseInt(document.getElementById("paslon_2").value),
+      paslon_3: parseInt(document.getElementById("paslon_3").value),
+      suara_sah: parseInt(document.getElementById("suara_sah").value),
+      total_dpt: parseInt(document.getElementById("total_dpt").value), 
+      total_dpt_tambahan: parseInt(document.getElementById("total_dpt_tambahan").value), 
+      total_dpt_khusus: parseInt(document.getElementById("total_dpt_khusus").value), 
+      total_dpt_datang: parseInt(document.getElementById("total_dpt_datang").value), 
+      suara_tidak_sah: parseInt(document.getElementById("suara_tidak_sah").value), 
+      tps_id: parseInt(document.getElementById("tps").value),
+      nrp: '!{nrp}'
+      })
+    .then(function (response) {
+
+    });
+    }
+
+
   // ... the form gets submitted:
   document.getElementById("nextBtn").style.display = "none";
   document.getElementById("prevBtn").style.display = "none";
   document.getElementById("submisi").style.display = "block"
-  document.getElementById("regForm").submit();
   return false;
   }
   // Otherwise, display the correct tab:
   showTab(currentTab);
   }
+

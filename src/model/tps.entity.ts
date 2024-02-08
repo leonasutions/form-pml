@@ -1,15 +1,11 @@
 
 import {
     Column,
-    CreateDateColumn,
-    DeleteDateColumn,
     Entity,
     ManyToOne,
     JoinColumn,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
 } from "typeorm";
-import KecamatanEntity from "./kecamatan.entity";
 import kelurahanEntity from "./kelurahan.entity";
 
 
@@ -39,6 +35,6 @@ export default class tpsEntity {
     @ManyToOne(() => kelurahanEntity,
         (kecamatan) => kecamatan.id)
     @JoinColumn({ name: "kelurahan_id" })
-    kelurahan: kelurahanEntity ;
+    kelurahan: kelurahanEntity;
 
 }

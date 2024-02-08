@@ -24,8 +24,13 @@ export default class KecamatanEntity {
     })
     nama: string;
 
+    @Column({
+        name: "type",
+    })
+    type: string;
+
     @ManyToOne(() => Wilayah,
-        (ChartOfAccount) => ChartOfAccount.id)
+        (wilayah) => wilayah.id)
     @JoinColumn({ name: "wilayah_id" })
     wilayah: Wilayah ;
 

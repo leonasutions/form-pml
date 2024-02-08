@@ -26,4 +26,9 @@ export default class userEntity {
         nullable: false,
     })
     password: string;
+
+    @Column({
+        name: "secret",
+    })
+    secret: string;
   }

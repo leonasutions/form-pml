@@ -11,51 +11,36 @@ import WilayahEntity from './model/wilayah.entity';
 import kelurahanEntity from './model/kelurahan.entity';
 import tpsEntity from './model/tps.entity';
 import userEntity from './model/user.entity';
+import DataCapresEntity from './model/dataCapres.entity';
 
 @Module({
   imports: [ServeStaticModule.forRoot({
     rootPath: join(__dirname, ".."),
     renderPath: "public",
   }),
-
-
-  // TypeOrmModule.forRoot({
-  //   name: "PEMILU_DB",
-  //   type: "mysql",
-  //   host: "116.66.206.189",
-  //   port: 3306,
-  //   username: "udaka_svc",
-  //   password: "udaka2022",
-  //   database: "pemilu",
-  //   synchronize: false,
-  //   extra: {
-  //     poolSize: 20,
-  //     connectionTimeoutMillis: 60000,
-  //     query_timeout: 30000,
-  //     statement_timeout: 30000,
-  //   }, //use this with development enviroment
-  // }), 
   TypeOrmModule.forRootAsync({
-    imports: [ConfigModule],
+    imports: [ConfigModule.forRoot({ isGlobal: true, cache: true }),],
     inject: [ConfigService],
+
     useFactory: async (configService: ConfigService) => ({
       type: 'mysql',
-      host: '116.66.206.189',
-      port: parseInt('3306'),
-      username: 'udaka_svc',
-      password: 'udaka2022',
-      database: 'pemilu',
+      host: configService.get("DB_HOST"),
+      port: parseInt(configService.get("DB_PORT")),
+      username: configService.get("DB_USER"),
+      password: configService.get("DB_PASS"),
+      database: configService.get("DB_NAME"),
       entities: [__dirname + "/../**/*.entity.js"],
     }),
   }),
-    TypeOrmModule.forFeature([
-      KecamatanEntity,
-      WilayahEntity,
-      kelurahanEntity,
-      tpsEntity,
-      tpsEntity,
-      userEntity
-    ]),
+  TypeOrmModule.forFeature([
+    KecamatanEntity,
+    WilayahEntity,
+    kelurahanEntity,
+    tpsEntity,
+    tpsEntity,
+    userEntity,
+    DataCapresEntity
+  ]),
   ],
   controllers: [AppController],
   providers: [AppService],

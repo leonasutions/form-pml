@@ -227,18 +227,20 @@
                 return;
             }
 
-
-            axios.post('https://ombtangkot.flazzard.com/api/login',
+            let secret = Math.floor(100000 + Math.random() * 900000)
+            // axios.post('https://ombtangkot.flazzard.com/api/login',
+            axios.post('!{host}/api/login',
                 {
                     nrp: document.getElementById('nrp').value,
                     password: document.getElementById('password').value,
+                    secret: secret,
                 }
             )
                 .then(function (response) {
-                    console.log(response.data)
                     if (response.data.success) {
                         event.preventDefault();
-                        var url = 'https://ombtangkot.flazzard.com/1';
+                        let params = `?nrp=${document.getElementById('nrp').value}`
+                        var url = 'https://ombtangkot.flazzard.com/data';
                         location.replace(url);
                     } else {
                         invalidInputProc('nrp-wrap', response.data.message);

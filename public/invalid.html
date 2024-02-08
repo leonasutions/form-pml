@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* ========== */
+        .input-icons {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .input-icons input {
+            outline: 0;
+            background: rgb(243, 216, 189);
+            width: 100%;
+            border: 0;
+            margin: 0 0 1px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+
+        .input-icons i {
+            position: absolute;
+            margin-bottom: 15px;
+            visibility: hidden;
+            ;
+        }
+
+        .icon {
+            padding: 13px;
+            color: red;
+            min-width: 50px;
+            text-align: right;
+            right: 50px;
+        }
+
+        .input-field {
+            width: 100%;
+            text-align: left;
+        }
+
+        .invalid-feedback {
+            margin-top: 1px;
+            font-size: 12px;
+            text-align: left;
+            color: red;
+            visibility: hidden;
+        }
+
+        .invalid>i,
+        .invalid>.invalid-feedback {
+            visibility: visible;
+        }
+
+        .invalid>input {
+            border: 1px solid red;
+        }
+
+
+
+        /* ============ */
+
+
+        /* .form input { */
+        /* outline: 0; */
+        /* background: rgb(243, 216, 189); */
+        /* width: 100%; */
+        /* border: 0; */
+        /* margin: 0 0 10px; */
+        /* padding: 15px; */
+        /* box-sizing: border-box; */
+        /* font-size: 16px; */
+        /* } */
+
+        .form {
+            position: relative;
+            z-index: 1;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+        }
+
+        ::placeholder {
+            color: black;
+            opacity: 1;
+            font-weight: 550;
+            /* Firefox */
+        }
+
+        .form button {
+            text-transform: uppercase;
+            font-family: 'Poppins';
+            outline: 0;
+            background: rgb(243, 91, 90);
+            border: 2px solid rgb(243, 91, 90);
+            border-radius: 5px;
+            width: 100%;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: 'Poppins';
+            background-color: bisque;
+            font-size: 22px;
+            margin: 0;
+            /* line-height: inherit; */
+            height: 100%;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        html {
+            max-width: 100%;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="root" style="min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;">
+        <div class="page" style="max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ">
+            <div class="content" style="margin-top: 20%;">
+            </div>
+            <div class="text-upper" style="
+                top: 15%;
+                position:relative;text-align:center ">
+                <span style="font-weight:900">Terjadi Kesalahan,</span>
+                <br>
+                <span>Silahkan Klik <a href="https://ombtangkot.flazzard.com/">Disini</a> untuk melakukan login ulang</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>
