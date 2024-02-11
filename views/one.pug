@@ -164,9 +164,6 @@ head
           .header-input
             | Jumlah Suara Tidak Sah
           input#suara_tidak_sah(type='number')
-          .header-input
-            | Jumlah Suara Sah
-          input#suara_sah(type='number')
       .tab.form
         .text-upper
           b Hasil Pemilihan Presiden
@@ -191,7 +188,7 @@ head
           input#paslon_3(type='number')
       .form
         div(style='margin-bottom: 15px;' ) 
-          b#warningMsg(style='color:red;display:none') Data Tidak boleh ada yang kosong
+          i#warningMsg(style='color:red;display:none;font-size:20px') Data Tidak boleh ada yang kosong
         button#prevBtn(style='margin-bottom: 15px;' type='button' onclick='nextPrev(-1)') Previous
         button#nextBtn(type='button' onclick='nextPrev(1)') Next
     #submisi.submisi(style='text-align: center; display: none;')
@@ -340,7 +337,7 @@ script(type='text/javascript').
       document.getElementById("warningMsg").style.display="none";
     }
     var total_paslon = parseInt(document.getElementById("paslon_1").value) + parseInt(document.getElementById("paslon_2").value) + parseInt(document.getElementById("paslon_3").value) 
-    var sah = parseInt(document.getElementById("suara_sah").value)
+    var sah = parseInt(document.getElementById("total_dpt_datang").value) - parseInt(document.getElementById("suara_tidak_sah").value)
     if (total_paslon < sah || total_paslon > sah){
       check = false
     }else{
@@ -370,7 +367,7 @@ script(type='text/javascript').
       paslon_1: parseInt(document.getElementById("paslon_1").value),
       paslon_2: parseInt(document.getElementById("paslon_2").value),
       paslon_3: parseInt(document.getElementById("paslon_3").value),
-      suara_sah: parseInt(document.getElementById("suara_sah").value),
+      suara_sah: sah,
       total_dpt: parseInt(document.getElementById("total_dpt").value), 
       total_dpt_tambahan: parseInt(document.getElementById("total_dpt_tambahan").value), 
       total_dpt_khusus: parseInt(document.getElementById("total_dpt_khusus").value), 

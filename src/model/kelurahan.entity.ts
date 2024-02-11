@@ -26,6 +26,6 @@ export default class kelurahanEntity {
     @ManyToOne(() => KecamatanEntity,
         (kecamatan) => kecamatan.id)
     @JoinColumn({ name: "kecamatan_id" })
-    kecamatan: KecamatanEntity ;
+    kecamatan: KecamatanEntity;
 
 }

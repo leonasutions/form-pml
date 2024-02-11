@@ -31,4 +31,9 @@ export default class userEntity {
         name: "secret",
     })
     secret: string;
+
+    @Column({
+        name: "phone",
+    })
+    phone: string;
   }

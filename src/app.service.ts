@@ -17,7 +17,7 @@ export class AppService {
   constructor(
     // @InjectDataSource("PEMILU_DB") private dataSource: DataSource,
     @InjectRepository(KecamatanEntity)
-    private accountingRepository: Repository<KecamatanEntity>,
+    private kecamatanRepository: Repository<KecamatanEntity>,
     @InjectRepository(kelurahanEntity)
     private kelurahanRepository: Repository<kelurahanEntity>,
     @InjectRepository(tpsEntity)
@@ -32,7 +32,141 @@ export class AppService {
   }
 
   async getKecamatan(type: string) {
-    var dataKecamatan = await this.accountingRepository.find({ where: { type: type }, relations: ['wilayah'] })
+    var dataKecamatan = await this.kecamatanRepository.find({ where: { type: type }, relations: ['wilayah'] })
+    return dataKecamatan
+  }
+  async fetchDashboard(idKelurahan: [number], type) {
+    var dataKecamatan = await this.tpsRepository.query(`
+    SELECT 
+          sum(total_dpt) as total_dpt_all,
+          '100%' as total_dpt_all_percentage,
+          sum(total_dpt_tambahan) as total_dpt_tambahan_all,
+          TRUNCATE((sum(total_dpt_tambahan)/sum(total_dpt))*100,2) as total_dpt_tambahan_all_percentage,
+          sum(total_dpt_datang)  as total_hadir,
+          TRUNCATE((sum(total_dpt_datang) / (sum(total_dpt) + sum(total_dpt_tambahan)))*100,2) as total_hadir_percentage,
+          sum(suara_sah) as total_suara_sah ,
+          TRUNCATE((sum(suara_sah) / sum(total_dpt))*100,2) as total_suara_sah_percentage,
+          sum(suara_tidak_sah)  as total_suara_tidak_sah,
+          TRUNCATE((sum(suara_tidak_sah) / sum(total_dpt))*100,2) as total_suara_tidak_sah_percentage,
+          sum(paslon_1) as total_paslon_1,
+          TRUNCATE((sum(paslon_1)/(sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_1_percentage,
+          sum(paslon_2) as total_paslon_2,
+          TRUNCATE((sum(paslon_2) / (sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_2_percentage,
+          sum(paslon_3) as total_paslon_3,
+          TRUNCATE((sum(paslon_3) / (sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_3_percentage
+      FROM
+          pemilu.data_capres cap
+              LEFT JOIN
+          tps tp ON cap.tps_id = tp.id
+          left join
+        kelurahan kel on tp.kelurahan_id = kel.id
+          where kel.id in ( ${idKelurahan})
+      ;
+    `,)
+
+    var total_data_tps = await this.tpsRepository.query(`
+    SELECT count(tp.id)  as total_tps  FROM
+        tps tp 
+        left join
+      kelurahan kel on tp.kelurahan_id = kel.id
+        left join kecamatan kec on kel.kecamatan_id = kec.id
+        where kel.id in ( ${idKelurahan})
+    `)
+    var data_tps_masuk = await this.dataCapresRepository.query(`
+          SELECT count(cap.tps_id) as data_tps_masuk  FROM
+          pemilu.data_capres cap
+              LEFT JOIN
+          tps tp ON cap.tps_id = tp.id
+          left join
+        kelurahan kel on tp.kelurahan_id = kel.id
+          where kel.id in ( ${idKelurahan});
+    `)
+    var total_tps
+    var total_tps_masuk
+    for (const item of total_data_tps) {
+      total_tps = item.total_tps
+    }
+
+    for (const item of data_tps_masuk) {
+      total_tps_masuk = item.data_tps_masuk
+    }
+    dataKecamatan[0]['total_tps_masuk'] = total_tps_masuk
+    dataKecamatan[0]['total_tps'] = total_tps
+    var data_tps_belum_masuk
+    if (type == 'SELURUH WILAYAH') {
+      data_tps_belum_masuk = await this.dataCapresRepository.query(`
+      SELECT 
+      id, nama,total-toral as data_belum_masuk
+      FROM
+          (SELECT 
+              id,
+                  total.nama,
+                  total.total,type,
+                  CASE
+                      WHEN pd.total IS NULL THEN 0
+                      ELSE pd.total
+                  END AS toral
+          FROM
+              (SELECT 
+              kec.nama, kec.id as id,type, COUNT(tp.id) AS total
+          FROM
+              tps tp
+          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+          GROUP BY kec.nama) AS total
+          LEFT JOIN (SELECT 
+              kec.nama, COUNT(cap.id) AS total
+          FROM
+              data_capres AS cap
+          LEFT JOIN tps tp ON cap.tps_id = tp.id
+          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+          GROUP BY kec.nama) AS pd ON total.nama = pd.nama) AS pf
+      `)
+    } else {
+      data_tps_belum_masuk = await this.dataCapresRepository.query(`
+      SELECT 
+      id, nama,total-toral as data_belum_masuk
+      FROM
+          (SELECT 
+              id,
+                  total.nama,
+                  total.total,type,
+                  CASE
+                      WHEN pd.total IS NULL THEN 0
+                      ELSE pd.total
+                  END AS toral
+          FROM
+              (SELECT 
+              kec.nama, kec.id as id,type, COUNT(tp.id) AS total
+          FROM
+              tps tp
+          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+          GROUP BY kec.nama) AS total
+          LEFT JOIN (SELECT 
+              kec.nama, COUNT(cap.id) AS total
+          FROM
+              data_capres AS cap
+          LEFT JOIN tps tp ON cap.tps_id = tp.id
+          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+          GROUP BY kec.nama) AS pd ON total.nama = pd.nama) AS pf
+          where type='${type}'
+      `)
+    }
+    dataKecamatan[0]['list_belum_masuk'] = data_tps_belum_masuk
+    return dataKecamatan
+  }
+
+  async getWilayah(type: string) {
+    var dataKecamatan
+    if (type == 'SELURUH WILAYAH') {
+      dataKecamatan = await this.kecamatanRepository.find({ relations: ['kelurahans'] })
+
+    } else {
+      dataKecamatan = await this.kecamatanRepository.find({ where: { type: type }, relations: ['kelurahans'] })
+    }
     return dataKecamatan
   }
 
@@ -40,6 +174,8 @@ export class AppService {
     if (nrp != null) {
       var dataUser = await this.userRepository.findOne({ where: { nrp: nrp, password: password } })
       if (dataUser) {
+        dataUser.phone = nomor_hp
+        await this.userRepository.save(dataUser);
         return dataUser
       } else {
         return null

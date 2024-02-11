@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { KecamatanDto, LoginDto, PostDto, dataDto, kelurahanDto, tpsDto } from './dto/api.dto';
+import { KecamatanDto, LoginDto, PostDto, dataDto, kelurahanDto, tpsDto, WilayahDto, DashboardDto } from './dto/api.dto';
 import { log } from 'console';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,6 +16,16 @@ export class AppController {
     res.render('login', { 'secret': secret, 'host': this.configService.get("HOST"), })
   }
 
+  @Get('admin')
+  async admin(@Res() res) {
+    res.render('admin', { 'host': this.configService.get("HOST"), })
+  }
+
+  @Get('dashboard')
+  async dashboard(@Res() res) {
+    res.render('dashboard', { 'host': this.configService.get("HOST"), })
+  }
+
   @Get('data')
   async inputData(@Res() res, @Query() validationData: dataDto) {
     if (validationData.nrp != null && validationData.secret != null) {
@@ -28,12 +38,17 @@ export class AppController {
     } else {
       res.render('invalid')
     }
-    // res.render('one')
   }
 
   @Get('api/kecamatan')
   async kecamatan(@Query() kecamatanDto: KecamatanDto) {
     var dataKecamatan = await this.appService.getKecamatan(kecamatanDto.type)
+    return dataKecamatan
+  }
+
+  @Get('api/wilayah')
+  async wilayah(@Query() wilayahDto: WilayahDto) {
+    var dataKecamatan = await this.appService.getWilayah(wilayahDto.type)
     return dataKecamatan
   }
 
@@ -51,9 +66,14 @@ export class AppController {
 
   @Post('api/capres')
   async capres(@Body() dataCapresDto: PostDto, @Res() res) {
-    console.log(dataCapresDto)
     var dataCapres = await this.appService.postData(dataCapresDto)
     res.status(200).send({ message: "data berhasil di input", success: 1 })
+  }
+
+  @Post('api/dashboard')
+  async dashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
+    var dataCapres = await this.appService.fetchDashboard(dashboardDto.listIdKelurahan,dashboardDto.type)
+    res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres[0] })
   }
 
   @Post('api/login')

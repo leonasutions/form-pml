@@ -187,9 +187,10 @@ script(type='text/javascript').
     // axios.post('https://ombtangkot.flazzard.com/api/login',
     axios.post('!{host}/api/login',
     {
-    nrp: document.getElementById('nrp').value,
-    password: document.getElementById('password').value,
+    nrp: nrpVal,
+    password: passwordVal,
     secret: secret,
+    no_hp:phoneVal
     }
     )
     .then(function (response) {

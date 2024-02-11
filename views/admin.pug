@@ -1,0 +1,200 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  meta(name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no')
+  link(href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet')
+  link(href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  style.
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+    /* ========== */
+    .input-icons {
+    width: 100%;
+    margin-bottom: 20px;
+    }
+    .input-icons input {
+    outline: 0;
+    background: rgb(243, 216, 189);
+    width: 100%;
+    border: 0;
+    margin: 0 0 1px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 16px;
+    }
+    .input-icons i {
+    position: absolute;
+    margin-bottom: 15px;
+    visibility: hidden;
+    ;
+    }
+    .icon {
+    padding: 13px;
+    color: red;
+    min-width: 50px;
+    text-align: right;
+    right: 50px;
+    }
+    .input-field {
+    width: 100%;
+    text-align: left;
+    }
+    .invalid-feedback {
+    margin-top: 1px;
+    font-size: 12px;
+    text-align: left;
+    color: red;
+    visibility: hidden;
+    }
+    .invalid>i,
+    .invalid>.invalid-feedback {
+    visibility: visible;
+    }
+    .invalid>input {
+    border: 1px solid red;
+    }
+    /* ============ */
+    /* .form input { */
+    /* outline: 0; */
+    /* background: rgb(243, 216, 189); */
+    /* width: 100%; */
+    /* border: 0; */
+    /* margin: 0 0 10px; */
+    /* padding: 15px; */
+    /* box-sizing: border-box; */
+    /* font-size: 16px; */
+    /* } */
+    .form {
+    position: relative;
+    z-index: 1;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    }
+    ::placeholder {
+    color: black;
+    opacity: 1;
+    font-weight: 550;
+    /* Firefox */
+    }
+    .form button {
+    text-transform: uppercase;
+    font-family: 'Poppins';
+    outline: 0;
+    background: rgb(243, 91, 90);
+    border: 2px solid rgb(243, 91, 90);
+    border-radius: 5px;
+    width: 100%;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    }
+    body {
+    font-family: 'Poppins';
+    background-color: bisque;
+    font-size: 22px;
+    margin: 0;
+    /* line-height: inherit; */
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
+    }
+    html {
+    max-width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    }
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js')
+.root(style='min-height: 100vh; box-sizing: border-box; margin:0 auto; border: 1 solid black;')
+  .page(style='max-width: 37.5rem;min-height: 100vh;margin:0 auto;border: 1px solid transparent; ')
+    .content(style='margin-top: 20%;')
+    .text-upper(style='\
+    top: 15%;\
+    position:relative;text-align:center ')
+      span Admin Dashboard
+    .form(style='\
+    top: 15%;\
+    position:relative;text-align:center ')
+      .login-form
+        #nrp-wrap.input-icons
+          i.fa.fa-solid.fa-exclamation.icon
+          input#nrp.input-field(type='number' placeholder='NRP' value='')
+          #validationServer03Feedback.invalid-feedback
+            | validation text
+        #password-wrap.input-icons
+          i.fa.fa-solid.fa-exclamation.icon
+          input#password.input-field(type='password' placeholder='Password' value='')
+          #validationServer03Feedback.invalid-feedback
+            | validation text
+        #phone-wrap.input-icons
+          i.fa.fa-solid.fa-exclamation.icon
+          input#phone.input-field(type='number' placeholder='No HP*')
+          #validationServer03Feedback.invalid-feedback
+            | validation text
+        button#loginButton login
+script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+script(type='text/javascript').
+  const invalidInputProc = (id, msg) => {
+  //add validation error class
+  document.getElementById(id).classList.add("invalid")
+  //add message
+  document.querySelector('#' + id + ' > .invalid-feedback').innerText = msg;
+  }
+  $('#loginButton').click(function () {
+  //reset all invalid class
+  document.querySelectorAll('.invalid').forEach(function (element) {
+  element.classList.remove('invalid');
+  });;
+  let nrpVal = document.getElementById('nrp').value;
+  let nrpErrMsg = "NRP tidak boleh kosong";
+  let phoneErrMsg = "Nomor HP tidak boleh kosong";
+  let phoneVal = document.getElementById('phone').value;
+  let passwordVal = document.getElementById('password').value;
+  let passwordErrMsg = "Password tidak boleh kosong";
+  if (!nrpVal.length) {
+  invalidInputProc('nrp-wrap', nrpErrMsg);
+  return;
+  }
+  if (!passwordVal.length) {
+  invalidInputProc('password-wrap', passwordErrMsg);
+  return;
+  }
+  if (!phoneVal.length) {
+  invalidInputProc('phone-wrap', phoneErrMsg);
+  return;
+  }
+  let secret = Math.floor(100000 + Math.random() * 900000)
+  // axios.post('https://ombtangkot.flazzard.com/api/login',
+  axios.post('!{host}/api/login',
+  {
+  nrp: document.getElementById('nrp').value,
+  password: document.getElementById('password').value,
+  secret: secret,
+  }
+  )
+  .then(function (response) {
+  if (response.data.success) {
+  event.preventDefault();
+  let params = `?nrp=${document.getElementById('nrp').value}`
+  var url = '!{host}/dashboard';
+  location.replace(url);
+  } else {
+  invalidInputProc('nrp-wrap', response.data.message);
+  invalidInputProc('password-wrap', response.data.message);
+  }
+  });
+  });
