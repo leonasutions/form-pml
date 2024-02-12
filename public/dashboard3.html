@@ -119,6 +119,20 @@
             display: inline-block;
         }
 
+        .chart-sec {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-sec-dot {
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         #donut {
             /* (A1) CIRCLE */
             width: 200px;
@@ -199,6 +213,11 @@
             padding: 10px;
         }
 
+        .container {
+            display: flex;
+            justify-content: space-around;
+            /* Centers elements horizontally */
+        }
 
 
         /* (C) LEGEND */
@@ -207,10 +226,6 @@
 </head>
 
 <body>
-
-    <div id="date">&nbsp;</div>
-    <div id="clock"></div>
-
     <div class="row">
         <div class="column1">
             <div class="card1">
@@ -236,12 +251,14 @@
                     <div id="detail-pop" style="text-align: right;cursor: pointer;">
                         LIHAT DETAIL</div>
                 </div>
-                <div style=" display: flex; justify-content: center;">
-                    <div class="column3">
-                        <div class="dot" id="paslon1"
-                            style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">0%
+                <div style=" display: flex; justify-content: space-between;">
+                    <div class="column3 chart-sec">
+                        <div class="chart-sec-dot">
+                            <div class="dot" id="paslon1"
+                                style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">0%
+                            </div>
                         </div>
-                        <div style="padding-top:100px" id="sum_paslon1">0</div>
+                        <div style="padding-top:10px" id="sum_paslon1">0</div>
                         <div style="padding:30px;">
                             <div>PASLON NO 1</div>
                             <div>
@@ -250,21 +267,25 @@
                         </div>
                     </div>
 
-                    <div class="column3">
-                        <div class="dot" id="paslon2"
-                            style="background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;">0%
+                    <div class="column3 chart-sec">
+                        <div class="chart-sec-dot">
+                            <div class="dot" id="paslon2"
+                                style="background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;">0%
+                            </div>
                         </div>
-                        <div style="padding-top:100px" id="sum_paslon2">0</div>
+                        <div style="padding-top:10px" id="sum_paslon2">0</div>
                         <div style="padding:30px;">
                             <div>PASLON NO 2</div>
                             <div>PRABOWO SUBIANTO - GIBRAN RAKABUMI</div>
                         </div>
                     </div>
-                    <div class="column3">
-                        <div class="dot" id="paslon3"
-                            style="background-color: #FF0202;font-size:26px;color:white;font-weight: bold;">0%
+                    <div class="column3 chart-sec">
+                        <div class="chart-sec-dot">
+                            <div class="dot" id="paslon3"
+                                style="background-color: #FF0202;font-size:26px;color:white;font-weight: bold;">0%
+                            </div>
                         </div>
-                        <div style="padding-top:100px" id="sum_paslon3">0</div>
+                        <div style="padding-top:10px" id="sum_paslon3">0</div>
                         <div style="padding:30px;">
                             <div>PASLON NO 3</div>
                             <div>GANJAR PRANOWO - MAHFUD MD</div>
