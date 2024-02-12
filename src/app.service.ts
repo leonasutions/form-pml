@@ -218,6 +218,141 @@ export class AppService {
     return dataKecamatan
   }
 
+  async getDetailTpsKecamatan(listIdKecamatan: [number]) {
+    var data_tps_kecamatan_belum_masuk = await this.dataCapresRepository.query(`
+    SELECT 
+        pf.id, 
+        pf.nama, 
+        pf.total - COALESCE(pf.toral, 0) AS data_belum_masuk,
+        COALESCE(pf.toral, 0) AS data_masuk
+    FROM
+        (SELECT 
+            total.id,
+            total.nama,
+            total.total,
+            total.type,
+            COALESCE(pd.total, 0) AS toral
+        FROM
+            (SELECT 
+                kec.id,
+                kec.nama,
+                COUNT(tp.id) AS total,
+                'type' AS type -- Adjust 'type' as needed, as it's currently hard-coded
+            FROM
+                tps tp
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY kec.id, kec.nama) AS total
+        LEFT JOIN
+            (SELECT 
+                kec.id,
+                COUNT(cap.id) AS total
+            FROM
+                data_capres AS cap
+            LEFT JOIN tps tp ON cap.tps_id = tp.id
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY kec.id) AS pd ON total.id = pd.id) AS pf;
+    `)
+    return data_tps_kecamatan_belum_masuk
+  }
+  async getDetailTpsKelurahan(listIdKecamatan: [number]) {
+
+
+    var data_tps_kelurahan_belum_masuk = await this.dataCapresRepository.query(`
+    SELECT 
+        pf.id, 
+        pf.kelurahan,
+		    pf.kecamatan,
+        pf.total - COALESCE(pf.toral, 0) AS data_belum_masuk,
+        COALESCE(pf.toral, 0) AS data_masuk
+    FROM
+        (SELECT 
+            total.id,
+            total.kelurahan,
+            total.kecamatan,
+            total.total,
+            total.type,
+            COALESCE(pd.total, 0) AS toral
+        FROM
+            (SELECT 
+                kel.id,
+                kel.nama as kelurahan,
+                kec.nama as kecamatan,
+                COUNT(tp.id) AS total,
+                'type' AS type -- Adjust 'type' as needed, as it's currently hard-coded
+            FROM
+                tps tp
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY kel.id) AS total
+        LEFT JOIN
+            (SELECT 
+                kel.id,
+                COUNT(cap.id) AS total
+            FROM
+                data_capres AS cap
+            LEFT JOIN tps tp ON cap.tps_id = tp.id
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY kel.id) AS pd ON total.id = pd.id) AS pf;
+    `)
+    return data_tps_kelurahan_belum_masuk
+
+
+  }
+
+  async getDetailTpstpx(listIdKecamatan: [number]) {
+    var data_tps_tpx_belum_masuk = await this.dataCapresRepository.query(`
+    SELECT 
+        pf.id, 
+        pf.kelurahan,
+		pf.kecamatan,
+        pf.total - COALESCE(pf.toral, 0) AS data_belum_masuk,
+        COALESCE(pf.toral, 0) AS data_masuk
+    FROM
+        (SELECT 
+            total.id,
+            total.kelurahan,
+            total.kecamatan,
+            total.total,
+            total.type,
+            COALESCE(pd.total, 0) AS toral
+        FROM
+            (SELECT 
+                tp.id,
+                tp.nama as alamat,
+                kel.nama as kelurahan,
+                kec.nama as kecamatan,
+                COUNT(tp.id) AS total,
+                'type' AS type -- Adjust 'type' as needed, as it's currently hard-coded
+            FROM
+                tps tp
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY tp.id) AS total
+        LEFT JOIN
+            (SELECT 
+                tp.id,
+                COUNT(cap.id) AS total
+            FROM
+                data_capres AS cap
+            LEFT JOIN tps tp ON cap.tps_id = tp.id
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            WHERE kec.id IN (${listIdKecamatan})
+            GROUP BY tp.id) AS pd ON total.id = pd.id) AS pf
+            
+            order by data_masuk desc;
+    `)
+    return data_tps_tpx_belum_masuk
+  }
+
   async getWilayah(type: string) {
     var dataKecamatan
     if (type == 'SELURUH WILAYAH') {
@@ -352,6 +487,38 @@ export class AppService {
     const excelBuffer = await workbook.xlsx.writeBuffer();
     return excelBuffer;
   }
+
+  async excelTps(excelFilter: DashboardDto) {
+    var dataKec = await this.getDetailTpsKecamatan(excelFilter.listIdKecamatan)
+    var dataKel = await this.getDetailTpsKelurahan(excelFilter.listIdKecamatan)
+    var dataTps = await this.getDetailTpstpx(excelFilter.listIdKecamatan)
+    const workbook = new Workbook();
+    await workbook.xlsx.readFile("files/excel_tps_kecamatan.xlsx");
+    const worksheet = workbook.getWorksheet("KECAMATAN");
+    const worksheet2 = workbook.getWorksheet("KELURAHAN");
+    const worksheet3 = workbook.getWorksheet("TPS");
+    var nomor = 1
+    for (const item of dataKec) {
+      worksheet.addRow([nomor, item.nama, item.data_masuk, item.data_belum_masuk])
+      nomor = nomor + 1
+    }
+    nomor = 1
+    for (const item of dataKel) {
+      dataKel
+      worksheet2.addRow([nomor, item.kelurahan, item.kecamatan, item.data_masuk, item.data_belum_masuk])
+      nomor = nomor + 1
+    }
+    nomor = 1
+    for (const item of dataTps) {
+      worksheet3.addRow([nomor, item.alamat, item.kelurahan, item.kecamatan, item.data_masuk, item.data_belum_masuk])
+      nomor = nomor + 1
+    }
+    const excelBuffer = await workbook.xlsx.writeBuffer();
+    return excelBuffer;
+  }
+
+
+
 
 
 

@@ -82,6 +82,12 @@ export class AppController {
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres })
   }
 
+  @Post('api/detail-tps')
+  async detailTpsApi(@Body() dashboardDto: DashboardDto, @Res() res) {
+    var dataCapres = await this.appService.getDetailTpsKecamatan(dashboardDto.listIdKecamatan)
+    res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres })
+  }
+
   @Post('api/login')
   async loginApi(@Body() loginDto: LoginDto, @Res() res) {
     var dataLogin = await this.appService.login(loginDto.nrp, loginDto.password, loginDto.no_hp)
@@ -110,6 +116,15 @@ export class AppController {
     let buff = Buffer.from(new Uint8Array(excelFile))
     var name = Math.random().toString(36).slice(2).toUpperCase()
     const file_name = `attachment; filename="excel-kecamatan-${name}.xlsx"`
+    return new StreamableFile(buff, { 'type': 'application/vnd.ms-excel', length: buff.length, disposition: file_name });
+  }
+
+  @Post('api/excel-tps')
+  async getxltps(@Body() excelDto: DashboardDto,) {
+    let excelFile = await this.appService.excelTps(excelDto)
+    let buff = Buffer.from(new Uint8Array(excelFile))
+    var name = Math.random().toString(36).slice(2).toUpperCase()
+    const file_name = `attachment; filename="excel-tps-${name}.xlsx"`
     return new StreamableFile(buff, { 'type': 'application/vnd.ms-excel', length: buff.length, disposition: file_name });
   }
 

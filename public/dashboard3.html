@@ -90,6 +90,14 @@
             padding: 5px;
         }
 
+        #table-pop2,
+        #th-pop2,
+        #td-pop2 {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
         /* Style the counter cards */
         .card1 {
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -200,6 +208,46 @@
 
 
         #export {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .popup2 {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .popup-content2 {
+            background-color: rgb(208, 167, 124);
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-height: 80%;
+            /* Set maximum height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            /* Could be more or less, depending on screen size */
+        }
+
+
+        #export2 {
             float: right;
             font-size: 20px;
             cursor: pointer;
@@ -358,7 +406,7 @@
                 </div>
                 <div
                     style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
-                    <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
+                    <div style="text-align: right;margin-right: 20px;cursor:pointer" id="tps-pop">LIHAT DETAIL</div>
                     <table id="tabel-tps" style="width: 100%;font-size:12px;margin-left: 20px;margin-right: 20px">
 
                         <th>
@@ -393,12 +441,48 @@
                 <th id="th-pop">JUMLAH SUARA PASLON III</th>
             </table>
         </div>
-    </div>`
+    </div>
+
+    <div id="popup2" class="popup2">
+        <div class="popup-content2">
+            <span id="export2">EXPORT TO EXCEL</span>
+            <h1 style="text-align: center;">HASIL PERHITUNGAN SUARA</h1>
+            <h2 style="text-align: center;" id="tag_type2">WILAYAH : SELURUH WILAYAH</h2>
+            <table style="margin-left: auto;margin-right: auto;" id="table-pop2">
+                <th id="th-pop2">No</th>
+                <th id="th-pop2">Kecamatan</th>
+                <th id="th-pop2">JUMLAH TPS BELUM MASUK</th>
+                <th id="th-pop2">JUMLAH TPS MASUK</th>
+            </table>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
         var listIdKecamatan = []
         $(document).ready(function () {
+
+
+            $("#tps-pop").on('click', function () {
+                axios.post('http://localhost:4890/api/detail-tps', {
+                    listIdKecamatan: listIdKecamatan,
+                }).then(function (response) {
+                    var nomor = 1
+                    for (item of response.data.data) {
+                        $("#table-pop2").append(`
+                                <tr >
+                                    <td id="td-pop2">${nomor}</td>
+                                    <td id="td-pop2">${item.nama}</td>
+                                    <td id="td-pop2">${item.data_belum_masuk}</td>
+                                    <td id="td-pop2">${item.data_masuk}</td>
+                                </tr>
+                            `)
+                        nomor = nomor + 1
+                    }
+                })
+                $("#popup2").css("display", "block");
+            });
+
             $("#detail-pop").on('click', function () {
                 axios.post('http://localhost:4890/api/detail-dashboard', {
                     listIdKecamatan: listIdKecamatan,
@@ -444,17 +528,56 @@
                 $("#popup").css("display", "none");
             });
 
+            $(".close, .popup2").on('click', function () {
+                document.getElementById("table-pop2").replaceChildren();
+                $("#table-pop2").append(`
+                <th id="th-pop2">No</th>
+                <th id="th-pop2">Kecamatan</th>
+                <th id="th-pop2">JUMLAH TPS BELUM MASUK</th>
+                <th id="th-pop2">JUMLAH TPS MASUK</th>
+                `)
+                $("#popup2").css("display", "none");
+            });
+
             // Prevent clicks inside the popup from closing it
             $(".popup-content").click(function (event) {
                 event.stopPropagation();
             });
 
+            $(".popup-content2").click(function (event) {
+                event.stopPropagation();
+            });
+
             $("#export").click(function (event) {
-                console.log(listIdKecamatan)
                 axios.post('http://localhost:4890/api/excel', {
                     listIdKecamatan: listIdKecamatan,
                 }, { responseType: 'blob' }).then(function (response) {
                     let fileName = 'data-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
+
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
+                        window.navigator.msSaveOrOpenBlob(new Blob([response.data],
+                            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+                        ),
+                            fileName
+                        );
+                    } else {
+                        const url = window.URL.createObjectURL(new Blob([response.data],
+                            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download',
+                            fileName);
+                        document.body.appendChild(link);
+                        link.click();
+                    }
+                })
+            });
+
+            $("#export2").click(function (event) {
+                axios.post('http://localhost:4890/api/excel-tps', {
+                    listIdKecamatan: listIdKecamatan,
+                }, { responseType: 'blob' }).then(function (response) {
+                    let fileName = 'data-tps-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
 
                     if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
                         window.navigator.msSaveOrOpenBlob(new Blob([response.data],
@@ -567,6 +690,7 @@
                         for (item_belum of response.data.data.list_belum_masuk) {
                             $("#tabel-tps").append(`
                                 <tr>
+                                    <td>${nomor}</td>
                                     <td>${item_belum.nama}</td>
                                     <td>${item_belum.data_belum_masuk}</td>
                                 </tr>
@@ -633,7 +757,7 @@
                 pas_3.css({
                     "width": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
                     "height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
-                    "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2,200)}px`, // Change background color to red
+                    "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
                 });
                 $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
                 $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
@@ -663,6 +787,7 @@
                 for (item_belum of response.data.data.list_belum_masuk) {
                     $("#tabel-tps").append(`
                                 <tr>
+                                    <td>${nomor}</td>
                                     <td>${item_belum.nama}</td>
                                     <td>${item_belum.data_belum_masuk}</td>
                                 </tr>
