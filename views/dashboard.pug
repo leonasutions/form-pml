@@ -207,16 +207,16 @@ head
         .column3
           #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
             | 0%
-          #sum_paslon1(style='padding-top:100px') 0
+          #sum_paslon2(style='padding-top:100px') 0
           div(style='padding:30px;')
             div PASLON NO 2
             div PRABOWO SUBIANTO - GIBRAN RAKABUMI
         .column3
           #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
             | 0%
-          #sum_paslon1(style='padding-top:100px') 0
+          #sum_paslon3(style='padding-top:100px') 0
           div(style='padding:30px;')
-            div PASLON NO 2
+            div PASLON NO 3
             div GANJAR PRANOWO - MAHFUD MD
       div(style='height: 250px;padding-top:25px ; display: flex; justify-content: space-around;')
         div
@@ -433,7 +433,7 @@ script.
   $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
   $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all)
   $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
-  $("#total_hadir").text(response.data.data.total_suara_sah)
+  $("#total_hadir").text(response.data.data.total_hadir)
   $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
   $("#total_sah").text(response.data.data.total_suara_sah)
   $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
