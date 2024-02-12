@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Float four columns side by side */
+        .column1 {
+            float: left;
+            width: 20vw;
+            padding: 0 10px;
+        }
+
+        /* Float four columns side by side */
+        .column2 {
+            float: left;
+            width: 60vw;
+            padding: 0 10px;
+        }
+
+        .column3 {
+            float: left;
+            width: 30%;
+            padding: 0 10px;
+            height: 50px;
+        }
+
+        .column4 {
+            float: left;
+            width: 15%;
+            padding: 0 110px;
+            margin: auto;
+        }
+
+
+        /* Remove extra left and right margins, due to padding */
+        .row {
+            margin: 0 -5px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive columns */
+        @media screen and (max-width: 600px) {
+            .column1 {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .column2 {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
+        }
+
+        body {
+            font-family: 'Poppins';
+            background-color: bisque;
+            font-size: 21px;
+            margin: 0;
+            color: #7B2929;
+            /* line-height: inherit; */
+            height: 100%;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        #table-pop,
+        #th-pop,
+        #td-pop {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        /* Style the counter cards */
+        .card1 {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: left;
+            background-color: rgb(243, 216, 189);
+            height: 1300px;
+
+        }
+
+        .card2 {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: rgb(243, 216, 189);
+            height: 1300px;
+
+        }
+
+        .dot {
+            height: 150px;
+            width: 150px;
+            background-color: #bbb;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 150px;
+            display: inline-block;
+        }
+
+        #donut {
+            /* (A1) CIRCLE */
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: auto;
+            /* (A2) SEGMENTS */
+            background: conic-gradient(red 0deg 80deg,
+                    blue 80deg 360deg);
+        }
+
+        /* (B) DONUT "CONVERSION" */
+        /* (B1) SMALLER CIRCLE */
+        #donut::before {
+            content: "";
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgb(243, 216, 189);
+        }
+
+        /* (B2) "CONVERT PIE TO DONUT" - CENTER SMALLER CIRCLE */
+        #donut {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Popup CSS */
+        .popup {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .popup-content {
+            background-color: rgb(208, 167, 124);
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-height: 80%;
+            /* Set maximum height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            /* Could be more or less, depending on screen size */
+        }
+
+
+        #export {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .cardnya {
+            max-width: 12.5rem;
+            max-height: 250px;
+            background-color: azure;
+            text-align: center;
+            border-style: solid;
+            border-collapse: collapse;
+            border-width: 4px;
+            padding: 10px;
+        }
+
+
+
+        /* (C) LEGEND */
+        /* (C1) LEGEND CONTAINER */
+    </style>
+</head>
+
+<body>
+
+    <div id="date">&nbsp;</div>
+    <div id="clock"></div>
+
+    <div class="row">
+        <div class="column1">
+            <div class="card1">
+                <h3>PILIH WILAYAH :</h3>
+                <select id="wilayah" style="width: 100%;padding:10px">
+                    <option></option>
+                    <option>SELURUH WILAYAH</S></option>
+                    <option value="KOTAMADYA">KOTAMADYA</option>
+                    <option value="KABUPATEN">KABUPATEN</option>
+                </select>
+                <div id="placeholderWilayah"
+                    style="margin-top:20px;overflow-y: scroll; height:400px; text-align: left;height:70%">
+                </div>
+            </div>
+        </div>
+
+        <div class="column2">
+            <div class="card2">
+                <h1>HASIL PERHITUNGAN SUARA</h1>
+                <h2 id="tag_type2">WILAYAH : SELURUH WILAYAH</h2>
+                <div style="width: 100%;height: 100px;">
+                    <div class="column3">
+                        <h3 style="text-align: left;">PEMILIHAN PRESIDEN 2024</h3>
+                    </div>
+                    <div class="column3"> &nbsp;</div>
+                    <div class="column3" id="detail-pop" style="text-align: right;line-height: 75px;cursor: pointer;">
+                        LIHAT DETAIL</div>
+                </div>
+                <div style="min-height: 500px;">
+                    <div class="column3">
+                        <div class="dot" id="paslon1"
+                            style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">0%
+                        </div>
+                        <div style="padding-top:100px" id="sum_paslon1">0</div>
+                        <div style="padding:30px;">
+                            <div>PASLON NO 1</div>
+                            <div>
+                                ANIES BASWEDAN - MUHAIMIN ISKANDAR
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column3">
+                        <div class="dot" id="paslon2"
+                            style="background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;">0%
+                        </div>
+                        <div style="padding-top:100px" id="sum_paslon1">0</div>
+                        <div style="padding:30px;">
+                            <div>PASLON NO 2</div>
+                            <div>PRABOWO SUBIANTO - GIBRAN RAKABUMI</div>
+                        </div>
+                    </div>
+                    <div class="column3">
+                        <div class="dot" id="paslon3"
+                            style="background-color: #FF0202;font-size:26px;color:white;font-weight: bold;">0%
+                        </div>
+                        <div style="padding-top:100px" id="sum_paslon1">0</div>
+                        <div style="padding:30px;">
+                            <div>PASLON NO 2</div>
+                            <div>GANJAR PRANOWO - MAHFUD MD</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="height: 250px;padding-top:25px ; display: flex; justify-content: space-around;">
+                    <div class="">
+                        <div class="cardnya">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL DPT</b></div>
+                            <div id="total_dpt" style="height: 75px;font-size: 32px;">0</div>
+                            <div id="total_dpt_perc" style="height: 75px;font-size: 48px;"><b>0</b></div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="cardnya">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL DPT TAMBAHAN</b></div>
+                            <div id="total_dpt_plus" style="height: 75px;font-size: 32px;">0</div>
+                            <div id="total_dpt_plus_perc" style="height: 75px;font-size: 48px;"><b>0</b></div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="cardnya">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL HADIR</b></div>
+                            <div id="total_hadir" style="height: 75px;font-size: 32px;">0</div>
+                            <div id="total_hadir_perc" style="height: 75px;font-size: 48px;"><b>0</b></div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="cardnya">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL SUARA SAH</b></div>
+                            <div id="total_sah" style="height: 75px;font-size: 32px;">0</div>
+                            <div id="total_sah_perc" style="height: 75px;font-size: 48px;"><b>0</b></div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="cardnya">
+                            <div style="height: 75px;font-size: 22px;"><b>TOTAL SUARA TIDAK SAH</b></div>
+                            <div id="total_tidak_sah" style="height: 75px;font-size: 32px;">2,350</div>
+                            <div id="total_tidak_sah_perc" style="height: 75px;font-size: 48px;"><b>1,93%</b></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+
+        <div class="column1">
+            <div class="card1">
+                <h3>TOTAL HASIL TPS MASUK</h3>
+                <!-- DONUT CHART -->
+                <div style="text-align: center;" id="donut"></div>
+                <div style="text-align: center;">
+                    <h2 id="perc_tps">0%</h2>
+                </div>
+
+                <!-- LEGEND -->
+                <div id="legend">
+                    <div id="tps_masuk">0 DATA TPS MASUK DARI TOTAL</div>
+                    <div id="terdaftar">0 TPS TERDAFTAR</div>
+                </div>
+                <div
+                    style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
+                    <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
+                    <table id="tabel-tps" style="width: 100%;margin-left: 20px;margin-right: 20px">
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Kecamatan
+                        </th>
+                        <th>
+                            JML TPS BLM MASUK DATA
+                        </th>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span id="export">EXPORT TO EXCEL</span>
+            <h1 style="text-align: center;">HASIL PERHITUNGAN SUARA</h1>
+            <h2 style="text-align: center;" id="tag_type">WILAYAH : SELURUH WILAYAH</h2>
+            <table id="table-pop">
+                <th id="th-pop">No</th>
+                <th id="th-pop">Kecamatan</th>
+                <th id="th-pop">JUMLAH DPT</th>
+                <th id="th-pop">JUMLAH DPT TAMBAHAN</th>
+                <th id="th-pop">JUMLAH HADIR</th>
+                <th id="th-pop">JUMLAH SUARA SAH</th>
+                <th id="th-pop">JUMLAH SUARA TIDAK SAH</th>
+                <th id="th-pop">JUMLAH SUARA PASLON I</th>
+                <th id="th-pop">JUMLAH SUARA PASLON II</th>
+                <th id="th-pop">JUMLAH SUARA PASLON III</th>
+            </table>
+        </div>
+    </div>`
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        var listIdKelurahan = []
+        $(document).ready(function () {
+            $("#detail-pop").on('click', function () {
+                axios.post('https://ombtangkot.flazzard.com/api/detail-dashboard', {
+                    listIdKelurahan: listIdKelurahan,
+                }).then(function (response) {
+                    var nomor = 1
+
+                    for (item of response.data.data) {
+                        $("#table-pop").append(`
+                                <tr >
+                                    <td id="td-pop">${nomor}</td>
+                                    <td id="td-pop">${item.nama}</td>
+                                    <td id="td-pop">${item.total_dpt}</td>
+                                    <td id="td-pop">${item.total_dpt_plus}</td>
+                                    <td id="td-pop">${item.total_dpt_datang}</td>
+                                    <td id="td-pop">${item.total_sah}</td>
+                                    <td id="td-pop">${item.total_tidak_sah}</td>
+                                    <td id="td-pop">${item.total_paslon_1}</td>
+                                    <td id="td-pop">${item.total_paslon_2}</td>
+                                    <td id="td-pop">${item.total_paslon_3}</td>
+                                </tr>
+                            `)
+                        nomor = nomor + 1
+                    }
+                })
+                $("#popup").css("display", "block");
+            });
+
+            // Close the popup when the close button or anywhere outside the popup is clicked
+            $(".close, .popup").on('click', function () {
+                document.getElementById("table-pop").replaceChildren();
+                $("#table-pop").append(`
+                <th id="th-pop">No</th>
+                <th id="th-pop">Kecamatan</th>
+                <th id="th-pop">JUMLAH DPT</th>
+                <th id="th-pop">JUMLAH DPT TAMBAHAN</th>
+                <th id="th-pop">JUMLAH HADIR</th>
+                <th id="th-pop">JUMLAH SUARA SAH</th>
+                <th id="th-pop">JUMLAH SUARA TIDAK SAH</th>
+                <th id="th-pop">JUMLAH SUARA PASLON I</th>
+                <th id="th-pop">JUMLAH SUARA PASLON II</th>
+                <th id="th-pop">JUMLAH SUARA PASLON III</th>
+                `)
+                $("#popup").css("display", "none");
+            });
+
+            // Prevent clicks inside the popup from closing it
+            $(".popup-content").click(function (event) {
+                event.stopPropagation();
+            });
+
+            $("#export").click(function (event) {
+                axios.post('https://ombtangkot.flazzard.com/api/excel', {
+                    listIdKelurahan: listIdKelurahan,
+                }, { responseType: 'blob' }).then(function (response) {
+                    let fileName = 'data-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
+
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
+                        window.navigator.msSaveOrOpenBlob(new Blob([response.data],
+                            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+                        ),
+                            fileName
+                        );
+                    } else {
+                        const url = window.URL.createObjectURL(new Blob([response.data],
+                            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download',
+                            fileName);
+                        document.body.appendChild(link);
+                        link.click();
+                    }
+                })
+            });
+        });
+        $('#wilayah').change(function () {
+            // document.querySelectorAll('#tps option').forEach(option => option.remove())
+            glob_type = $(this).val()
+            $("#tag_type").text('WILAYAH : ' + $(this).val())
+            $("#tag_type2").text('WILAYAH : ' + $(this).val())
+            document.getElementById("placeholderWilayah").replaceChildren();
+            document.getElementById("tabel-tps").replaceChildren();
+
+            $("#tabel-tps").append(`
+            <th>
+                No
+            </th>
+            <th>
+                Kecamatan
+            </th>
+            <th>
+                JML TPS BLM MASUK DATA
+            </th>
+            `)
+
+            axios.get('https://ombtangkot.flazzard.com/api/wilayah', {
+                params: {
+                    type: $(this).val(),
+                },
+            })
+                .then(function (response) {
+                    listIdKelurahan = []
+                    for (item of response.data) {
+                        $('#placeholderWilayah').append(`<h3>${item.nama}</h3>`);
+                        $('#placeholderWilayah').append(`<ul id="kecamatan-${item.id}"></ul>`)
+                        for (subItem of item.kelurahans) {
+                            listIdKelurahan.push(subItem.id)
+                            $(`#kecamatan-${item.id}`).append(`<li style="list-style-type: none;">
+                                <input type="checkbox" checked="true" name="${subItem.nama}" value="${subItem.id}">
+                                <label for="${subItem.nama}"> ${subItem.nama}</label>
+                            </li>`)
+                        }
+                    }
+                    axios.post('https://ombtangkot.flazzard.com/api/dashboard', {
+                        listIdKelurahan: listIdKelurahan,
+                        type: glob_type
+                    }).then(function (response) {
+                        $("#paslon1").text(response.data.data.total_paslon_1_percentage + '%')
+                        var pas_1 = $("#paslon1");
+                        pas_1.css({
+                            "width": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "line-height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                        });
+
+                        var pas_2 = $("#paslon2");
+                        pas_2.css({
+                            "width": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "line-height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                        });
+                        var pas_3 = $("#paslon3");
+                        pas_3.css({
+                            "width": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                            "line-height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                        });
+                        $("#paslon2").text(response.data.data.total_paslon_2_percentage + '%')
+                        $("#sum_paslon1").text(response.data.data.total_paslon_1)
+                        $("#sum_paslon2").text(response.data.data.total_paslon_2)
+                        $("#sum_paslon3").text(response.data.data.total_paslon_3)
+                        $("#paslon3").text(response.data.data.total_paslon_3_percentage + '%')
+                        $("#total_dpt").text(response.data.data.total_dpt_all)
+                        $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
+                        $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all)
+                        $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
+                        $("#total_hadir").text(response.data.data.total_suara_sah)
+                        $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
+                        $("#total_sah").text(response.data.data.total_suara_sah)
+                        $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
+                        $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah)
+                        $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage + '%')
+                        $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
+                        $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+                        $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
+
+                        var pas_3 = $("#donut");
+                        var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
+                        var from_perc = parseFloat(from) / 100 * 360
+                        pas_3.css({
+                            "background": `conic-gradient(blue 0deg ${from_perc}deg, red ${from_perc}deg 360deg)`, // Change background color to red
+                        });
+                        var nomor = 1
+                        for (item_belum of response.data.data.list_belum_masuk) {
+                            $("#tabel-tps").append(`
+                                <tr>
+                                    <td>${nomor}</td>
+                                    <td>${item_belum.nama}</td>
+                                    <td>${item_belum.data_belum_masuk}</td>
+                                </tr>
+                            `)
+                            nomor = nomor + 1
+                        }
+
+
+                    });
+                });
+        });
+    </script>
+    <script>
+
+        function bodyload() {
+            startTime()
+            const today = new Date();
+            let month = today.getMonth();
+            let day = today.getDate();
+            let year = today.getFullYear();
+            document.getElementById('date').innerHTML = day + "/" + month + '/' + year;
+        }
+        function startTime() {
+            const today = new Date();
+            let h = today.getHours();
+            let m = today.getMinutes();
+            let s = today.getSeconds();
+
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
+
+            setTimeout(startTime, 1000);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+</body>
+
+</html>
