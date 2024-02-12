@@ -338,16 +338,15 @@
                 <div
                     style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
                     <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
-                    <table id="tabel-tps" style="width: 100%;margin-left: 20px;margin-right: 20px">
-                        <th>
-                            No
-                        </th>
+                    <table id="tabel-tps" style="width: 100%;font-size:12px;margin-left: 20px;margin-right: 20px">
+                       
                         <th>
                             Kecamatan
                         </th>
-                        <th>
-                            JML TPS BLM MASUK DATA
+                        <th style="text-align: center;">
+                            JML TPS <br>BLM MASUK DATA
                         </th>
+
 
                     </table>
                 </div>
@@ -469,8 +468,8 @@
             <th>
                 Kecamatan
             </th>
-            <th>
-                JML TPS BLM MASUK DATA
+            <th style="text-align: center;">
+                JML TPS <br>BLM MASUK DATA
             </th>
             `)
 
@@ -545,7 +544,6 @@
                         for (item_belum of response.data.data.list_belum_masuk) {
                             $("#tabel-tps").append(`
                                 <tr>
-                                    <td>${nomor}</td>
                                     <td>${item_belum.nama}</td>
                                     <td>${item_belum.data_belum_masuk}</td>
                                 </tr>

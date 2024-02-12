@@ -13,13 +13,13 @@ head
     /* Float four columns side by side */
     .column1 {
     float: left;
-    width: 20%;
+    width: 20vw;
     padding: 0 10px;
     }
     /* Float four columns side by side */
     .column2 {
     float: left;
-    width: 60%;
+    width: 60vw;
     padding: 0 10px;
     }
     .column3 {
@@ -161,6 +161,16 @@ head
     font-size: 20px;
     cursor: pointer;
     }
+    .cardnya {
+    max-width: 12.5rem;
+    max-height: 250px;
+    background-color: azure;
+    text-align: center;
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 4px;
+    padding: 10px;
+    }
     /* (C) LEGEND */
     /* (C1) LEGEND CONTAINER */
 #date &nbsp;
@@ -185,66 +195,60 @@ head
         .column3  &nbsp;
         #detail-pop.column3(style='text-align: right;line-height: 75px;cursor: pointer;')
           | LIHAT DETAIL
-      div(style='height: 250px;')
+      div(style='min-height: 500px;')
         .column3
           #paslon1.dot(style='background-color: #378960;font-size:26px;color:white;font-weight: bold;')
             | 0%
+          #sum_paslon1(style='padding-top:100px') 0
+          div(style='padding:30px;')
+            div PASLON NO 1
+            div
+              | ANIES BASWEDAN - MUHAIMIN ISKANDAR
         .column3
           #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
             | 0%
+          #sum_paslon1(style='padding-top:100px') 0
+          div(style='padding:30px;')
+            div PASLON NO 2
+            div PRABOWO SUBIANTO - GIBRAN RAKABUMI
         .column3
           #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
             | 0%
-      div(style='height: 50px;')
-        .column3
-          #sum_paslon1 0
-        .column3
-          #sum_paslon2 0
-        .column3
-          #sum_paslon3 0
-      div(style='height: 120px;')
-        .column3(style='padding:10px')
-          div PASLON NO 1
-          div
-            | ANIES BASWEDAN - MUHAIMIN ISKANDAR
-        .column3(style='padding:10px')
-          div PASLON NO 2
-          div PRABOWO SUBIANTO - GIBRAN RAKABUMI
-        .column3(style='padding:10px')
-          div PASLON NO 2
-          div GANJAR PRANOWO - MAHFUD MD
-      div(style='height: 250px;padding-top:25px')
-        .column4
-          div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
+          #sum_paslon1(style='padding-top:100px') 0
+          div(style='padding:30px;')
+            div PASLON NO 2
+            div GANJAR PRANOWO - MAHFUD MD
+      div(style='height: 250px;padding-top:25px ; display: flex; justify-content: space-around;')
+        div
+          .cardnya
             div(style='height: 75px;font-size: 22px;')
               b TOTAL DPT
             #total_dpt(style='height: 75px;font-size: 32px;') 0
             #total_dpt_perc(style='height: 75px;font-size: 48px;')
               b 0
-        .column4
-          div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
+        div
+          .cardnya
             div(style='height: 75px;font-size: 22px;')
               b TOTAL DPT TAMBAHAN
             #total_dpt_plus(style='height: 75px;font-size: 32px;') 0
             #total_dpt_plus_perc(style='height: 75px;font-size: 48px;')
               b 0
-        .column4
-          div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
+        div
+          .cardnya
             div(style='height: 75px;font-size: 22px;')
               b TOTAL HADIR
             #total_hadir(style='height: 75px;font-size: 32px;') 0
             #total_hadir_perc(style='height: 75px;font-size: 48px;')
               b 0
-      div(style='height: 250px;padding-top:50px')
-        .column4
-          div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
+        div
+          .cardnya
             div(style='height: 75px;font-size: 22px;')
               b TOTAL SUARA SAH
             #total_sah(style='height: 75px;font-size: 32px;') 0
             #total_sah_perc(style='height: 75px;font-size: 48px;')
               b 0
-        .column4
-          div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
+        div
+          .cardnya
             div(style='height: 75px;font-size: 22px;')
               b TOTAL SUARA TIDAK SAH
             #total_tidak_sah(style='height: 75px;font-size: 32px;') 2,350
@@ -263,13 +267,13 @@ head
         #terdaftar 0 TPS TERDAFTAR
       div(style='margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;')
         div(style='text-align: right;margin-right: 20px;') LIHAT DETAIL
-        table#tabel-tps(style='width: 100%;margin-left: 20px;margin-right: 20px')
-          th
-            | No
+        table#tabel-tps(style='width: 100%;font-size:12px;margin-left: 20px;margin-right: 20px')
           th
             | Kecamatan
-          th
-            | JML TPS BLM MASUK DATA
+          th(style='text-align: center;')
+            | JML TPS 
+            br
+            | BLM MASUK DATA
 #popup.popup
   .popup-content
     span#export EXPORT TO EXCEL
@@ -341,7 +345,7 @@ script.
   axios.post('!{host}/api/excel', {
   listIdKelurahan: listIdKelurahan,
   }, { responseType: 'blob' }).then(function (response) {
-  let fileName = 'data-pemilu_' +  Math.random().toString(36).slice(2).toUpperCase();
+  let fileName = 'data-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
   if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
   window.navigator.msSaveOrOpenBlob(new Blob([response.data],
   { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
@@ -375,8 +379,8 @@ script.
   <th>
   Kecamatan
   </th>
-  <th>
-  JML TPS BLM MASUK DATA
+  <th style="text-align: center;">
+  JML TPS <br>BLM MASUK DATA
   </th>
   `)
   axios.get('!{host}/api/wilayah', {
@@ -448,7 +452,6 @@ script.
   for (item_belum of response.data.data.list_belum_masuk) {
   $("#tabel-tps").append(`
   <tr>
-  <td>${nomor}</td>
   <td>${item_belum.nama}</td>
   <td>${item_belum.data_belum_masuk}</td>
   </tr>

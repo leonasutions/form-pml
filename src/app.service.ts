@@ -436,12 +436,12 @@ export class AppService {
       worksheet.addRow([nomor, item.nama, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
       nomor = nomor + 1
     }
-
+    nomor = 1
     for (const item of dataKel) {dataKel
       worksheet2.addRow([nomor, item.nama, item.kecamatan, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
       nomor = nomor + 1
     }
-
+    nomor = 1
     for (const item of dataTps) {
       worksheet3.addRow([nomor, item.alamat, item.kelurahan, item.kecamatan, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
       nomor = nomor + 1

@@ -10,6 +10,10 @@
             box-sizing: border-box;
         }
 
+        :root {
+            font-size : clamp(2rem, 10vw, 5rem);
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -305,7 +309,7 @@
                             <div id="total_hadir_perc" style="height: 75px;font-size: 48px;"><b>0</b></div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div style="height: 250px;padding-top:50px">
                     <div class="column4">
@@ -351,15 +355,12 @@
                 <div
                     style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
                     <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
-                    <table id="tabel-tps" style="width: 100%;margin-left: 20px;margin-right: 20px">
-                        <th>
-                            No
-                        </th>
+                    <table id="tabel-tps" style="width: 100%;margin-left: 20px;font-size:12px;margin-right: 20px">
                         <th>
                             Kecamatan
                         </th>
-                        <th>
-                            JML TPS BLM MASUK DATA
+                        <th style="text-align: center;">
+                            JML TPS <br>BLM MASUK DATA
                         </th>
 
                     </table>
@@ -446,8 +447,7 @@
                 axios.post('http://localhost:4890/api/excel', {
                     listIdKelurahan: listIdKelurahan,
                 }, { responseType: 'blob' }).then(function (response) {
-                    let fileName = 'data-pemilu_' +  Math.random().toString(36).slice(2).toUpperCase();
-
+                    let fileName = 'data-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
                     if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
                         window.navigator.msSaveOrOpenBlob(new Blob([response.data],
                             { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
@@ -460,7 +460,7 @@
                         const link = document.createElement('a');
                         link.href = url;
                         link.setAttribute('download',
-                        fileName);
+                            fileName);
                         document.body.appendChild(link);
                         link.click();
                     }
@@ -477,13 +477,10 @@
 
             $("#tabel-tps").append(`
             <th>
-                No
-            </th>
-            <th>
                 Kecamatan
             </th>
-            <th>
-                JML TPS BLM MASUK DATA
+            <th style="text-align: center;">
+                JML TPS <br>BLM MASUK DATA
             </th>
             `)
 
@@ -557,10 +554,9 @@
                         var nomor = 1
                         for (item_belum of response.data.data.list_belum_masuk) {
                             $("#tabel-tps").append(`
-                                <tr>
-                                    <td>${nomor}</td>
+                                <tr style="text-align:center">
                                     <td>${item_belum.nama}</td>
-                                    <td>${item_belum.data_belum_masuk}</td>
+                                    <td >${item_belum.data_belum_masuk}</td>
                                 </tr>
                             `)
                             nomor = nomor + 1
