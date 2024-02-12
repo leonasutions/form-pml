@@ -177,7 +177,7 @@ head
   .column2
     .card2
       h1 HASIL PERHITUNGAN SUARA
-      h2#tag_type WILAYAH : SELURUH WILAYAH
+      h2#tag_type2 WILAYAH : SELURUH WILAYAH
       div(style='width: 100%;height: 100px;')
         .column3
           h3(style='text-align: left;') PEMILIHAN PRESIDEN 2024
@@ -188,15 +188,19 @@ head
         .column3
           #paslon1.dot(style='background-color: #378960;font-size:26px;color:white;font-weight: bold;')
             | 0%
-          div 55555
         .column3
           #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
             | 0%
-          div 55555
         .column3
           #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
             | 0%
-          div 55555
+      div(style='height: 50px;')
+        .column3
+          #sum_paslon1 0
+        .column3
+          #sum_paslon2 0
+        .column3
+          #sum_paslon3 0
       div(style='height: 120px;')
         .column3(style='padding:10px')
           div PASLON NO 1
@@ -208,7 +212,7 @@ head
         .column3(style='padding:10px')
           div PASLON NO 2
           div GANJAR PRANOWO - MAHFUD MD
-      div(style='height: 250px;padding-top:50px')
+      div(style='height: 250px;padding-top:25px')
         .column4
           div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
             div(style='height: 75px;font-size: 22px;')
@@ -334,11 +338,35 @@ script.
   $(".popup-content").click(function (event) {
   event.stopPropagation();
   });
+  $("#export").click(function (event) {
+  axios.post('!{host}/api/excel', {
+  listIdKelurahan: listIdKelurahan,
+  }, { responseType: 'blob' }).then(function (response) {
+  let fileName = 'data-pemilu_' +  Math.random().toString(36).slice(2).toUpperCase();
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
+  window.navigator.msSaveOrOpenBlob(new Blob([response.data],
+  { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+  ),
+  fileName
+  );
+  } else {
+  const url = window.URL.createObjectURL(new Blob([response.data],
+  { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download',
+  fileName);
+  document.body.appendChild(link);
+  link.click();
+  }
+  })
+  });
   });
   $('#wilayah').change(function () {
   // document.querySelectorAll('#tps option').forEach(option => option.remove())
   glob_type = $(this).val()
   $("#tag_type").text('WILAYAH : ' + $(this).val())
+  $("#tag_type2").text('WILAYAH : ' + $(this).val())
   document.getElementById("placeholderWilayah").replaceChildren();
   document.getElementById("tabel-tps").replaceChildren();
   $("#tabel-tps").append(`
@@ -358,7 +386,7 @@ script.
   },
   })
   .then(function (response) {
-  listIdKelurahan =[]
+  listIdKelurahan = []
   for (item of response.data) {
   $('#placeholderWilayah').append(`<h3>${item.nama}</h3>`);
   $('#placeholderWilayah').append(`<ul id="kecamatan-${item.id}"></ul>`)
@@ -394,6 +422,9 @@ script.
   "line-height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
   });
   $("#paslon2").text(response.data.data.total_paslon_2_percentage + '%')
+  $("#sum_paslon1").text(response.data.data.total_paslon_1)
+  $("#sum_paslon2").text(response.data.data.total_paslon_2)
+  $("#sum_paslon3").text(response.data.data.total_paslon_3)
   $("#paslon3").text(response.data.data.total_paslon_3_percentage + '%')
   $("#total_dpt").text(response.data.data.total_dpt_all)
   $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')

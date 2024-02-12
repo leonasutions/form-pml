@@ -32,6 +32,11 @@ export class DashboardDto {
   type: string;
 }
 
+export class ExcelDto {
+  type: string;
+}
+
+
 
 export class PostDto {
   user: string;

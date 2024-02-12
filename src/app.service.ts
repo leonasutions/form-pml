@@ -6,8 +6,9 @@ import Wilayah from './model/wilayah.entity';
 import kelurahanEntity from './model/kelurahan.entity';
 import tpsEntity from './model/tps.entity';
 import userEntity from './model/user.entity';
-import { PostDto, dataDto } from './dto/api.dto';
+import { DashboardDto, PostDto, dataDto } from './dto/api.dto';
 import DataCapresEntity from './model/dataCapres.entity';
+import { Workbook } from "exceljs";
 
 
 
@@ -42,35 +43,35 @@ export class AppService {
       SELECT 
           kec.nama,
           CASE
-              WHEN SUM(paslon_1) IS NULL THEN 0
+              WHEN SUM(paslon_1) IS NULL THEN '-'
               ELSE SUM(paslon_1)
           END AS total_paslon_1,
           CASE
-              WHEN SUM(paslon_2) IS NULL THEN 0
+              WHEN SUM(paslon_2) IS NULL THEN '-'
               ELSE SUM(paslon_2)
           END AS total_paslon_2,
           CASE
-              WHEN SUM(paslon_3) IS NULL THEN 0
+              WHEN SUM(paslon_3) IS NULL THEN '-'
               ELSE SUM(paslon_3)
           END AS total_paslon_3,
           CASE
-              WHEN SUM(total_dpt) IS NULL THEN 0
+              WHEN SUM(total_dpt) IS NULL THEN '-'
               ELSE SUM(total_dpt)
           END AS total_dpt,
           CASE
-              WHEN SUM(total_dpt_tambahan) IS NULL THEN 0
+              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
               ELSE SUM(total_dpt_tambahan)
           END AS total_dpt_plus,
           CASE
-              WHEN SUM(total_dpt_datang) IS NULL THEN 0
+              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
               ELSE SUM(total_dpt_datang)
           END AS total_dpt_datang,
           CASE
-              WHEN SUM(suara_sah) IS NULL THEN 0
+              WHEN SUM(suara_sah) IS NULL THEN '-'
               ELSE SUM(suara_sah)
           END AS total_sah,
           CASE
-              WHEN SUM(suara_tidak_sah) IS NULL THEN 0
+              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
               ELSE SUM(suara_tidak_sah)
           END AS total_tidak_sah
       FROM
@@ -317,6 +318,20 @@ export class AppService {
     }
 
   }
+  async excel(excelFilter: DashboardDto) {
+    var data = await this.fetchDashboardDetail(excelFilter.listIdKelurahan, excelFilter.type)
+    const workbook = new Workbook();
+    await workbook.xlsx.readFile("files/excel_kecamatan.xlsx");
+    const worksheet = workbook.getWorksheet("Sheet1");
+    var nomor = 1
+    for (const item of data) {
+      worksheet.addRow([nomor, item.nama, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
+      nomor = nomor + 1
+    }
+    const excelBuffer = await workbook.xlsx.writeBuffer();
+    return excelBuffer;
+  }
+
 
 
 }

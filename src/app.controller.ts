@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, StreamableFile } from '@nestjs/common';
 import { AppService } from './app.service';
 import { KecamatanDto, LoginDto, PostDto, dataDto, kelurahanDto, tpsDto, WilayahDto, DashboardDto } from './dto/api.dto';
 import { log } from 'console';
@@ -72,14 +72,14 @@ export class AppController {
 
   @Post('api/dashboard')
   async dashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
-    var dataCapres = await this.appService.fetchDashboard(dashboardDto.listIdKelurahan,dashboardDto.type)
+    var dataCapres = await this.appService.fetchDashboard(dashboardDto.listIdKelurahan, dashboardDto.type)
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres[0] })
   }
 
   @Post('api/detail-dashboard')
   async detailDashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
-    var dataCapres = await this.appService.fetchDashboardDetail(dashboardDto.listIdKelurahan,dashboardDto.type)
-    res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres})
+    var dataCapres = await this.appService.fetchDashboardDetail(dashboardDto.listIdKelurahan, dashboardDto.type)
+    res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres })
   }
 
   @Post('api/login')
@@ -103,5 +103,15 @@ export class AppController {
       res.status(200).send({ message: "nrp atau password salah", success: 0 })
     }
   }
+
+  @Post('api/excel')
+  async getxl(@Body() excelDto: DashboardDto,) {
+    let excelFile = await this.appService.excel(excelDto)
+    let buff = Buffer.from(new Uint8Array(excelFile))
+    var name = Math.random().toString(36).slice(2).toUpperCase()
+    const file_name = `attachment; filename="excel-kecamatan-${name}.xlsx"`
+    return new StreamableFile(buff, { 'type': 'application/vnd.ms-excel', length: buff.length, disposition: file_name });
+  }
+
 
 }
