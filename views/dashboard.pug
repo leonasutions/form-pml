@@ -19,13 +19,14 @@ head
     /* Float four columns side by side */
     .column2 {
     float: left;
-    width: 55%;
+    width: 60%;
     padding: 0 10px;
     }
     .column3 {
     float: left;
-    width: 33%;
+    width: 30%;
     padding: 0 10px;
+    height: 50px;
     }
     .column4 {
     float: left;
@@ -44,7 +45,7 @@ head
     clear: both;
     }
     /* Responsive columns */
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 600px) {
     .column1 {
     width: 100%;
     display: block;
@@ -80,14 +81,14 @@ head
     padding: 16px;
     text-align: left;
     background-color: rgb(243, 216, 189);
-    height: 1050px;
+    height: 1300px;
     }
     .card2 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 16px;
     text-align: center;
     background-color: rgb(243, 216, 189);
-    height: 1050px;
+    height: 1300px;
     }
     .dot {
     height: 150px;
@@ -234,6 +235,7 @@ head
             #total_hadir(style='height: 75px;font-size: 32px;') 0
             #total_hadir_perc(style='height: 75px;font-size: 48px;')
               b 0
+      div(style='height: 250px;padding-top:50px')
         .column4
           div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
             div(style='height: 75px;font-size: 22px;')
