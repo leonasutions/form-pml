@@ -37,7 +37,7 @@ export class AppService {
     return dataKecamatan
   }
 
-  async fetchDashboardDetail(idKelurahan: [number], type) {
+  async fetchDashboardDetailKecamatan(idKelurahan: [number], type) {
     var dataAllKecamatan = await this.dataCapresRepository.query(
       `
       SELECT 
@@ -84,6 +84,110 @@ export class AppService {
           data_capres cap ON cap.tps_id = tp.id
           where kel.id in (${idKelurahan})
       group by kec.nama
+      `
+    )
+    return dataAllKecamatan
+  }
+
+  async fetchDashboardDetailKelurahan(idKelurahan: [number], type) {
+    var dataAllKecamatan = await this.dataCapresRepository.query(
+      `
+      SELECT 
+          kel.nama,kec.nama as kecamatan,
+          CASE
+              WHEN SUM(paslon_1) IS NULL THEN '-'
+              ELSE SUM(paslon_1)
+          END AS total_paslon_1,
+          CASE
+              WHEN SUM(paslon_2) IS NULL THEN '-'
+              ELSE SUM(paslon_2)
+          END AS total_paslon_2,
+          CASE
+              WHEN SUM(paslon_3) IS NULL THEN '-'
+              ELSE SUM(paslon_3)
+          END AS total_paslon_3,
+          CASE
+              WHEN SUM(total_dpt) IS NULL THEN '-'
+              ELSE SUM(total_dpt)
+          END AS total_dpt,
+          CASE
+              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
+              ELSE SUM(total_dpt_tambahan)
+          END AS total_dpt_plus,
+          CASE
+              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
+              ELSE SUM(total_dpt_datang)
+          END AS total_dpt_datang,
+          CASE
+              WHEN SUM(suara_sah) IS NULL THEN '-'
+              ELSE SUM(suara_sah)
+          END AS total_sah,
+          CASE
+              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
+              ELSE SUM(suara_tidak_sah)
+          END AS total_tidak_sah
+      FROM
+          kecamatan AS kec
+              LEFT JOIN
+          kelurahan kel ON kec.id = kel.kecamatan_id
+              LEFT JOIN
+          tps tp ON tp.kelurahan_id = kel.id
+              LEFT JOIN
+          data_capres cap ON cap.tps_id = tp.id
+          where kel.id in (${idKelurahan})
+      group by kel.nama,kec.nama
+      `
+    )
+    return dataAllKecamatan
+  }
+
+  async fetchDashboardDetailTps(idKelurahan: [number], type) {
+    var dataAllKecamatan = await this.dataCapresRepository.query(
+      `
+      SELECT 
+        tp.alamat,kel.nama as kelurahan,kec.nama as kecamatan,
+          CASE
+              WHEN SUM(paslon_1) IS NULL THEN '-'
+              ELSE SUM(paslon_1)
+          END AS total_paslon_1,
+          CASE
+              WHEN SUM(paslon_2) IS NULL THEN '-'
+              ELSE SUM(paslon_2)
+          END AS total_paslon_2,
+          CASE
+              WHEN SUM(paslon_3) IS NULL THEN '-'
+              ELSE SUM(paslon_3)
+          END AS total_paslon_3,
+          CASE
+              WHEN SUM(total_dpt) IS NULL THEN '-'
+              ELSE SUM(total_dpt)
+          END AS total_dpt,
+          CASE
+              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
+              ELSE SUM(total_dpt_tambahan)
+          END AS total_dpt_plus,
+          CASE
+              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
+              ELSE SUM(total_dpt_datang)
+          END AS total_dpt_datang,
+          CASE
+              WHEN SUM(suara_sah) IS NULL THEN '-'
+              ELSE SUM(suara_sah)
+          END AS total_sah,
+          CASE
+              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
+              ELSE SUM(suara_tidak_sah)
+          END AS total_tidak_sah
+      FROM
+          kecamatan AS kec
+              LEFT JOIN
+          kelurahan kel ON kec.id = kel.kecamatan_id
+              LEFT JOIN
+          tps tp ON tp.kelurahan_id = kel.id
+              LEFT JOIN
+          data_capres cap ON cap.tps_id = tp.id
+          where kel.id in (${idKelurahan})
+      group by tp.alamat,kel.nama,kec.nama
       `
     )
     return dataAllKecamatan
@@ -319,13 +423,27 @@ export class AppService {
 
   }
   async excel(excelFilter: DashboardDto) {
-    var data = await this.fetchDashboardDetail(excelFilter.listIdKelurahan, excelFilter.type)
+    var dataKec = await this.fetchDashboardDetailKecamatan(excelFilter.listIdKelurahan, excelFilter.type)
+    var dataKel = await this.fetchDashboardDetailKelurahan(excelFilter.listIdKelurahan, excelFilter.type)
+    var dataTps = await this.fetchDashboardDetailTps(excelFilter.listIdKelurahan, excelFilter.type)
     const workbook = new Workbook();
     await workbook.xlsx.readFile("files/excel_kecamatan.xlsx");
-    const worksheet = workbook.getWorksheet("Sheet1");
+    const worksheet = workbook.getWorksheet("KECAMATAN");
+    const worksheet2 = workbook.getWorksheet("KELURAHAN");
+    const worksheet3 = workbook.getWorksheet("TPS");
     var nomor = 1
-    for (const item of data) {
+    for (const item of dataKec) {
       worksheet.addRow([nomor, item.nama, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
+      nomor = nomor + 1
+    }
+    nomor = 1
+    for (const item of dataKel) {dataKel
+      worksheet2.addRow([nomor, item.nama, item.kecamatan, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
+      nomor = nomor + 1
+    }
+    nomor = 1
+    for (const item of dataTps) {
+      worksheet3.addRow([nomor, item.alamat, item.kelurahan, item.kecamatan, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
       nomor = nomor + 1
     }
     const excelBuffer = await workbook.xlsx.writeBuffer();

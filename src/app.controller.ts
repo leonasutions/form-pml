@@ -78,7 +78,7 @@ export class AppController {
 
   @Post('api/detail-dashboard')
   async detailDashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
-    var dataCapres = await this.appService.fetchDashboardDetail(dashboardDto.listIdKelurahan, dashboardDto.type)
+    var dataCapres = await this.appService.fetchDashboardDetailKecamatan(dashboardDto.listIdKelurahan, dashboardDto.type)
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres })
   }
 
@@ -112,6 +112,5 @@ export class AppController {
     const file_name = `attachment; filename="excel-kecamatan-${name}.xlsx"`
     return new StreamableFile(buff, { 'type': 'application/vnd.ms-excel', length: buff.length, disposition: file_name });
   }
-
 
 }

@@ -239,7 +239,7 @@
                     <div class="column3" id="detail-pop" style="text-align: right;line-height: 75px;cursor: pointer;">
                         LIHAT DETAIL</div>
                 </div>
-                <div style="min-height: 500px; display: flex; justify-content: center;">
+                <div style="min-height: 500px; display: flex; justify-content: center;"">
                     <div class="column3">
                         <div class="dot" id="paslon1"
                             style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">0%
@@ -269,7 +269,7 @@
                         </div>
                         <div style="padding-top:100px" id="sum_paslon3">0</div>
                         <div style="padding:30px;">
-                            <div>PASLON NO 2</div>
+                            <div>PASLON NO 3</div>
                             <div>GANJAR PRANOWO - MAHFUD MD</div>
                         </div>
                     </div>
@@ -338,16 +338,15 @@
                 <div
                     style="margin-top:20px;overflow-y: scroll; height:400px;background-color: white; text-align: left;">
                     <div style="text-align: right;margin-right: 20px;">LIHAT DETAIL</div>
-                    <table id="tabel-tps" style="width: 100%;margin-left: 20px;margin-right: 20px">
-                        <th>
-                            No
-                        </th>
+                    <table id="tabel-tps" style="width: 100%;font-size:12px;margin-left: 20px;margin-right: 20px">
+                       
                         <th>
                             Kecamatan
                         </th>
-                        <th>
-                            JML TPS BLM MASUK DATA
+                        <th style="text-align: center;">
+                            JML TPS <br>BLM MASUK DATA
                         </th>
+
 
                     </table>
                 </div>
@@ -469,8 +468,8 @@
             <th>
                 Kecamatan
             </th>
-            <th>
-                JML TPS BLM MASUK DATA
+            <th style="text-align: center;">
+                JML TPS <br>BLM MASUK DATA
             </th>
             `)
 
@@ -525,7 +524,7 @@
                         $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
                         $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all)
                         $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
-                        $("#total_hadir").text(response.data.data.total_suara_sah)
+                        $("#total_hadir").text(response.data.data.total_hadir)
                         $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
                         $("#total_sah").text(response.data.data.total_suara_sah)
                         $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
@@ -545,7 +544,6 @@
                         for (item_belum of response.data.data.list_belum_masuk) {
                             $("#tabel-tps").append(`
                                 <tr>
-                                    <td>${nomor}</td>
                                     <td>${item_belum.nama}</td>
                                     <td>${item_belum.data_belum_masuk}</td>
                                 </tr>
