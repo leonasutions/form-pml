@@ -26,7 +26,7 @@ head
     float: left;
     width: 30%;
     padding: 0 10px;
-    height: 50px;
+    /* height: 50px; */
     }
     .column4 {
     float: left;
@@ -98,6 +98,19 @@ head
     text-align: center;
     line-height: 150px;
     display: inline-block;
+    }
+    .chart-sec {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    }
+    .chart-sec-dot {
+    height: 250px;
+    max-height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
     #donut {
     /* (A1) CIRCLE */
@@ -171,10 +184,13 @@ head
     border-width: 4px;
     padding: 10px;
     }
+    .container {
+    display: flex;
+    justify-content: space-around;
+    /* Centers elements horizontally */
+    }
     /* (C) LEGEND */
     /* (C1) LEGEND CONTAINER */
-#date &nbsp;
-#clock
 .row
   .column1
     .card1
@@ -184,75 +200,77 @@ head
         option SELURUH WILAYAH
         option(value='KOTAMADYA') KOTAMADYA
         option(value='KABUPATEN') KABUPATEN
-      #placeholderWilayah(style='margin-top:20px;overflow-y: scroll; height:400px; text-align: left;height:70%')
+      select#kecamatan-select(style='width: 100%;padding:10px;margin-top:50px')
+        option(value='1')
   .column2
     .card2
       h1 HASIL PERHITUNGAN SUARA
       h2#tag_type2 WILAYAH : SELURUH WILAYAH
-      div(style='width: 100%;height: 100px;')
-        .column3
-          h3(style='text-align: left;') PEMILIHAN PRESIDEN 2024
-        .column3  &nbsp;
-        #detail-pop.column3(style='text-align: right;line-height: 75px;cursor: pointer;')
+      div(style='display: flex; justify-content: space-between; align-items: center; margin-bottom:30px ;')
+        h3(style='float:left') PEMILIHAN PRESIDEN 2024
+        #detail-pop(style='text-align: right;cursor: pointer;')
           | LIHAT DETAIL
-      div(style='min-height: 500px; display: flex; justify-content: center;')
-        .column3
-          #paslon1.dot(style='background-color: #378960;font-size:26px;color:white;font-weight: bold;')
-            | 0%
-          #sum_paslon1(style='padding-top:100px') 0
+      div(style=' display: flex; justify-content: space-between;')
+        .column3.chart-sec
+          .chart-sec-dot
+            #paslon1.dot(style='background-color: #378960;font-size:26px;color:white;font-weight: bold;')
+              | 0%
+          #sum_paslon1(style='padding-top:10px') 0
           div(style='padding:30px;')
             div PASLON NO 1
             div
               | ANIES BASWEDAN - MUHAIMIN ISKANDAR
-        .column3
-          #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
-            | 0%
-          #sum_paslon2(style='padding-top:100px') 0
+        .column3.chart-sec
+          .chart-sec-dot
+            #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
+              | 0%
+          #sum_paslon2(style='padding-top:10px') 0
           div(style='padding:30px;')
             div PASLON NO 2
             div PRABOWO SUBIANTO - GIBRAN RAKABUMI
-        .column3
-          #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
-            | 0%
-          #sum_paslon3(style='padding-top:100px') 0
+        .column3.chart-sec
+          .chart-sec-dot
+            #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
+              | 0%
+          #sum_paslon3(style='padding-top:10px') 0
           div(style='padding:30px;')
             div PASLON NO 3
             div GANJAR PRANOWO - MAHFUD MD
-      div(style='height: 250px;padding-top:25px ; display: flex; justify-content: space-around;')
+      div(style='padding-top:25px ; display: flex; justify-content: space-around; ')
         div
           .cardnya
-            div(style='height: 75px;font-size: 22px;')
+            div(style='height: 75px;font-size: 1.17vw;')
               b TOTAL DPT
-            #total_dpt(style='height: 75px;font-size: 32px;') 0
-            #total_dpt_perc(style='height: 75px;font-size: 48px;')
+            #total_dpt(style='height: 75px;font-size: 1.702vw;') 0
+            #total_dpt_perc(style='height: 75px;font-size: 2.553vw')
               b 0
         div
           .cardnya
-            div(style='height: 75px;font-size: 22px;')
+            div(style='height: 75px;font-size: 1.17vw;;')
               b TOTAL DPT TAMBAHAN
-            #total_dpt_plus(style='height: 75px;font-size: 32px;') 0
-            #total_dpt_plus_perc(style='height: 75px;font-size: 48px;')
+            #total_dpt_plus(style='height: 75px;font-size: 1.702vw') 0
+            #total_dpt_plus_perc(style='height: 75px;font-size: 2.553vw')
               b 0
         div
           .cardnya
-            div(style='height: 75px;font-size: 22px;')
+            div(style='height: 75px;font-size: 1.17vw;')
               b TOTAL HADIR
-            #total_hadir(style='height: 75px;font-size: 32px;') 0
-            #total_hadir_perc(style='height: 75px;font-size: 48px;')
+            #total_hadir(style='height: 75px;font-size: 1.702vw') 0
+            #total_hadir_perc(style='height: 75px;font-size: 2.553vw')
               b 0
         div
           .cardnya
-            div(style='height: 75px;font-size: 22px;')
+            div(style='height: 75px;font-size: 1.17vw;')
               b TOTAL SUARA SAH
-            #total_sah(style='height: 75px;font-size: 32px;') 0
-            #total_sah_perc(style='height: 75px;font-size: 48px;')
+            #total_sah(style='height: 75px;font-size: 1.702vw;') 0
+            #total_sah_perc(style='height: 75px;font-size: 2.553vw')
               b 0
         div
           .cardnya
-            div(style='height: 75px;font-size: 22px;')
+            div(style='height: 75px;font-size: 1.17vw;')
               b TOTAL SUARA TIDAK SAH
-            #total_tidak_sah(style='height: 75px;font-size: 32px;') 2,350
-            #total_tidak_sah_perc(style='height: 75px;font-size: 48px;')
+            #total_tidak_sah(style='height: 75px;font-size: 1.702vw') 2,350
+            #total_tidak_sah_perc(style='height: 75px;font-size: 2.553vw')
               b 1,93%
   .column1
     .card1
@@ -293,11 +311,11 @@ head
 | &grave;
 script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 script.
-  var listIdKelurahan = []
+  var listIdKecamatan = []
   $(document).ready(function () {
   $("#detail-pop").on('click', function () {
   axios.post('!{host}/api/detail-dashboard', {
-  listIdKelurahan: listIdKelurahan,
+  listIdKecamatan: listIdKecamatan,
   }).then(function (response) {
   var nomor = 1
   for (item of response.data.data) {
@@ -342,8 +360,9 @@ script.
   event.stopPropagation();
   });
   $("#export").click(function (event) {
+  console.log(listIdKecamatan)
   axios.post('!{host}/api/excel', {
-  listIdKelurahan: listIdKelurahan,
+  listIdKecamatan: listIdKecamatan,
   }, { responseType: 'blob' }).then(function (response) {
   let fileName = 'data-pemilu_' + Math.random().toString(36).slice(2).toUpperCase();
   if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE variant
@@ -370,7 +389,7 @@ script.
   glob_type = $(this).val()
   $("#tag_type").text('WILAYAH : ' + $(this).val())
   $("#tag_type2").text('WILAYAH : ' + $(this).val())
-  document.getElementById("placeholderWilayah").replaceChildren();
+  document.getElementById("kecamatan-select").replaceChildren();
   document.getElementById("tabel-tps").replaceChildren();
   $("#tabel-tps").append(`
   <th>
@@ -389,20 +408,21 @@ script.
   },
   })
   .then(function (response) {
-  listIdKelurahan = []
+  listIdKecamatan = []
+  var select = document.getElementById("kecamatan-select");
+  var newOption = document.createElement('option');
+  newOption.value = 0;
+  newOption.innerHTML = 'SELURUH KECAMATAN';
+  select.appendChild(newOption);
   for (item of response.data) {
-  $('#placeholderWilayah').append(`<h3>${item.nama}</h3>`);
-  $('#placeholderWilayah').append(`<ul id="kecamatan-${item.id}"></ul>`)
-  for (subItem of item.kelurahans) {
-  listIdKelurahan.push(subItem.id)
-  $(`#kecamatan-${item.id}`).append(`<li style="list-style-type: none;">
-  <input type="checkbox" checked="true" name="${subItem.nama}" value="${subItem.id}">
-  <label for="${subItem.nama}"> ${subItem.nama}</label>
-  </li>`)
-  }
+  var newOption = document.createElement('option');
+  newOption.value = item.id;
+  newOption.innerHTML = item.nama;
+  select.appendChild(newOption);
+  listIdKecamatan.push(item.id)
   }
   axios.post('!{host}/api/dashboard', {
-  listIdKelurahan: listIdKelurahan,
+  listIdKecamatan: listIdKecamatan,
   type: glob_type
   }).then(function (response) {
   $("#paslon1").text(response.data.data.total_paslon_1_percentage + '%')
@@ -462,6 +482,91 @@ script.
   });
   });
 script.
+  $('#kecamatan-select').change(function () {
+  listIdKecamatan = []
+  if ($(this).val() == 0) {
+  var optionValues = $('#kecamatan-select option').map(function () {
+  return $(this).val(); // Return the value of each option
+  }).get();
+  listIdKecamatan = optionValues
+  } else {
+  listIdKecamatan.push($(this).val())
+  }
+  var selectedOptionInnerHTML = $(this).find('option:selected').html(); // Get the inner HTML content of the selected option
+  console.log(selectedOptionInnerHTML)
+  $("#tag_type").text('WILAYAH : ' + selectedOptionInnerHTML)
+  $("#tag_type2").text('WILAYAH : ' + selectedOptionInnerHTML)
+  document.getElementById("tabel-tps").replaceChildren();
+  $("#tabel-tps").append(`
+  <th>
+  No
+  </th>
+  <th>
+  Kecamatan
+  </th>
+  <th style="text-align: center;">
+  JML TPS <br>BLM MASUK DATA
+  </th>
+  `)
+  axios.post('!{host}/api/dashboard', {
+  listIdKecamatan: listIdKecamatan,
+  type: glob_type
+  }).then(function (response) {
+  $("#paslon1").text(response.data.data.total_paslon_1_percentage != null ? response.data.data.total_paslon_1_percentage + '%' : '-')
+  var pas_1 = $("#paslon1");
+  pas_1.css({
+  "width": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  });
+  var pas_2 = $("#paslon2");
+  pas_2.css({
+  "width": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  });
+  var pas_3 = $("#paslon3");
+  pas_3.css({
+  "width": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  });
+  $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
+  $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
+  $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2 : '-')
+  $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3 : '-')
+  $("#paslon3").text(response.data.data.total_paslon_3_percentage != null ? response.data.data.total_paslon_3_percentage + '%' : '-')
+  $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all : '-')
+  $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
+  $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all : '-')
+  $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage != null ? response.data.data.total_dpt_tambahan_all + '%' : '-')
+  $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_dpt_tambahan_all : '-')
+  $("#total_hadir_perc").text(response.data.data.total_hadir_percentage != null ? response.data.data.total_hadir_percentage + '%' : '-')
+  $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah : '-')
+  $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage != null ? response.data.data.total_suara_sah_percentage + '%' : '-')
+  $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah : '-')
+  $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage != null ? response.data.data.total_suara_tidak_sah_percentage + '%' : '-')
+  $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
+  $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+  $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
+  var pas_3 = $("#donut");
+  var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
+  var from_perc = parseFloat(from) / 100 * 360
+  pas_3.css({
+  "background": `conic-gradient(blue 0deg ${from_perc}deg, red ${from_perc}deg 360deg)`, // Change background color to red
+  });
+  var nomor = 1
+  for (item_belum of response.data.data.list_belum_masuk) {
+  $("#tabel-tps").append(`
+  <tr>
+  <td>${item_belum.nama}</td>
+  <td>${item_belum.data_belum_masuk}</td>
+  </tr>
+  `)
+  nomor = nomor + 1
+  }
+  });
+  })
   function bodyload() {
   startTime()
   const today = new Date();
