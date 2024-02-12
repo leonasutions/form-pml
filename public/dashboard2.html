@@ -81,13 +81,21 @@
             display: block;
         }
 
+        #table-pop,
+        #th-pop,
+        #td-pop {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
         /* Style the counter cards */
         .card1 {
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             padding: 16px;
             text-align: left;
             background-color: rgb(243, 216, 189);
-            height: 900px;
+            height: 1050px;
 
         }
 
@@ -96,17 +104,17 @@
             padding: 16px;
             text-align: center;
             background-color: rgb(243, 216, 189);
-            height: 900px;
+            height: 1050px;
 
         }
 
         .dot {
-            height: 200px;
-            width: 200px;
+            height: 150px;
+            width: 150px;
             background-color: #bbb;
             border-radius: 50%;
             text-align: center;
-            line-height: 200px;
+            line-height: 150px;
             display: inline-block;
         }
 
@@ -137,6 +145,50 @@
             align-items: center;
             justify-content: center;
         }
+
+        /* Popup CSS */
+        .popup {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        .popup-content {
+            background-color: rgb(208, 167, 124);
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-height: 80%;
+            /* Set maximum height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            /* Could be more or less, depending on screen size */
+        }
+
+        
+        #export {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+
+        
 
         /* (C) LEGEND */
         /* (C1) LEGEND CONTAINER */
@@ -173,29 +225,35 @@
                         <h3 style="text-align: left;">PEMILIHAN PRESIDEN 2024</h3>
                     </div>
                     <div class="column3"> &nbsp;</div>
-                    <div class="column3" style="text-align: right;line-height: 75px;">LIHAT DETAIL</div>
+                    <div class="column3" id="detail-pop" style="text-align: right;line-height: 75px;cursor: pointer;">
+                        LIHAT DETAIL</div>
                 </div>
 
-                <div style="height: 200px;">
+                <div style="height: 250px;">
                     <div class="column3">
                         <div class="dot" id="paslon1"
                             style="background-color: #378960;font-size:26px;color:white;font-weight: bold;">0%
                         </div>
+                        <div>55555</div>
+
                     </div>
                     <div class="column3">
                         <div class="dot" id="paslon2"
                             style="background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;">0%
                         </div>
+                        <div>55555</div>
                     </div>
                     <div class="column3">
                         <div class="dot" id="paslon3"
                             style="background-color: #FF0202;font-size:26px;color:white;font-weight: bold;">0%
                         </div>
+                        <div>55555</div>
                     </div>
                 </div>
 
                 <div style="height: 120px;">
                     <div class="column3" style="padding:10px">
+
                         <div>PASLON NO 1</div>
                         <div>
                             ANIES BASWEDAN - MUHAIMIN ISKANDAR
@@ -210,7 +268,7 @@
                         <div>GANJAR PRANOWO - MAHFUD MD</div>
                     </div>
                 </div>
-                <div style="height: 250px;">
+                <div style="height: 250px;padding-top:50px">
                     <div class="column4">
                         <div
                             style="width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;">
@@ -294,19 +352,92 @@
 
             </div>
         </div>
-
+        #table-pop,
+        #th-pop,
+        #td-pop 
 
     </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span id="export">EXPORT TO EXCEL</span>
+            <h1 style="text-align: center;">HASIL PERHITUNGAN SUARA</h1>
+            <h2 style="text-align: center;" id="tag_type">WILAYAH : SELURUH WILAYAH</h2>
+            <table id="table-pop">
+                <th id="th-pop">No</th>
+                <th id="th-pop">Kecamatan</th>
+                <th id="th-pop">JUMLAH DPT</th>
+                <th id="th-pop">JUMLAH DPT TAMBAHAN</th>
+                <th id="th-pop">JUMLAH HADIR</th>
+                <th id="th-pop">JUMLAH SUARA SAH</th>
+                <th id="th-pop">JUMLAH SUARA TIDAK SAH</th>
+                <th id="th-pop">JUMLAH SUARA PASLON I</th>
+                <th id="th-pop">JUMLAH SUARA PASLON II</th>
+                <th id="th-pop">JUMLAH SUARA PASLON III</th>
+            </table>
+        </div>
+    </div>`
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
+        var listIdKelurahan = []
+        $(document).ready(function () {
+            $("#detail-pop").on('click', function () {
+                axios.post('http://localhost:4890/api/detail-dashboard', {
+                    listIdKelurahan: listIdKelurahan,
+                }).then(function (response) {
+                    var nomor = 1
+
+                    for (item of response.data.data) {
+                        $("#table-pop").append(`
+                                <tr >
+                                    <td id="td-pop">${nomor}</td>
+                                    <td id="td-pop">${item.nama}</td>
+                                    <td id="td-pop">${item.total_dpt}</td>
+                                    <td id="td-pop">${item.total_dpt_plus}</td>
+                                    <td id="td-pop">${item.total_dpt_datang}</td>
+                                    <td id="td-pop">${item.total_sah}</td>
+                                    <td id="td-pop">${item.total_tidak_sah}</td>
+                                    <td id="td-pop">${item.total_paslon_1}</td>
+                                    <td id="td-pop">${item.total_paslon_2}</td>
+                                    <td id="td-pop">${item.total_paslon_3}</td>
+                                </tr>
+                            `)
+                        nomor = nomor + 1
+                    }
+                })
+                $("#popup").css("display", "block");
+            });
+
+            // Close the popup when the close button or anywhere outside the popup is clicked
+            $(".close, .popup").on('click', function () {
+                document.getElementById("table-pop").replaceChildren();
+                $("#table-pop").append(`
+                <th id="th-pop">No</th>
+                <th id="th-pop">Kecamatan</th>
+                <th id="th-pop">JUMLAH DPT</th>
+                <th id="th-pop">JUMLAH DPT TAMBAHAN</th>
+                <th id="th-pop">JUMLAH HADIR</th>
+                <th id="th-pop">JUMLAH SUARA SAH</th>
+                <th id="th-pop">JUMLAH SUARA TIDAK SAH</th>
+                <th id="th-pop">JUMLAH SUARA PASLON I</th>
+                <th id="th-pop">JUMLAH SUARA PASLON II</th>
+                <th id="th-pop">JUMLAH SUARA PASLON III</th>
+                `)
+                $("#popup").css("display", "none");
+            });
+
+            // Prevent clicks inside the popup from closing it
+            $(".popup-content").click(function (event) {
+                event.stopPropagation();
+            });
+        });
         $('#wilayah').change(function () {
             // document.querySelectorAll('#tps option').forEach(option => option.remove())
             glob_type = $(this).val()
-            $("#tag_type").text('WILAYAH : '+$(this).val())
+            $("#tag_type").text('WILAYAH : ' + $(this).val())
             document.getElementById("placeholderWilayah").replaceChildren();
             document.getElementById("tabel-tps").replaceChildren();
-           
+
             $("#tabel-tps").append(`
             <th>
                 No
@@ -318,14 +449,14 @@
                 JML TPS BLM MASUK DATA
             </th>
             `)
-            
+
             axios.get('http://localhost:4890/api/wilayah', {
                 params: {
                     type: $(this).val(),
                 },
             })
                 .then(function (response) {
-                    var listIdKelurahan = []
+                    listIdKelurahan =[]
                     for (item of response.data) {
                         $('#placeholderWilayah').append(`<h3>${item.nama}</h3>`);
                         $('#placeholderWilayah').append(`<ul id="kecamatan-${item.id}"></ul>`)
@@ -341,7 +472,6 @@
                         listIdKelurahan: listIdKelurahan,
                         type: glob_type
                     }).then(function (response) {
-                        console.log(response.data.data)
                         $("#paslon1").text(response.data.data.total_paslon_1_percentage + '%')
                         var pas_1 = $("#paslon1");
                         pas_1.css({
@@ -370,7 +500,7 @@
                         $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
                         $("#total_hadir").text(response.data.data.total_suara_sah)
                         $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
-                        $("#total_sah").text(response.data.data.total_suara_sah_percentage)
+                        $("#total_sah").text(response.data.data.total_suara_sah)
                         $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
                         $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah)
                         $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage + '%')

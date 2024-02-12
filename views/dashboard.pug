@@ -67,28 +67,35 @@ head
     box-sizing: border-box;
     display: block;
     }
+    #table-pop,
+    #th-pop,
+    #td-pop {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+    }
     /* Style the counter cards */
     .card1 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 16px;
     text-align: left;
     background-color: rgb(243, 216, 189);
-    height: 900px;
+    height: 1050px;
     }
     .card2 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 16px;
     text-align: center;
     background-color: rgb(243, 216, 189);
-    height: 900px;
+    height: 1050px;
     }
     .dot {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     background-color: #bbb;
     border-radius: 50%;
     text-align: center;
-    line-height: 200px;
+    line-height: 150px;
     display: inline-block;
     }
     #donut {
@@ -116,6 +123,43 @@ head
     align-items: center;
     justify-content: center;
     }
+    /* Popup CSS */
+    .popup {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    }
+    .popup-content {
+    background-color: rgb(208, 167, 124);
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-height: 80%;
+    /* Set maximum height */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    /* Could be more or less, depending on screen size */
+    }
+    #export {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+    }
     /* (C) LEGEND */
     /* (C1) LEGEND CONTAINER */
 #date &nbsp;
@@ -138,17 +182,21 @@ head
         .column3
           h3(style='text-align: left;') PEMILIHAN PRESIDEN 2024
         .column3  &nbsp;
-        .column3(style='text-align: right;line-height: 75px;') LIHAT DETAIL
-      div(style='height: 200px;')
+        #detail-pop.column3(style='text-align: right;line-height: 75px;cursor: pointer;')
+          | LIHAT DETAIL
+      div(style='height: 250px;')
         .column3
           #paslon1.dot(style='background-color: #378960;font-size:26px;color:white;font-weight: bold;')
             | 0%
+          div 55555
         .column3
           #paslon2.dot(style='background-color: #63D0E6;font-size:26px;color:white;font-weight: bold;')
             | 0%
+          div 55555
         .column3
           #paslon3.dot(style='background-color: #FF0202;font-size:26px;color:white;font-weight: bold;')
             | 0%
+          div 55555
       div(style='height: 120px;')
         .column3(style='padding:10px')
           div PASLON NO 1
@@ -160,7 +208,7 @@ head
         .column3(style='padding:10px')
           div PASLON NO 2
           div GANJAR PRANOWO - MAHFUD MD
-      div(style='height: 250px;')
+      div(style='height: 250px;padding-top:50px')
         .column4
           div(style='width: 200px;height: 250px;background-color: azure;text-align: center;border-style: solid;border-collapse: collapse;border-width: 4px;padding:10px;')
             div(style='height: 75px;font-size: 22px;')
@@ -216,12 +264,81 @@ head
             | Kecamatan
           th
             | JML TPS BLM MASUK DATA
+  |         #table-pop,
+  |         #th-pop,
+  |         #td-pop
+#popup.popup
+  .popup-content
+    span#export EXPORT TO EXCEL
+    h1(style='text-align: center;') HASIL PERHITUNGAN SUARA
+    h2#tag_type(style='text-align: center;') WILAYAH : SELURUH WILAYAH
+    table#table-pop
+      th#th-pop No
+      th#th-pop Kecamatan
+      th#th-pop JUMLAH DPT
+      th#th-pop JUMLAH DPT TAMBAHAN
+      th#th-pop JUMLAH HADIR
+      th#th-pop JUMLAH SUARA SAH
+      th#th-pop JUMLAH SUARA TIDAK SAH
+      th#th-pop JUMLAH SUARA PASLON I
+      th#th-pop JUMLAH SUARA PASLON II
+      th#th-pop JUMLAH SUARA PASLON III
+| &grave;
 script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 script.
+  var listIdKelurahan = []
+  $(document).ready(function () {
+  $("#detail-pop").on('click', function () {
+  axios.post('!{host}/api/detail-dashboard', {
+  listIdKelurahan: listIdKelurahan,
+  }).then(function (response) {
+  var nomor = 1
+  for (item of response.data.data) {
+  $("#table-pop").append(`
+  <tr >
+  <td id="td-pop">${nomor}</td>
+  <td id="td-pop">${item.nama}</td>
+  <td id="td-pop">${item.total_dpt}</td>
+  <td id="td-pop">${item.total_dpt_plus}</td>
+  <td id="td-pop">${item.total_dpt_datang}</td>
+  <td id="td-pop">${item.total_sah}</td>
+  <td id="td-pop">${item.total_tidak_sah}</td>
+  <td id="td-pop">${item.total_paslon_1}</td>
+  <td id="td-pop">${item.total_paslon_2}</td>
+  <td id="td-pop">${item.total_paslon_3}</td>
+  </tr>
+  `)
+  nomor = nomor + 1
+  }
+  })
+  $("#popup").css("display", "block");
+  });
+  // Close the popup when the close button or anywhere outside the popup is clicked
+  $(".close, .popup").on('click', function () {
+  document.getElementById("table-pop").replaceChildren();
+  $("#table-pop").append(`
+  <th id="th-pop">No</th>
+  <th id="th-pop">Kecamatan</th>
+  <th id="th-pop">JUMLAH DPT</th>
+  <th id="th-pop">JUMLAH DPT TAMBAHAN</th>
+  <th id="th-pop">JUMLAH HADIR</th>
+  <th id="th-pop">JUMLAH SUARA SAH</th>
+  <th id="th-pop">JUMLAH SUARA TIDAK SAH</th>
+  <th id="th-pop">JUMLAH SUARA PASLON I</th>
+  <th id="th-pop">JUMLAH SUARA PASLON II</th>
+  <th id="th-pop">JUMLAH SUARA PASLON III</th>
+  `)
+  $("#popup").css("display", "none");
+  });
+  // Prevent clicks inside the popup from closing it
+  $(".popup-content").click(function (event) {
+  event.stopPropagation();
+  });
+  });
   $('#wilayah').change(function () {
   // document.querySelectorAll('#tps option').forEach(option => option.remove())
   glob_type = $(this).val()
-  $("#tag_type").text('WILAYAH : '+$(this).val())
+  $("#tag_type").text('WILAYAH : ' + $(this).val())
   document.getElementById("placeholderWilayah").replaceChildren();
   document.getElementById("tabel-tps").replaceChildren();
   $("#tabel-tps").append(`
@@ -241,7 +358,7 @@ script.
   },
   })
   .then(function (response) {
-  var listIdKelurahan = []
+  listIdKelurahan =[]
   for (item of response.data) {
   $('#placeholderWilayah').append(`<h3>${item.nama}</h3>`);
   $('#placeholderWilayah').append(`<ul id="kecamatan-${item.id}"></ul>`)
@@ -284,7 +401,7 @@ script.
   $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
   $("#total_hadir").text(response.data.data.total_suara_sah)
   $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
-  $("#total_sah").text(response.data.data.total_suara_sah_percentage)
+  $("#total_sah").text(response.data.data.total_suara_sah)
   $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
   $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah)
   $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage + '%')

@@ -76,6 +76,12 @@ export class AppController {
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres[0] })
   }
 
+  @Post('api/detail-dashboard')
+  async detailDashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
+    var dataCapres = await this.appService.fetchDashboardDetail(dashboardDto.listIdKelurahan,dashboardDto.type)
+    res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres})
+  }
+
   @Post('api/login')
   async loginApi(@Body() loginDto: LoginDto, @Res() res) {
     var dataLogin = await this.appService.login(loginDto.nrp, loginDto.password, loginDto.no_hp)

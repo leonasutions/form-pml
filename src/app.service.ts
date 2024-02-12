@@ -35,11 +35,63 @@ export class AppService {
     var dataKecamatan = await this.kecamatanRepository.find({ where: { type: type }, relations: ['wilayah'] })
     return dataKecamatan
   }
+
+  async fetchDashboardDetail(idKelurahan: [number], type) {
+    var dataAllKecamatan = await this.dataCapresRepository.query(
+      `
+      SELECT 
+          kec.nama,
+          CASE
+              WHEN SUM(paslon_1) IS NULL THEN 0
+              ELSE SUM(paslon_1)
+          END AS total_paslon_1,
+          CASE
+              WHEN SUM(paslon_2) IS NULL THEN 0
+              ELSE SUM(paslon_2)
+          END AS total_paslon_2,
+          CASE
+              WHEN SUM(paslon_3) IS NULL THEN 0
+              ELSE SUM(paslon_3)
+          END AS total_paslon_3,
+          CASE
+              WHEN SUM(total_dpt) IS NULL THEN 0
+              ELSE SUM(total_dpt)
+          END AS total_dpt,
+          CASE
+              WHEN SUM(total_dpt_tambahan) IS NULL THEN 0
+              ELSE SUM(total_dpt_tambahan)
+          END AS total_dpt_plus,
+          CASE
+              WHEN SUM(total_dpt_datang) IS NULL THEN 0
+              ELSE SUM(total_dpt_datang)
+          END AS total_dpt_datang,
+          CASE
+              WHEN SUM(suara_sah) IS NULL THEN 0
+              ELSE SUM(suara_sah)
+          END AS total_sah,
+          CASE
+              WHEN SUM(suara_tidak_sah) IS NULL THEN 0
+              ELSE SUM(suara_tidak_sah)
+          END AS total_tidak_sah
+      FROM
+          kecamatan AS kec
+              LEFT JOIN
+          kelurahan kel ON kec.id = kel.kecamatan_id
+              LEFT JOIN
+          tps tp ON tp.kelurahan_id = kel.id
+              LEFT JOIN
+          data_capres cap ON cap.tps_id = tp.id
+          where kel.id in (${idKelurahan})
+      group by kec.nama
+      `
+    )
+    return dataAllKecamatan
+  }
   async fetchDashboard(idKelurahan: [number], type) {
     var dataKecamatan = await this.tpsRepository.query(`
     SELECT 
           sum(total_dpt) as total_dpt_all,
-          '100%' as total_dpt_all_percentage,
+          '100' as total_dpt_all_percentage,
           sum(total_dpt_tambahan) as total_dpt_tambahan_all,
           TRUNCATE((sum(total_dpt_tambahan)/sum(total_dpt))*100,2) as total_dpt_tambahan_all_percentage,
           sum(total_dpt_datang)  as total_hadir,
