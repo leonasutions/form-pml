@@ -112,6 +112,8 @@
         .dot {
             height: 150px;
             width: 150px;
+            max-width: 200px;
+            max-height: 200px;
             background-color: #bbb;
             border-radius: 50%;
             text-align: center;
@@ -127,8 +129,8 @@
         }
 
         .chart-sec-dot {
-            height: 250px;
-            max-height: 250px;
+            height: 200px;
+            max-height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -618,20 +620,20 @@
                 pas_1.css({
                     "width": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
                     "height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
-                    "line-height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                    "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
                 });
 
                 var pas_2 = $("#paslon2");
                 pas_2.css({
                     "width": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
                     "height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
-                    "line-height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                    "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
                 });
                 var pas_3 = $("#paslon3");
                 pas_3.css({
                     "width": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
                     "height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
-                    "line-height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+                    "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2,200)}px`, // Change background color to red
                 });
                 $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
                 $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
