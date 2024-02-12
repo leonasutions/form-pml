@@ -37,43 +37,19 @@ export class AppService {
     return dataKecamatan
   }
 
-  async fetchDashboardDetailKecamatan(idKelurahan: [number], type) {
+  async fetchDashboardDetailKecamatan(listIdKecamatan: [number], type) {
     var dataAllKecamatan = await this.dataCapresRepository.query(
       `
       SELECT 
           kec.nama,
-          CASE
-              WHEN SUM(paslon_1) IS NULL THEN '-'
-              ELSE SUM(paslon_1)
-          END AS total_paslon_1,
-          CASE
-              WHEN SUM(paslon_2) IS NULL THEN '-'
-              ELSE SUM(paslon_2)
-          END AS total_paslon_2,
-          CASE
-              WHEN SUM(paslon_3) IS NULL THEN '-'
-              ELSE SUM(paslon_3)
-          END AS total_paslon_3,
-          CASE
-              WHEN SUM(total_dpt) IS NULL THEN '-'
-              ELSE SUM(total_dpt)
-          END AS total_dpt,
-          CASE
-              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
-              ELSE SUM(total_dpt_tambahan)
-          END AS total_dpt_plus,
-          CASE
-              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
-              ELSE SUM(total_dpt_datang)
-          END AS total_dpt_datang,
-          CASE
-              WHEN SUM(suara_sah) IS NULL THEN '-'
-              ELSE SUM(suara_sah)
-          END AS total_sah,
-          CASE
-              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
-              ELSE SUM(suara_tidak_sah)
-          END AS total_tidak_sah
+          COALESCE(SUM(COALESCE(paslon_1, 0)), '-') AS total_paslon_1,
+          COALESCE(SUM(COALESCE(paslon_2, 0)), '-') AS total_paslon_2,
+          COALESCE(SUM(COALESCE(paslon_3, 0)), '-') AS total_paslon_3,
+          COALESCE(SUM(COALESCE(total_dpt, 0)), '-') AS total_dpt,
+          COALESCE(SUM(COALESCE(total_dpt_tambahan, 0)), '-') AS total_dpt_plus,
+          COALESCE(SUM(COALESCE(total_dpt_datang, 0)), '-') AS total_dpt_datang,
+          COALESCE(SUM(COALESCE(suara_sah, 0)), '-') AS total_sah,
+          COALESCE(SUM(COALESCE(suara_tidak_sah, 0)), '-') AS total_tidak_sah
       FROM
           kecamatan AS kec
               LEFT JOIN
@@ -82,152 +58,104 @@ export class AppService {
           tps tp ON tp.kelurahan_id = kel.id
               LEFT JOIN
           data_capres cap ON cap.tps_id = tp.id
-          where kel.id in (${idKelurahan})
-      group by kec.nama
+      WHERE
+          kec.id IN (${listIdKecamatan})
+      GROUP BY
+          kec.nama;
       `
     )
     return dataAllKecamatan
   }
 
-  async fetchDashboardDetailKelurahan(idKelurahan: [number], type) {
+  async fetchDashboardDetailKelurahan(listIdKecamatan: [number], type) {
     var dataAllKecamatan = await this.dataCapresRepository.query(
       `
       SELECT 
-          kel.nama,kec.nama as kecamatan,
-          CASE
-              WHEN SUM(paslon_1) IS NULL THEN '-'
-              ELSE SUM(paslon_1)
-          END AS total_paslon_1,
-          CASE
-              WHEN SUM(paslon_2) IS NULL THEN '-'
-              ELSE SUM(paslon_2)
-          END AS total_paslon_2,
-          CASE
-              WHEN SUM(paslon_3) IS NULL THEN '-'
-              ELSE SUM(paslon_3)
-          END AS total_paslon_3,
-          CASE
-              WHEN SUM(total_dpt) IS NULL THEN '-'
-              ELSE SUM(total_dpt)
-          END AS total_dpt,
-          CASE
-              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
-              ELSE SUM(total_dpt_tambahan)
-          END AS total_dpt_plus,
-          CASE
-              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
-              ELSE SUM(total_dpt_datang)
-          END AS total_dpt_datang,
-          CASE
-              WHEN SUM(suara_sah) IS NULL THEN '-'
-              ELSE SUM(suara_sah)
-          END AS total_sah,
-          CASE
-              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
-              ELSE SUM(suara_tidak_sah)
-          END AS total_tidak_sah
+          kel.nama,
+          kec.nama as kecamatan,
+          COALESCE(SUM(paslon_1), '-') AS total_paslon_1,
+          COALESCE(SUM(paslon_2), '-') AS total_paslon_2,
+          COALESCE(SUM(paslon_3), '-') AS total_paslon_3,
+          COALESCE(SUM(total_dpt), '-') AS total_dpt,
+          COALESCE(SUM(total_dpt_tambahan), '-') AS total_dpt_plus,
+          COALESCE(SUM(total_dpt_datang), '-') AS total_dpt_datang,
+          COALESCE(SUM(suara_sah), '-') AS total_sah,
+          COALESCE(SUM(suara_tidak_sah), '-') AS total_tidak_sah
       FROM
           kecamatan AS kec
-              LEFT JOIN
-          kelurahan kel ON kec.id = kel.kecamatan_id
-              LEFT JOIN
-          tps tp ON tp.kelurahan_id = kel.id
-              LEFT JOIN
-          data_capres cap ON cap.tps_id = tp.id
-          where kel.id in (${idKelurahan})
-      group by kel.nama,kec.nama
+          LEFT JOIN kelurahan AS kel ON kec.id = kel.kecamatan_id
+          LEFT JOIN tps AS tp ON tp.kelurahan_id = kel.id
+          LEFT JOIN data_capres AS cap ON cap.tps_id = tp.id
+      WHERE
+          kec.id IN (${listIdKecamatan})
+      GROUP BY
+          kel.nama, kec.nama;
       `
     )
     return dataAllKecamatan
   }
 
-  async fetchDashboardDetailTps(idKelurahan: [number], type) {
+  async fetchDashboardDetailTps(listIdKecamatan: [number], type) {
     var dataAllKecamatan = await this.dataCapresRepository.query(
       `
       SELECT 
-        tp.alamat,kel.nama as kelurahan,kec.nama as kecamatan,
-          CASE
-              WHEN SUM(paslon_1) IS NULL THEN '-'
-              ELSE SUM(paslon_1)
-          END AS total_paslon_1,
-          CASE
-              WHEN SUM(paslon_2) IS NULL THEN '-'
-              ELSE SUM(paslon_2)
-          END AS total_paslon_2,
-          CASE
-              WHEN SUM(paslon_3) IS NULL THEN '-'
-              ELSE SUM(paslon_3)
-          END AS total_paslon_3,
-          CASE
-              WHEN SUM(total_dpt) IS NULL THEN '-'
-              ELSE SUM(total_dpt)
-          END AS total_dpt,
-          CASE
-              WHEN SUM(total_dpt_tambahan) IS NULL THEN '-'
-              ELSE SUM(total_dpt_tambahan)
-          END AS total_dpt_plus,
-          CASE
-              WHEN SUM(total_dpt_datang) IS NULL THEN '-'
-              ELSE SUM(total_dpt_datang)
-          END AS total_dpt_datang,
-          CASE
-              WHEN SUM(suara_sah) IS NULL THEN '-'
-              ELSE SUM(suara_sah)
-          END AS total_sah,
-          CASE
-              WHEN SUM(suara_tidak_sah) IS NULL THEN '-'
-              ELSE SUM(suara_tidak_sah)
-          END AS total_tidak_sah
-      FROM
-          kecamatan AS kec
-              LEFT JOIN
-          kelurahan kel ON kec.id = kel.kecamatan_id
-              LEFT JOIN
-          tps tp ON tp.kelurahan_id = kel.id
-              LEFT JOIN
-          data_capres cap ON cap.tps_id = tp.id
-          where kel.id in (${idKelurahan})
-      group by tp.alamat,kel.nama,kec.nama
+        tp.alamat,
+        kel.nama AS kelurahan,
+        kec.nama AS kecamatan,
+        COALESCE(SUM(paslon_1), '-') AS total_paslon_1,
+        COALESCE(SUM(paslon_2), '-') AS total_paslon_2,
+        COALESCE(SUM(paslon_3), '-') AS total_paslon_3,
+        COALESCE(SUM(total_dpt), '-') AS total_dpt,
+        COALESCE(SUM(total_dpt_tambahan), '-') AS total_dpt_plus,
+        COALESCE(SUM(total_dpt_datang), '-') AS total_dpt_datang,
+        COALESCE(SUM(suara_sah), '-') AS total_sah,
+        COALESCE(SUM(suara_tidak_sah), '-') AS total_tidak_sah
+    FROM
+        tps tp
+        LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+        LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+        LEFT JOIN data_capres cap ON cap.tps_id = tp.id
+    WHERE
+        kec.id IN (${listIdKecamatan})
+    GROUP BY
+        tp.alamat,tp.nama, kel.nama, kec.nama;
       `
     )
     return dataAllKecamatan
   }
-  async fetchDashboard(idKelurahan: [number], type) {
+  async fetchDashboard(listIdKecamatan: [number], type) {
     var dataKecamatan = await this.tpsRepository.query(`
     SELECT 
-          sum(total_dpt) as total_dpt_all,
-          '100' as total_dpt_all_percentage,
-          sum(total_dpt_tambahan) as total_dpt_tambahan_all,
-          TRUNCATE((sum(total_dpt_tambahan)/sum(total_dpt))*100,2) as total_dpt_tambahan_all_percentage,
-          sum(total_dpt_datang)  as total_hadir,
-          TRUNCATE((sum(total_dpt_datang) / (sum(total_dpt) + sum(total_dpt_tambahan)))*100,2) as total_hadir_percentage,
-          sum(suara_sah) as total_suara_sah ,
-          TRUNCATE((sum(suara_sah) / sum(total_dpt))*100,2) as total_suara_sah_percentage,
-          sum(suara_tidak_sah)  as total_suara_tidak_sah,
-          TRUNCATE((sum(suara_tidak_sah) / sum(total_dpt))*100,2) as total_suara_tidak_sah_percentage,
-          sum(paslon_1) as total_paslon_1,
-          TRUNCATE((sum(paslon_1)/(sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_1_percentage,
-          sum(paslon_2) as total_paslon_2,
-          TRUNCATE((sum(paslon_2) / (sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_2_percentage,
-          sum(paslon_3) as total_paslon_3,
-          TRUNCATE((sum(paslon_3) / (sum(paslon_1)+sum(paslon_2)+sum(paslon_3)))*100,2) as total_paslon_3_percentage
-      FROM
-          pemilu.data_capres cap
-              LEFT JOIN
-          tps tp ON cap.tps_id = tp.id
-          left join
-        kelurahan kel on tp.kelurahan_id = kel.id
-          where kel.id in ( ${idKelurahan})
-      ;
+        SUM(total_dpt) as total_dpt_all,
+        '100' as total_dpt_all_percentage,
+        SUM(total_dpt_tambahan) as total_dpt_tambahan_all,
+        TRUNCATE((SUM(total_dpt_tambahan)/SUM(total_dpt))*100, 2) as total_dpt_tambahan_all_percentage,
+        SUM(total_dpt_datang)  as total_hadir,
+        TRUNCATE((SUM(total_dpt_datang) / (SUM(total_dpt) + SUM(total_dpt_tambahan)))*100, 2) as total_hadir_percentage,
+        SUM(suara_sah) as total_suara_sah ,
+        TRUNCATE((SUM(suara_sah) / SUM(total_dpt))*100, 2) as total_suara_sah_percentage,
+        SUM(suara_tidak_sah)  as total_suara_tidak_sah,
+        TRUNCATE((SUM(suara_tidak_sah) / SUM(total_dpt))*100, 2) as total_suara_tidak_sah_percentage,
+        SUM(paslon_1) as total_paslon_1,
+        TRUNCATE((SUM(paslon_1)/(SUM(paslon_1)+SUM(paslon_2)+SUM(paslon_3)))*100, 2) as total_paslon_1_percentage,
+        SUM(paslon_2) as total_paslon_2,
+        TRUNCATE((SUM(paslon_2) / (SUM(paslon_1)+SUM(paslon_2)+SUM(paslon_3)))*100, 2) as total_paslon_2_percentage,
+        SUM(paslon_3) as total_paslon_3,
+        TRUNCATE((SUM(paslon_3) / (SUM(paslon_1)+SUM(paslon_2)+SUM(paslon_3)))*100, 2) as total_paslon_3_percentage
+    FROM
+        pemilu.data_capres cap
+            LEFT JOIN tps tp ON cap.tps_id = tp.id
+            LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+    WHERE
+        kel.kecamatan_id IN (${listIdKecamatan});
     `,)
 
     var total_data_tps = await this.tpsRepository.query(`
     SELECT count(tp.id)  as total_tps  FROM
         tps tp 
         left join
-      kelurahan kel on tp.kelurahan_id = kel.id
-        left join kecamatan kec on kel.kecamatan_id = kec.id
-        where kel.id in ( ${idKelurahan})
+        kelurahan kel on tp.kelurahan_id = kel.id
+        where kel.kecamatan_id in ( ${listIdKecamatan})
     `)
     var data_tps_masuk = await this.dataCapresRepository.query(`
           SELECT count(cap.tps_id) as data_tps_masuk  FROM
@@ -236,7 +164,7 @@ export class AppService {
           tps tp ON cap.tps_id = tp.id
           left join
         kelurahan kel on tp.kelurahan_id = kel.id
-          where kel.id in ( ${idKelurahan});
+          where kel.kecamatan_id in ( ${listIdKecamatan});
     `)
     var total_tps
     var total_tps_masuk
@@ -249,69 +177,43 @@ export class AppService {
     }
     dataKecamatan[0]['total_tps_masuk'] = total_tps_masuk
     dataKecamatan[0]['total_tps'] = total_tps
-    var data_tps_belum_masuk
-    if (type == 'SELURUH WILAYAH') {
-      data_tps_belum_masuk = await this.dataCapresRepository.query(`
+    var data_tps_belum_masuk = await this.dataCapresRepository.query(`
       SELECT 
-      id, nama,total-toral as data_belum_masuk
+          pf.id, 
+          pf.nama, 
+          pf.total - COALESCE(pf.toral, 0) AS data_belum_masuk
       FROM
           (SELECT 
-              id,
-                  total.nama,
-                  total.total,type,
-                  CASE
-                      WHEN pd.total IS NULL THEN 0
-                      ELSE pd.total
-                  END AS toral
+              total.id,
+              total.nama,
+              total.total,
+              total.type,
+              COALESCE(pd.total, 0) AS toral
           FROM
               (SELECT 
-              kec.nama, kec.id as id,type, COUNT(tp.id) AS total
-          FROM
-              tps tp
-          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
-          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
-          GROUP BY kec.nama) AS total
-          LEFT JOIN (SELECT 
-              kec.nama, COUNT(cap.id) AS total
-          FROM
-              data_capres AS cap
-          LEFT JOIN tps tp ON cap.tps_id = tp.id
-          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
-          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
-          GROUP BY kec.nama) AS pd ON total.nama = pd.nama) AS pf
-      `)
-    } else {
-      data_tps_belum_masuk = await this.dataCapresRepository.query(`
-      SELECT 
-      id, nama,total-toral as data_belum_masuk
-      FROM
-          (SELECT 
-              id,
-                  total.nama,
-                  total.total,type,
-                  CASE
-                      WHEN pd.total IS NULL THEN 0
-                      ELSE pd.total
-                  END AS toral
-          FROM
+                  kec.id,
+                  kec.nama,
+                  COUNT(tp.id) AS total,
+                  'type' AS type -- Adjust 'type' as needed, as it's currently hard-coded
+              FROM
+                  tps tp
+              LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+              LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+              WHERE kec.id IN (${listIdKecamatan})
+              GROUP BY kec.id, kec.nama) AS total
+          LEFT JOIN
               (SELECT 
-              kec.nama, kec.id as id,type, COUNT(tp.id) AS total
-          FROM
-              tps tp
-          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
-          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
-          GROUP BY kec.nama) AS total
-          LEFT JOIN (SELECT 
-              kec.nama, COUNT(cap.id) AS total
-          FROM
-              data_capres AS cap
-          LEFT JOIN tps tp ON cap.tps_id = tp.id
-          LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
-          LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
-          GROUP BY kec.nama) AS pd ON total.nama = pd.nama) AS pf
-          where type='${type}'
+                  kec.id,
+                  COUNT(cap.id) AS total
+              FROM
+                  data_capres AS cap
+              LEFT JOIN tps tp ON cap.tps_id = tp.id
+              LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
+              LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+              WHERE kec.id IN (${listIdKecamatan})
+              GROUP BY kec.id) AS pd ON total.id = pd.id) AS pf;
+
       `)
-    }
     dataKecamatan[0]['list_belum_masuk'] = data_tps_belum_masuk
     return dataKecamatan
   }
@@ -423,9 +325,9 @@ export class AppService {
 
   }
   async excel(excelFilter: DashboardDto) {
-    var dataKec = await this.fetchDashboardDetailKecamatan(excelFilter.listIdKelurahan, excelFilter.type)
-    var dataKel = await this.fetchDashboardDetailKelurahan(excelFilter.listIdKelurahan, excelFilter.type)
-    var dataTps = await this.fetchDashboardDetailTps(excelFilter.listIdKelurahan, excelFilter.type)
+    var dataKec = await this.fetchDashboardDetailKecamatan(excelFilter.listIdKecamatan, excelFilter.type)
+    var dataKel = await this.fetchDashboardDetailKelurahan(excelFilter.listIdKecamatan, excelFilter.type)
+    var dataTps = await this.fetchDashboardDetailTps(excelFilter.listIdKecamatan, excelFilter.type)
     const workbook = new Workbook();
     await workbook.xlsx.readFile("files/excel_kecamatan.xlsx");
     const worksheet = workbook.getWorksheet("KECAMATAN");
@@ -437,7 +339,8 @@ export class AppService {
       nomor = nomor + 1
     }
     nomor = 1
-    for (const item of dataKel) {dataKel
+    for (const item of dataKel) {
+      dataKel
       worksheet2.addRow([nomor, item.nama, item.kecamatan, item.total_dpt, item.total_dpt_plus, item.total_dpt_datang, item.total_sah, item.total_tidak_sah, item.total_paslon_1, item.total_paslon_2, item.total_paslon_3])
       nomor = nomor + 1
     }

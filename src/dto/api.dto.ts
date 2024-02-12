@@ -28,7 +28,7 @@ export class LoginDto {
 }
 
 export class DashboardDto {
-  listIdKelurahan: [number];
+  listIdKecamatan: [number];
   type: string;
 }
 

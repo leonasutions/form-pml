@@ -72,13 +72,13 @@ export class AppController {
 
   @Post('api/dashboard')
   async dashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
-    var dataCapres = await this.appService.fetchDashboard(dashboardDto.listIdKelurahan, dashboardDto.type)
+    var dataCapres = await this.appService.fetchDashboard(dashboardDto.listIdKecamatan, dashboardDto.type)
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres[0] })
   }
 
   @Post('api/detail-dashboard')
   async detailDashboardApi(@Body() dashboardDto: DashboardDto, @Res() res) {
-    var dataCapres = await this.appService.fetchDashboardDetailKecamatan(dashboardDto.listIdKelurahan, dashboardDto.type)
+    var dataCapres = await this.appService.fetchDashboardDetailKecamatan(dashboardDto.listIdKecamatan, dashboardDto.type)
     res.status(200).send({ message: "data berhasil di ambil", success: 1, data: dataCapres })
   }
 
