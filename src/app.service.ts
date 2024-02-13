@@ -128,14 +128,19 @@ export class AppService {
     SELECT 
         SUM(total_dpt) as total_dpt_all,
         '100' as total_dpt_all_percentage,
+
         SUM(total_dpt_tambahan) as total_dpt_tambahan_all,
         TRUNCATE((SUM(total_dpt_tambahan)/SUM(total_dpt))*100, 2) as total_dpt_tambahan_all_percentage,
+
         SUM(total_dpt_datang)  as total_hadir,
         TRUNCATE((SUM(total_dpt_datang) / (SUM(total_dpt) + SUM(total_dpt_tambahan)))*100, 2) as total_hadir_percentage,
+
         SUM(suara_sah) as total_suara_sah ,
-        TRUNCATE((SUM(suara_sah) / SUM(total_dpt))*100, 2) as total_suara_sah_percentage,
+        TRUNCATE((SUM(suara_sah) / SUM(total_dpt_datang))*100, 2) as total_suara_sah_percentage,
+
         SUM(suara_tidak_sah)  as total_suara_tidak_sah,
-        TRUNCATE((SUM(suara_tidak_sah) / SUM(total_dpt))*100, 2) as total_suara_tidak_sah_percentage,
+        TRUNCATE((SUM(suara_tidak_sah) / SUM(suara_sah))*100, 2) as total_suara_tidak_sah_percentage,
+
         SUM(paslon_1) as total_paslon_1,
         TRUNCATE((SUM(paslon_1)/(SUM(paslon_1)+SUM(paslon_2)+SUM(paslon_3)))*100, 2) as total_paslon_1_percentage,
         SUM(paslon_2) as total_paslon_2,
