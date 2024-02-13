@@ -196,7 +196,7 @@ script(type='text/javascript').
     .then(function (response) {
     if (response.data.success) {
     event.preventDefault();
-    let params = `?nrp=${document.getElementById('nrp').value}&secret=${secret}`
+    let params = `?nrp=${document.getElementById('nrp').value}`
     var url = '!{host}/data'+params;
     location.replace(url);
     } else {

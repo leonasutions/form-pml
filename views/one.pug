@@ -11,6 +11,16 @@ head
     -webkit-appearance: none;
     margin: 0;
     }
+    .button-href {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgb(243, 91, 90);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
     /* Firefox */
     input[type=number] {
     -moz-appearance: textfield;
@@ -192,10 +202,11 @@ head
       | Terima kasih, hasil perhitungan telah masuk dalam database
       br
       br
-      |                 Silahkan klik 
-      a(href='/') DISINI
-      |  untuk kembali ke halaman awal dan
-      |                 memasukkan data dari TPS lainnya.
+      a#href-one.button-href(style='display: none;' href=`/data?nrp=${nrp}`) Isi data TPS lain
+      br
+      a#href-two.button-href(style='display: none;' href='/') Logout
+
+
 script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 script(type='text/javascript').
   var check = true
@@ -374,15 +385,17 @@ script(type='text/javascript').
       nrp: '!{nrp}'
       })
     .then(function (response) {
-
+      document.getElementById("href-one").style.display = "block";
+      document.getElementById("href-two").style.display = "block";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("prevBtn").style.display = "none";
+      document.getElementById("submisi").style.display = "block"
     });
     }
 
 
   // ... the form gets submitted:
-  document.getElementById("nextBtn").style.display = "none";
-  document.getElementById("prevBtn").style.display = "none";
-  document.getElementById("submisi").style.display = "block"
+
   return false;
   }
   // Otherwise, display the correct tab:

@@ -415,7 +415,7 @@ export class AppService {
     return dataKelurahan
   }
   async validation(dataDto: dataDto) {
-    var dataUser = await this.userRepository.findOne({ where: { nrp: dataDto.nrp, secret: dataDto.secret } })
+    var dataUser = await this.userRepository.findOne({ where: { nrp: dataDto.nrp } })
     if (dataUser) {
       return dataUser
     } else {
@@ -433,22 +433,22 @@ export class AppService {
       }
     }
     var dataKelurahan
-    if (filter.length >0){
-      dataKelurahan= await this.tpsRepository.find({
+    if (filter.length > 0) {
+      dataKelurahan = await this.tpsRepository.find({
         where: {
           kelurahan: { id: idKelurahan }, id: Raw((alias) => `${alias} NOT IN (:...list_id)`, {
             list_id: filter
           }),
         },
       })
-    }else{
-      dataKelurahan= await this.tpsRepository.find({
+    } else {
+      dataKelurahan = await this.tpsRepository.find({
         where: {
           kelurahan: { id: idKelurahan }
         },
       })
     }
-    
+
     return dataKelurahan
   }
   async postData(dataCapres: PostDto) {

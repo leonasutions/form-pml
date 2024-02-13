@@ -28,7 +28,7 @@ export class AppController {
 
   @Get('data')
   async inputData(@Res() res, @Query() validationData: dataDto) {
-    if (validationData.nrp != null && validationData.secret != null) {
+    if (validationData.nrp != null) {
       var validateCheck = await this.appService.validation(validationData);
       if (validateCheck) {
         res.render('one', { nrp: validationData.nrp })

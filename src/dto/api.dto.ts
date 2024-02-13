@@ -5,7 +5,6 @@ export class kelurahanDto {
 
 export class dataDto {
   nrp: string;
-  secret: string;
 }
 
 

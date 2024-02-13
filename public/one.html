@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.0, maximum-scale=1, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
     <style>
         /* Chrome, Safari, Edge, Opera */
@@ -30,6 +31,18 @@
             box-sizing: border-box;
             font-size: 16px;
         }
+
+        .button-href {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(243, 91, 90);
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
 
         select {
             outline: 0;
@@ -141,47 +154,71 @@
                 <div class="text-upper">Halo,</div>
                 <div style="text-align:center ">
                     <div class="header-input">Kotamadya/Kabupaten</div>
-                    <div class="custom-select"><select id="kotkab"><option value="KOTAMADYA">Kotamadya</option><option value="KABUPATEN">Kabupaten</option></select></div>
+                    <div class="custom-select"><select id="kotkab">
+                            <option value="KOTAMADYA">Kotamadya</option>
+                            <option value="KABUPATEN">Kabupaten</option>
+                        </select></div>
                     <div class="header-input">Kecamatan</div>
-                    <div class="custom-select"><select id="kecamatan"><option value=""></option></select></div>
+                    <div class="custom-select"><select id="kecamatan">
+                            <option value=""></option>
+                        </select></div>
                     <div class="header-input">Kelurahan</div>
-                    <div class="custom-select"><select id="kelurahan"><option value=""></option></select></div>
+                    <div class="custom-select"><select id="kelurahan">
+                            <option value=""></option>
+                        </select></div>
                     <div class="header-input">No TPS</div>
-                    <div class="custom-select"><select id="tps"><option value=""></option></select></div>
+                    <div class="custom-select"><select id="tps">
+                            <option value=""></option>
+                        </select></div>
                     <div class="header-input">Jumlah Daftar Pemilih Tetap</div><input id="total_dpt" type="number">
                     <div class="header-input">Jumlah DPT B</div><input id="total_dpt_tambahan" type="number">
                     <div class="header-input">Jumlah DPT Hadir</div><input id="total_dpt_datang" type="number">
-                    <div class="header-input">Jumlah Suara Tidak Sah</div><input id="suara_tidak_sah" type="number"></div>
+                    <div class="header-input">Jumlah Suara Tidak Sah</div><input id="suara_tidak_sah" type="number">
+                </div>
             </div>
             <div class="tab form">
                 <div class="text-upper"><b>Hasil Pemilihan Presiden</b></div>
                 <div class="text-lower">Masukkan angka hasil pemilihan pada masing-masing kolom.</div>
                 <div style="text-align:center ">
                     <div class="subheader-input">Paslon 1</div>
-                    <div class="subheader-input">Anies Baswedan - Muhaimin Iskandar</div><input id="paslon_1" type="number">
+                    <div class="subheader-input">Anies Baswedan - Muhaimin Iskandar</div><input id="paslon_1"
+                        type="number">
                     <div class="subheader-input">Paslon 2</div>
-                    <div class="subheader-input">Prabowo Subianto - Gibran Rakabuming</div><input id="paslon_2" type="number">
+                    <div class="subheader-input">Prabowo Subianto - Gibran Rakabuming</div><input id="paslon_2"
+                        type="number">
                     <div class="subheader-input">Paslon 3</div>
-                    <div class="subheader-input">Ganjar Pranowo - Mahfud MD</div><input id="paslon_3" type="number"></div>
+                    <div class="subheader-input">Ganjar Pranowo - Mahfud MD</div><input id="paslon_3" type="number">
+                </div>
             </div>
             <div class="form">
-                <div style="margin-bottom: 15px;"> <i id="warningMsg" style="color:red;display:none;font-size:20px">Data Tidak boleh ada yang kosong</i></div><button id="prevBtn" style="margin-bottom: 15px;" type="button" onclick="nextPrev(-1)">Previous</button><button id="nextBtn" type="button"
-                    onclick="nextPrev(1)">Next</button></div>
+                <div style="margin-bottom: 15px;"> <i id="warningMsg" style="color:red;display:none;font-size:20px">Data
+                        Tidak boleh ada yang kosong</i></div><button id="prevBtn" style="margin-bottom: 15px;"
+                    type="button" onclick="nextPrev(-1)">Previous</button>
+                <button id="nextBtn" type="button" onclick="nextPrev(1)">Next</button>
+
+            </div>
         </form>
-        <div class="submisi" id="submisi" style="text-align: center; display: none;">Terima kasih, hasil perhitungan telah masuk dalam database<br><br> Silahkan klik <a href="/">DISINI</a> untuk kembali ke halaman awal dan memasukkan data dari TPS lainnya.</div>
+        <div class="submisi" id="submisi" style="text-align: center; display: none;">Terima kasih, hasil perhitungan
+            telah masuk dalam database<br><br> Silahkan klik <a href="/">DISINI</a> untuk kembali ke halaman awal dan
+            memasukkan data dari TPS lainnya.</div>
+        <a style="display: none;" id="href-one" href="/data?nrp=!{nrp}&secret=!{secret}" class="button-href">Isi data
+            TPS lain</a>
+        <br>
+        <a style="display: none;" id="href-two" href="/" class="button-href">Logout</a>
     </div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
     var check = true
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         axios.get('https://ombtangkot.flazzard.com/api/kecamatan', {
-                params: {
-                    type: document.getElementById("kotkab").value,
-                }
-            })
-            .then(function(response) {
+            params: {
+                type: document.getElementById("kotkab").value,
+            }
+        })
+            .then(function (response) {
                 var select = document.getElementById("kecamatan");
                 for (item of response.data) {
                     var newOption = document.createElement('option');
@@ -191,16 +228,16 @@
                 }
             });
     });
-    $('#kotkab').change(function() {
+    $('#kotkab').change(function () {
         document.querySelectorAll('#kecamatan option').forEach(option => option.remove())
         document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
         document.querySelectorAll('#tps option').forEach(option => option.remove())
         axios.get('https://ombtangkot.flazzard.com/api/kecamatan', {
-                params: {
-                    type: document.getElementById("kotkab").value,
-                },
-            })
-            .then(function(response) {
+            params: {
+                type: document.getElementById("kotkab").value,
+            },
+        })
+            .then(function (response) {
                 var select = document.getElementById("kecamatan");
                 var firstOption = document.createElement('option');
                 firstOption.value = '';
@@ -214,15 +251,15 @@
             });
     });
 
-    $('#kecamatan').change(function() {
+    $('#kecamatan').change(function () {
         document.querySelectorAll('#kelurahan option').forEach(option => option.remove())
         document.querySelectorAll('#tps option').forEach(option => option.remove())
         axios.get('https://ombtangkot.flazzard.com/api/kelurahan', {
-                params: {
-                    idKecamatan: $(this).val(),
-                },
-            })
-            .then(function(response) {
+            params: {
+                idKecamatan: $(this).val(),
+            },
+        })
+            .then(function (response) {
                 var select = document.getElementById("kelurahan");
                 var firstOption = document.createElement('option');
                 firstOption.value = '';
@@ -235,14 +272,14 @@
                 }
             });
     });
-    $('#kelurahan').change(function() {
+    $('#kelurahan').change(function () {
         document.querySelectorAll('#tps option').forEach(option => option.remove())
         axios.get('https://ombtangkot.flazzard.com/api/tps', {
-                params: {
-                    idKelurahan: $(this).val(),
-                },
-            })
-            .then(function(response) {
+            params: {
+                idKelurahan: $(this).val(),
+            },
+        })
+            .then(function (response) {
                 var select = document.getElementById("tps");
                 var firstOption = document.createElement('option');
                 firstOption.value = '';
@@ -336,20 +373,21 @@
         if (currentTab >= x.length) {
             if (check) {
                 axios.post('https://ombtangkot.flazzard.com/api/capres', {
-                        paslon_1: parseInt(document.getElementById("paslon_1").value),
-                        paslon_2: parseInt(document.getElementById("paslon_2").value),
-                        paslon_3: parseInt(document.getElementById("paslon_3").value),
-                        suara_sah: sah,
-                        total_dpt: parseInt(document.getElementById("total_dpt").value),
-                        total_dpt_tambahan: parseInt(document.getElementById("total_dpt_tambahan").value),
-                        total_dpt_khusus: parseInt(document.getElementById("total_dpt_khusus").value),
-                        total_dpt_datang: parseInt(document.getElementById("total_dpt_datang").value),
-                        suara_tidak_sah: parseInt(document.getElementById("suara_tidak_sah").value),
-                        tps_id: parseInt(document.getElementById("tps").value),
-                        nrp: ''
-                    })
-                    .then(function(response) {
-
+                    paslon_1: parseInt(document.getElementById("paslon_1").value),
+                    paslon_2: parseInt(document.getElementById("paslon_2").value),
+                    paslon_3: parseInt(document.getElementById("paslon_3").value),
+                    suara_sah: sah,
+                    total_dpt: parseInt(document.getElementById("total_dpt").value),
+                    total_dpt_tambahan: parseInt(document.getElementById("total_dpt_tambahan").value),
+                    total_dpt_khusus: 0,
+                    total_dpt_datang: parseInt(document.getElementById("total_dpt_datang").value),
+                    suara_tidak_sah: parseInt(document.getElementById("suara_tidak_sah").value),
+                    tps_id: parseInt(document.getElementById("tps").value),
+                    nrp: ''
+                })
+                    .then(function (response) {
+                        document.getElementById("href-one").style.display = "block";
+                        document.getElementById("href-two").style.display = "block";
                     });
             }
 
