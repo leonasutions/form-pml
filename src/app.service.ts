@@ -433,7 +433,7 @@ export class AppService {
       }
     }
     var dataKelurahan
-    if (filter.length >1){
+    if (filter.length >0){
       dataKelurahan= await this.tpsRepository.find({
         where: {
           kelurahan: { id: idKelurahan }, id: Raw((alias) => `${alias} NOT IN (:...list_id)`, {
