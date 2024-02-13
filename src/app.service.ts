@@ -432,13 +432,23 @@ export class AppService {
         filter.push(item.tps.id)
       }
     }
-    var dataKelurahan = await this.tpsRepository.find({
-      where: {
-        kelurahan: { id: idKelurahan }, id: Raw((alias) => `${alias} NOT IN (:...list_id)`, {
-          list_id: filter
-        }),
-      },
-    })
+    var dataKelurahan
+    if (filter.length >1){
+      dataKelurahan= await this.tpsRepository.find({
+        where: {
+          kelurahan: { id: idKelurahan }, id: Raw((alias) => `${alias} NOT IN (:...list_id)`, {
+            list_id: filter
+          }),
+        },
+      })
+    }else{
+      dataKelurahan= await this.tpsRepository.find({
+        where: {
+          kelurahan: { id: idKelurahan }
+        },
+      })
+    }
+    
     return dataKelurahan
   }
   async postData(dataCapres: PostDto) {
