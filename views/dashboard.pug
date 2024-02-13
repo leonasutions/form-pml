@@ -367,6 +367,92 @@ script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 script.
   var listIdKecamatan = []
   $(document).ready(function () {
+  var intervalId = window.setInterval(function () {
+  var wilayahValue = document.getElementById("wilayah").value;
+  if (wilayahValue == "SELURUH WILAYAH" || wilayahValue == 'KABUPATEN' || wilayahValue == 'KOTAMADYA') {
+  var kecamatanValue = document.getElementById("kecamatan-select").value;
+  if (kecamatanValue == 0) {
+  var optionValues = $('#kecamatan-select option').map(function () {
+  return $(this).val(); // Return the value of each option
+  }).get();
+  listIdKecamatan = optionValues
+  } else {
+  listIdKecamatan.push(kecamatanValue)
+  }
+  listIdKecamatan = [...new Set(listIdKecamatan)];
+  document.getElementById("tabel-tps").replaceChildren();
+  $("#tabel-tps").append(`
+  <th>
+  No
+  </th>
+  <th>
+  Kecamatan
+  </th>
+  <th style="text-align: center;">
+  JML TPS <br>BLM MASUK DATA
+  </th>
+  `)
+  axios.post('!{host}/api/dashboard', {
+  listIdKecamatan: listIdKecamatan,
+  type: glob_type
+  }).then(function (response) {
+  $("#paslon1").text(response.data.data.total_paslon_1_percentage != null ? response.data.data.total_paslon_1_percentage + '%' : '-')
+  var pas_1 = $("#paslon1");
+  pas_1.css({
+  "width": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_1_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
+  });
+  var pas_2 = $("#paslon2");
+  pas_2.css({
+  "width": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_2_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
+  });
+  var pas_3 = $("#paslon3");
+  pas_3.css({
+  "width": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
+  "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
+  });
+  $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
+  $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
+  $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2 : '-')
+  $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3 : '-')
+  $("#paslon3").text(response.data.data.total_paslon_3_percentage != null ? response.data.data.total_paslon_3_percentage + '%' : '-')
+  $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all : '-')
+  $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
+  $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all : '-')
+  $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage != null ? response.data.data.total_dpt_tambahan_all_percentage + '%' : '-')
+  $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_hadir : '-')
+  $("#total_hadir_perc").text(response.data.data.total_hadir_percentage != null ? response.data.data.total_hadir_percentage + '%' : '-')
+  $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah : '-')
+  $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage != null ? response.data.data.total_suara_sah_percentage + '%' : '-')
+  $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah : '-')
+  $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage != null ? response.data.data.total_suara_tidak_sah_percentage + '%' : '-')
+  $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
+  $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+  $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
+  var pas_3 = $("#donut");
+  var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
+  var from_perc = parseFloat(from) / 100 * 360
+  pas_3.css({
+  "background": `conic-gradient(blue 0deg ${from_perc}deg, red ${from_perc}deg 360deg)`, // Change background color to red
+  });
+  var nomor = 1
+  for (item_belum of response.data.data.list_belum_masuk) {
+  $("#tabel-tps").append(`
+  <tr>
+  <td>${nomor}</td>
+  <td>${item_belum.nama}</td>
+  <td>${item_belum.data_belum_masuk}</td>
+  </tr>
+  `)
+  nomor = nomor + 1
+  }
+  });
+  }
+  }, 1200000);
   $("#tps-pop").on('click', function () {
   axios.post('!{host}/api/detail-tps', {
   listIdKecamatan: listIdKecamatan,
@@ -494,6 +580,24 @@ script.
   });
   $('#wilayah').change(function () {
   // document.querySelectorAll('#tps option').forEach(option => option.remove())
+  console.log($(this).val().length)
+  if ($(this).val().length == 0) {
+  document.getElementById("kecamatan-select").replaceChildren();
+  document.getElementById("tabel-tps").replaceChildren();
+  $("#tag_type").text('WILAYAH : ' + $(this).val())
+  $("#tag_type2").text('WILAYAH : ' + $(this).val())
+  $("#tabel-tps").append(`
+  <th>
+  No
+  </th>
+  <th>
+  Kecamatan
+  </th>
+  <th style="text-align: center;">
+  JML TPS <br>BLM MASUK DATA
+  </th>
+  `)
+  } else {
   glob_type = $(this).val()
   $("#tag_type").text('WILAYAH : ' + $(this).val())
   $("#tag_type2").text('WILAYAH : ' + $(this).val())
@@ -589,6 +693,7 @@ script.
   }
   });
   });
+  }
   });
 script.
   $('#kecamatan-select').change(function () {
