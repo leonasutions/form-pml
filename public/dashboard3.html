@@ -462,6 +462,9 @@
         var listIdKecamatan = []
         $(document).ready(function () {
 
+            var intervalId = window.setInterval(function(){
+                // call your function here
+              }, 1000);
 
             $("#tps-pop").on('click', function () {
                 axios.post('http://localhost:4890/api/detail-tps', {
