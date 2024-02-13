@@ -317,6 +317,9 @@ export class AppService {
         pf.id, 
         pf.kelurahan,
 		pf.kecamatan,
+        pf.nrp,
+        pf.phone,
+        pf.nama_anggota,
         pf.total - COALESCE(pf.toral, 0) AS data_belum_masuk,
         COALESCE(pf.toral, 0) AS data_masuk
     FROM
@@ -326,6 +329,9 @@ export class AppService {
             total.kecamatan,
             total.total,
             total.type,
+            pd.nrp as nrp,
+             pd.phone as phone,
+            pd.nama_anggota as nama_anggota,
             COALESCE(pd.total, 0) AS toral
         FROM
             (SELECT 
@@ -338,20 +344,25 @@ export class AppService {
             FROM
                 tps tp
             LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
-            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+            LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id 
             WHERE kec.id IN (${listIdKecamatan})
             GROUP BY tp.id) AS total
         LEFT JOIN
             (SELECT 
                 tp.id,
+                 ang.nrp as nrp,
+                 ang.phone as phone,
+                 angot.nama as nama_anggota,
                 COUNT(cap.id) AS total
             FROM
                 data_capres AS cap
             LEFT JOIN tps tp ON cap.tps_id = tp.id
             LEFT JOIN kelurahan kel ON tp.kelurahan_id = kel.id
             LEFT JOIN kecamatan kec ON kel.kecamatan_id = kec.id
+             LEFT JOIN user_app_iccs ang ON cap.user_id = ang.id
+            LEFT JOIN anggotas angot ON angot.nrp = ang.nrp
             WHERE kec.id IN (${listIdKecamatan})
-            GROUP BY tp.id) AS pd ON total.id = pd.id) AS pf
+             GROUP BY tp.id,nrp,phone,nama_anggota) AS pd ON total.id = pd.id) AS pf
             
             order by data_masuk desc;
     `)
@@ -525,7 +536,7 @@ export class AppService {
     }
     nomor = 1
     for (const item of dataTps) {
-      worksheet3.addRow([nomor, item.alamat, item.kelurahan, item.kecamatan, item.data_masuk, item.data_belum_masuk])
+      worksheet3.addRow([nomor, item.alamat, item.kelurahan, item.kecamatan, item.data_masuk, item.data_belum_masuk,item.nrp,item.nama_anggota,item.phone])
       nomor = nomor + 1
     }
     const excelBuffer = await workbook.xlsx.writeBuffer();
