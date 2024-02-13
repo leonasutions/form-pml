@@ -156,9 +156,6 @@ head
             | Jumlah DPT Tambahan
           input#total_dpt_tambahan(type='number')
           .header-input
-            | Jumlah DPT Khusus
-          input#total_dpt_khusus(type='number')
-          .header-input
             | Jumlah DPT Hadir
           input#total_dpt_datang(type='number')
           .header-input
@@ -370,7 +367,7 @@ script(type='text/javascript').
       suara_sah: sah,
       total_dpt: parseInt(document.getElementById("total_dpt").value), 
       total_dpt_tambahan: parseInt(document.getElementById("total_dpt_tambahan").value), 
-      total_dpt_khusus: parseInt(document.getElementById("total_dpt_khusus").value), 
+      total_dpt_khusus: 0, 
       total_dpt_datang: parseInt(document.getElementById("total_dpt_datang").value), 
       suara_tidak_sah: parseInt(document.getElementById("suara_tidak_sah").value), 
       tps_id: parseInt(document.getElementById("tps").value),
