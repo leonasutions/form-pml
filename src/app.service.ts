@@ -139,7 +139,7 @@ export class AppService {
         TRUNCATE((SUM(suara_sah) / SUM(total_dpt_datang))*100, 2) as total_suara_sah_percentage,
 
         SUM(suara_tidak_sah)  as total_suara_tidak_sah,
-        TRUNCATE((SUM(suara_tidak_sah) / SUM(suara_sah))*100, 2) as total_suara_tidak_sah_percentage,
+        TRUNCATE((SUM(suara_tidak_sah) / SUM(total_dpt_datang))*100, 2) as total_suara_tidak_sah_percentage,
 
         SUM(paslon_1) as total_paslon_1,
         TRUNCATE((SUM(paslon_1)/(SUM(paslon_1)+SUM(paslon_2)+SUM(paslon_3)))*100, 2) as total_paslon_1_percentage,
