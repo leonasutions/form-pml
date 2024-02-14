@@ -445,7 +445,7 @@ script.
   <tr>
   <td>${nomor}</td>
   <td>${item_belum.nama}</td>
-  <td>${item_belum.data_belum_masuk}</td>
+  <td style="text-align:center">${item_belum.data_belum_masuk}</td>
   </tr>
   `)
   nomor = nomor + 1
@@ -463,8 +463,8 @@ script.
   <tr >
   <td id="td-pop2">${nomor}</td>
   <td id="td-pop2">${item.nama}</td>
-  <td id="td-pop2">${item.data_belum_masuk}</td>
-  <td id="td-pop2">${item.data_masuk}</td>
+  <td id="td-pop2">${item.data_belum_masuk.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop2">${item.data_masuk.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
   </tr>
   `)
   nomor = nomor + 1
@@ -482,14 +482,14 @@ script.
   <tr >
   <td id="td-pop">${nomor}</td>
   <td id="td-pop">${item.nama}</td>
-  <td id="td-pop">${item.total_dpt}</td>
-  <td id="td-pop">${item.total_dpt_plus}</td>
-  <td id="td-pop">${item.total_dpt_datang}</td>
-  <td id="td-pop">${item.total_sah}</td>
-  <td id="td-pop">${item.total_tidak_sah}</td>
-  <td id="td-pop">${item.total_paslon_1}</td>
-  <td id="td-pop">${item.total_paslon_2}</td>
-  <td id="td-pop">${item.total_paslon_3}</td>
+  <td id="td-pop">${item.total_dpt.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_dpt_plus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_dpt_datang.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_sah.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_tidak_sah.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_paslon_1.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_paslon_2.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
+  <td id="td-pop">${item.total_paslon_3.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</td>
   </tr>
   `)
   nomor = nomor + 1
@@ -696,7 +696,7 @@ script.
   <tr>
   <td>${nomor}</td>
   <td>${item_belum.nama}</td>
-  <td>${item_belum.data_belum_masuk}</td>
+  <td style="text-align:center">${item_belum.data_belum_masuk}</td>
   </tr>
   `)
   nomor = nomor + 1
