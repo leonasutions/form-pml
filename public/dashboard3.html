@@ -348,28 +348,28 @@
                     <div class="">
                         <div class="cardnya">
                             <div style="height: 75px;font-size:1vw;"><b>TOTAL DPT</b></div>
-                            <div id="total_dpt" style="height: 75px;font-size: 1.5vw;">0</div>
+                            <div id="total_dpt" style="height: 75px;font-size: 1.3vw;">0</div>
                             <div id="total_dpt_perc" style="height: 75px;font-size: 1.7vw"><b>0</b></div>
                         </div>
                     </div>
                     <div class="">
                         <div class="cardnya">
                             <div style="height: 75px;font-size: 1vw;"><b>TOTAL DPT B</b></div>
-                            <div id="total_dpt_plus" style="height: 75px;font-size:  1.5vw">0</div>
+                            <div id="total_dpt_plus" style="height: 75px;font-size:  1.3vw">0</div>
                             <div id="total_dpt_plus_perc" style="height: 75px;font-size:  1.7vw"><b>0</b></div>
                         </div>
                     </div>
                     <div class="">
                         <div class="cardnya">
                             <div style="height: 75px;font-size: 1vw;"><b>TOTAL HADIR</b></div>
-                            <div id="total_hadir" style="height: 75px;font-size: 1.5vw">0</div>
+                            <div id="total_hadir" style="height: 75px;font-size: 1.3vw">0</div>
                             <div id="total_hadir_perc" style="height: 75px;font-size:  1.7vw"><b>0</b></div>
                         </div>
                     </div>
                     <div class="">
                         <div class="cardnya">
                             <div style="height: 75px;font-size: 1vw;"><b>TOTAL SUARA SAH</b></div>
-                            <div id="total_sah" style="height: 75px;font-size: 1.5vw;">0</div>
+                            <div id="total_sah" style="height: 75px;font-size: 1.3vw;">0</div>
                             <div id="total_sah_perc" style="height: 75px;font-size:  1.7vw"><b>0</b></div>
                         </div>
                     </div>
@@ -459,6 +459,19 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
+        function addDecimalPoints(id) {
+            var inputElement = document.getElementById(id);
+            inputElement.value=inputElement.value.replace(/\D/g, '');
+            var inputValue = inputElement.value.replace('.', '').split("").reverse().join(""); // reverse
+            var newValue = '';
+            for (var i = 0; i < inputValue.length; i++) {
+                if (i % 3 == 0) {
+                    newValue += '.';
+                }
+                newValue += inputValue[i];
+            }
+            inputElement.value = newValue.split("").reverse().join("");
+        }
         var listIdKecamatan = []
         $(document).ready(function () {
 
@@ -515,22 +528,22 @@
                             "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
                         });
                         $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
-                        $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
-                        $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2 : '-')
-                        $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3 : '-')
+                        $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
+                        $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
+                        $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#paslon3").text(response.data.data.total_paslon_3_percentage != null ? response.data.data.total_paslon_3_percentage + '%' : '-')
-                        $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all : '-')
+                        $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
-                        $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all : '-')
+                        $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage != null ? response.data.data.total_dpt_tambahan_all_percentage + '%' : '-')
-                        $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_hadir : '-')
+                        $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_hadir.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#total_hadir_perc").text(response.data.data.total_hadir_percentage != null ? response.data.data.total_hadir_percentage + '%' : '-')
-                        $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah : '-')
+                        $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage != null ? response.data.data.total_suara_sah_percentage + '%' : '-')
-                        $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah : '-')
+                        $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                         $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage != null ? response.data.data.total_suara_tidak_sah_percentage + '%' : '-')
-                        $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
-                        $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+                        $("#terdaftar").text(response.data.data.total_tps.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' TPS TERDAFTAR')
+                        $("#tps_masuk").text(response.data.data.total_tps_masuk.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' DATA TPS MASUK DARI TOTAL')
                         $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
                         var pas_3 = $("#donut");
                         var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
@@ -772,22 +785,22 @@
                                 "line-height": `${parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2}px`, // Change background color to red
                             });
                             $("#paslon2").text(response.data.data.total_paslon_2_percentage + '%')
-                            $("#sum_paslon1").text(response.data.data.total_paslon_1)
-                            $("#sum_paslon2").text(response.data.data.total_paslon_2)
-                            $("#sum_paslon3").text(response.data.data.total_paslon_3)
+                            $("#sum_paslon1").text(response.data.data.total_paslon_1.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+                            $("#sum_paslon2").text(response.data.data.total_paslon_2.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+                            $("#sum_paslon3").text(response.data.data.total_paslon_3.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#paslon3").text(response.data.data.total_paslon_3_percentage + '%')
-                            $("#total_dpt").text(response.data.data.total_dpt_all)
+                            $("#total_dpt").text(response.data.data.total_dpt_all.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
-                            $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all)
+                            $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage + '%')
-                            $("#total_hadir").text(response.data.data.total_hadir)
+                            $("#total_hadir").text(response.data.data.total_hadir.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#total_hadir_perc").text(response.data.data.total_hadir_percentage + '%')
-                            $("#total_sah").text(response.data.data.total_suara_sah)
+                            $("#total_sah").text(response.data.data.total_suara_sah.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage + '%')
-                            $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah)
+                            $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah.replace(/\B(?=(\d{3})+(?!\d))/g, "."))
                             $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage + '%')
-                            $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
-                            $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+                            $("#terdaftar").text(response.data.data.total_tps.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' TPS TERDAFTAR')
+                            $("#tps_masuk").text(response.data.data.total_tps_masuk.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' DATA TPS MASUK DARI TOTAL')
                             $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
                             var pas_3 = $("#donut");
                             var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
@@ -814,6 +827,7 @@
         });
     </script>
     <script>
+
         $('#kecamatan-select').change(function () {
             listIdKecamatan = []
             if ($(this).val() == 0) {
@@ -871,22 +885,22 @@
                     "line-height": `${Math.min(parseFloat(response.data.data.total_paslon_3_percentage / 100 * 200.0) * 2, 200)}px`, // Change background color to red
                 });
                 $("#paslon2").text(response.data.data.total_paslon_2_percentage != null ? response.data.data.total_paslon_2_percentage + '%' : '-')
-                $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1 : '-')
-                $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2 : '-')
-                $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3 : '-')
+                $("#sum_paslon1").text(response.data.data.total_paslon_1 != null ? response.data.data.total_paslon_1.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
+                $("#sum_paslon2").text(response.data.data.total_paslon_2 != null ? response.data.data.total_paslon_2.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
+                $("#sum_paslon3").text(response.data.data.total_paslon_3 != null ? response.data.data.total_paslon_3.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#paslon3").text(response.data.data.total_paslon_3_percentage != null ? response.data.data.total_paslon_3_percentage + '%' : '-')
-                $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all : '-')
+                $("#total_dpt").text(response.data.data.total_dpt_all != null ? response.data.data.total_dpt_all.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#total_dpt_perc").text(response.data.data.total_dpt_all_percentage + '%')
-                $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all : '-')
+                $("#total_dpt_plus").text(response.data.data.total_dpt_tambahan_all != null ? response.data.data.total_dpt_tambahan_all.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#total_dpt_plus_perc").text(response.data.data.total_dpt_tambahan_all_percentage != null ? response.data.data.total_dpt_tambahan_all_percentage + '%' : '-')
-                $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_hadir : '-')
+                $("#total_hadir").text(response.data.data.total_hadir != null ? response.data.data.total_hadir.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#total_hadir_perc").text(response.data.data.total_hadir_percentage != null ? response.data.data.total_hadir_percentage + '%' : '-')
-                $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah : '-')
+                $("#total_sah").text(response.data.data.total_suara_sah != null ? response.data.data.total_suara_sah.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#total_sah_perc").text(response.data.data.total_suara_sah_percentage != null ? response.data.data.total_suara_sah_percentage + '%' : '-')
-                $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah : '-')
+                $("#total_tidak_sah").text(response.data.data.total_suara_tidak_sah != null ? response.data.data.total_suara_tidak_sah.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : '-')
                 $("#total_tidak_sah_perc").text(response.data.data.total_suara_tidak_sah_percentage != null ? response.data.data.total_suara_tidak_sah_percentage + '%' : '-')
-                $("#terdaftar").text(response.data.data.total_tps + ' TPS TERDAFTAR')
-                $("#tps_masuk").text(response.data.data.total_tps_masuk + ' DATA TPS MASUK DARI TOTAL')
+                $("#terdaftar").text(response.data.data.total_tps.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' TPS TERDAFTAR')
+                $("#tps_masuk").text(response.data.data.total_tps_masuk.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' DATA TPS MASUK DARI TOTAL')
                 $("#perc_tps").text((parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2) + '%')
                 var pas_3 = $("#donut");
                 var from = (parseInt(response.data.data.total_tps_masuk) / parseInt(response.data.data.total_tps) * 100).toFixed(2)
